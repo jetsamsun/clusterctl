@@ -1,0 +1,117 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+ul,li {
+	list-style: none;
+}
+
+body {
+	font-size: 16px;
+}
+a {
+	text-decoration:none;
+	color: #fff;
+}
+.content {
+	width: 6.88rem;
+	margin: 0 auto;
+	padding-bottom: 1.2rem;
+}
+.download {
+	width: 6.88rem;
+	height: 10.08rem;
+	background-image: url(../image/download-bg.jpg);
+	background-size: cover;
+	color: #fff;
+}
+.app {
+	padding-top:0.5rem;
+    text-align: center;
+	font-size: 0.6rem;
+}
+.app img{
+    width: 2rem;
+}
+.title {
+	margin-top: 0.8rem;
+	margin-bottom: 1rem;
+    text-align: center;
+}
+.android-wrapper {
+	margin-left: 0.85rem;
+}
+.android-wrapper,
+.ios-wrapper {
+	display: inline-block;
+	width: 2.5rem;
+	margin-right: 0.24rem;
+}
+.android,
+.ios {
+	display: block;
+	width: 2.2rem;
+	padding: 0.2rem;
+	border-radius: 0.75rem;
+	margin-top: 0.24rem;
+	background: #f26e5f;
+	font-size: 0.24rem;
+}
+.android img,
+.ios img {
+	height: 0.3rem;
+	vertical-align: middle;
+}
+.tips {
+	margin-left: 0.68rem;
+	margin-top: 0.64rem;
+	font-size: 0.24rem; 
+}
+
+.installation h2 {
+	font-size: 0.4rem;
+	color: #f3220b;
+	margin-top: 0.28rem;
+	margin-bottom: 0.64rem; 
+}
+
+.question>div {
+	
+	color: #e45259;
+}
+.q {
+	font-size: 0.4rem;
+}
+.question ul {
+	padding-left: 0.56rem;
+	padding-bottom: 0.24rem;
+} 
+.question ul li {
+	margin-top: 0.2rem;
+	font-size: 0.24rem;
+}
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	background: #fff;
+	width: 7.5rem;
+	height: 1rem;
+	font-size: 0;
+	padding-top: 0.16rem;
+	border-top: 1px solid #eee;
+}
+footer>div {
+	display: inline-block;
+	width: 20%;
+	text-align: center;
+	font-size: 0.24rem;
+	color: #868686;
+}
+footer img {
+	width: 0.45rem;
+}
+footer .my {
+	color: #e9401b;
+}

@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>一起推广</title>
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="青瓜TV cctv4.me www.cctv4.me 青瓜视频 青瓜影视">
+    <meta name="keywords" content="青瓜TV cctv4.me www.cctv4.me 青瓜视频 青瓜影视">
+    <script src="./js/clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css?v=13" />
+</head>
+<style>
+    .text1 {
+        font-size:14px;
+        color:#eaeaea;
+        text-align:left;
+        padding-left:40px;
+        padding-right:40px;
+        line-height: 30px;
+        padding-bottom:20px;
+    }
+</style>
+
+<body>
+    <div class="bgImg">
+    </div>
+    <div style="height:1px;"></div>
+
+
+
+    <div class="ios-install">
+        <img class="ios-install-pic" src="./images/user1.png?v=1" style="margin-bottom:10px !important;"/>
+
+        <div class="text1">
+            进入 APP "我的" > "分享推广"，截图二维码或复制推广链接发送给好友，好友（新用户）下载成功即可增加你的每日追剧次数，好友充值你还能获得充值返利。
+        </div>
+
+        <div class="text1">
+            友情提示：</br>
+            1. 请妥善保管自己的账号和推广码。</br>
+            2. 若出现好友下载成功后，推广次数未增加情况，请让好友在“我的”页面输入邀请码来建立邀请关系。</br>
+            3. 复制推广链接，请在Safari等浏览器中打开，微信或QQ等第三方内置浏览器无法访问！   
+            </div>
+            
+            <div class="text1">
+                推广福利：</br>                
+                1. 成功推广1人，每日获10次追剧次数</br>
+                2. 成功推广3人，获“月卡”不限追剧次数</br>
+                3. 成功推广10人，获“年卡”不限追剧次数</br>（注：充值会员本身无限看，以上福利只是针对非会员）     
+                </div>            
+    </div>
+
+
+
+    </div>
+
+
+
+</body>
+<div style="display:none;">
+    <script type="text/javascript" src="https://s96.cnzz.com/z_stat.php?id=1277594270&web_id=1277594270"></script>
+</div>
+<script type="text/javascript" src="//js.users.51.la/20043143.js"></script>
+
+
+
+</body>
+<?php
+$f = isset($_GET['f']) ? $_GET['f'] : "";
+if ($f) {
+    ?>
+<script>
+    var clipboard = new ClipboardJS('.copy', {
+        text: function () {
+            return "qgtv=<?php echo $f; ?>";
+        }
+    });
+</script>
+<?php } ?>
+
+</html>

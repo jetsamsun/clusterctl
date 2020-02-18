@@ -1,0 +1,200 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    background:url('../images/bg3.jpg?v=1');
+    background-color: #686868;
+background-size: cover;
+}
+
+.bottom_tips {
+    position: fixed;
+    height: 2.8rem;
+    width: 97%;
+    bottom: 0px;
+    font-size: 0.8rem;
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    padding-top: 0.4rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    opacity: 0.7;
+}
+
+
+img{
+    border:none;
+}
+a{
+    text-decoration: none;
+}
+.bgImg{
+    height:100%;
+    width:100%;
+    position:fixed;
+    text-align: center;
+    z-index: -1;
+}
+.bgImg img{
+    height:100%;
+    margin-left: -20rem;
+}
+.logo{
+    text-align: center;
+    margin-top: 80px;
+}
+.logo img{
+    width:240px;
+}
+.mainLeft{
+    width:48%;
+    float: left;
+    text-align: right;
+    margin-top: 40px;
+}
+.mainLeft img{
+    width:256px;
+}
+.mainRight{
+    float: right;
+    text-align: left;
+    width:47%;
+}
+.mainRight .erweima img{
+    margin-top: 96px;
+    width: 176px;
+    margin-left: 10px;
+}
+.bottomtext {
+    font-size: 16px;
+    color: #fff;
+    margin-top: 35px;
+}
+.downloadImg img{
+    width: 160px;
+    margin-top: 30px;
+    margin-left: 16px;
+}
+
+.ios-install
+{
+    clear: both;
+    width:100%;
+    text-align: center;
+}
+.ios-install-pic
+{
+    margin-bottom:80px;
+    margin-top:80px;
+    width:400px;
+}
+
+@media screen and (max-width: 375px) {
+    .bgImg{
+        height:100%;
+        width:100%;
+        position:fixed;
+        text-align: center;
+        z-index: -1;
+    }
+    .bgImg img{
+        margin-left: -20rem;
+    }
+    .logo{
+        margin-top: 42px;
+    }
+    .logo img{
+        width:150px;
+    }
+    .mainLeft{
+        width:48%;
+        margin-top: 40px;
+    }
+    .mainLeft img{
+        width:153px;
+    }
+    .mainRight{
+        width:47%;
+    }
+    .mainRight .erweima img{
+        margin-top: 38px;
+        width: 124px;
+        margin-left: 10px;
+    }
+    .bottomtext {
+        font-size: 12px;
+        margin-top: 20px;
+    }
+    .downloadImg img{
+        width: 112px;
+        margin-top: 13px;
+        margin-left: 14px;
+    }
+    .ios-install
+    {
+        width:100%;
+        text-align: center;
+        clear: both;
+    }
+    .ios-install-pic
+    {
+        margin-bottom:40px;
+        margin-top:20px;
+        width:380px;
+    }    
+}
+@media screen and (min-width:376px) and (max-width:710px){
+    .bgImg{
+        height:100%;
+        width:100%;
+        position:fixed;
+        text-align: center;
+        z-index: -1;
+    }
+    .bgImg img{
+        margin-left: -127px;
+    }
+    .logo{
+        margin-top: 50px;
+    }
+    .logo img{
+        width:150px;
+    }
+    .mainLeft{
+        width:48%;
+        margin-top: 40px;
+    }
+    .mainLeft img{
+        width:189px;
+    }
+    .mainRight{
+        width:47%;
+    }
+    .mainRight .erweima img{
+        margin-top: 53px;
+        width: 170px;
+        margin-left: 10px;
+    }
+    .bottomtext {
+        font-size: 15px;
+        margin-top: 20px;
+    }
+    .downloadImg img{
+        width: 157px;
+        margin-top: 22px;
+        margin-left: 14px;
+    }
+
+    .ios-install
+    {
+        width:100%;
+        text-align: center;
+        clear: both;
+    }
+    .ios-install-pic
+    {
+        margin-bottom:40px;
+        margin-top:20px;
+        width:400px;
+    }
+}
