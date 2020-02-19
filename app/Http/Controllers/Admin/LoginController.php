@@ -40,7 +40,6 @@ class LoginController extends Controller
     }
     /*创建验证码*/
     public function captchamews() {
-    	return "fhrsjk";
         return Captcha::create('flat');
     }
 
