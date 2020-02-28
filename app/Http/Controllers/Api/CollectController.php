@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\StarList;
-use App\UserCollect;
-use App\VideoList;
+use App\Models\StarList;
+use App\Models\UserCollect;
+use App\Models\VideoList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

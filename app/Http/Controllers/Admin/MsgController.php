@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\MsgLog;
-use App\SeekVideo;
-use App\VideoTrouble;
+use App\Models\MsgLog;
+use App\Models\SeekVideo;
+use App\Models\VideoTrouble;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

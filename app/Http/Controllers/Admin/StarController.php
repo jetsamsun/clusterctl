@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\ScreenOtype;
-use App\StarList;
+use App\Models\ScreenOtype;
+use App\Models\StarList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

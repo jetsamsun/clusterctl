@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\AppInfo;
+use App\Models\AppInfo;
 use App\Http\Controllers\ApiController;
-use App\ShareLogs;
-use App\UserInfo;
-use App\Version;
+use App\Models\ShareLogs;
+use App\Models\UserInfo;
+use App\Models\Version;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

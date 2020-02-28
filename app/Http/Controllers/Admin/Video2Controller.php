@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\ListOtype;
-use App\ScreenOtype;
-use App\StarList;
-use App\VideoAdminLog;
-use App\VideoList;
-use App\VideoOtype;
+use App\Models\ListOtype;
+use App\Models\ScreenOtype;
+use App\Models\StarList;
+use App\Models\VideoAdminLog;
+use App\Models\VideoList;
+use App\Models\VideoOtype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

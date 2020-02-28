@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\Vip;
+use App\Models\Vip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

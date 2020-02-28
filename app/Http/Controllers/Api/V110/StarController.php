@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\StarList;
-use App\UserCollect;
-use App\VideoList;
+use App\Models\StarList;
+use App\Models\UserCollect;
+use App\Models\VideoList;
 use Illuminate\Http\Request;
 
 class StarController extends  ApiController{

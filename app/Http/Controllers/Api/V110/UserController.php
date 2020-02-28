@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\SmsLogs;
-use App\UserInfo;
-use App\UserLevel;
+use App\Models\SmsLogs;
+use App\Models\UserInfo;
+use App\Models\UserLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;

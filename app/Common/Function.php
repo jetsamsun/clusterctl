@@ -1,6 +1,6 @@
 <?php
 use function Qiniu\json_decode;
-use App\UserLog;
+use App\Models\UserLog;
 /**
  * @desc 自定义函数
  * @date 2019-04-16

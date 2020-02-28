@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\ListOtype;
-use App\ScreenOtype;
-use App\VideoOtype;
+use App\Models\ListOtype;
+use App\Models\ScreenOtype;
+use App\Models\VideoOtype;
 use Illuminate\Http\Request;
 
 class OtypeController extends  ApiController{

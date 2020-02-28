@@ -1,11 +1,12 @@
 @extends('layouts.layouts')
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
-        @if(!$data)
-            <a class="layui-btn layui-btn-sm layui-btn-primary"  onclick="click_free(1)" >一键限免</a>
-        @else
-            <a class="layui-btn layui-btn-sm layui-btn-primary" onclick="click_free(2)" >取消限免</a>
-        @endif
+        {{--@if(!$data)--}}
+            {{--<a class="layui-btn layui-btn-sm layui-btn-primary"  onclick="click_free(1)" >一键限免</a>--}}
+        {{--@else--}}
+            {{--<a class="layui-btn layui-btn-sm layui-btn-primary" onclick="click_free(2)" >取消限免</a>--}}
+        {{--@endif--}}
+        <span>*上传视频后，可执行转码切片</span>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>视频列表</legend>
@@ -24,6 +25,7 @@
         <input type="checkbox" name="is_free" value="@{{d.vid }}" title="限免" lay-filter="is_free" @{{ d.is_free == 1 ? 'checked' : '' }}>
     </script>
     <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="transcode">转码</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -70,7 +72,7 @@
                     ,{field:'hotcount', title:'视频热度', width:120}
                     ,{field:'videotime', title:'视频时长', width:120}
                     ,{field:'createtime', title:'加入时间', width:220}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
                 ]]
             });
             //搜索
@@ -137,6 +139,10 @@
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
                     vid = data.vid;
                     window.location.href = "/admin/video/editvideo/"+vid;
+                } else if(obj.event === 'transcode'){
+                    //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                    vid = data.vid;
+                    window.location.href = "/admin/video/transcodevideo/"+vid;
                 }
             });
         });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\AppInfo;
+use App\Models\AppInfo;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

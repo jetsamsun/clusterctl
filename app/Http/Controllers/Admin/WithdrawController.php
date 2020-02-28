@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
+use App\Models\Admin;
 use App\Http\Controllers\AdminController;
-use App\UserInfo;
-use App\UserWithdraw;
+use App\Models\UserInfo;
+use App\Models\UserWithdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

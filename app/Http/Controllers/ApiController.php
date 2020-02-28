@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\ListOtype;
-use App\ScreenOtype;
-use App\StarList;
-use App\UserInfo;
-use App\VideoOtype;
+use App\Models\ListOtype;
+use App\Models\ScreenOtype;
+use App\Models\StarList;
+use App\Models\UserInfo;
+use App\Models\VideoOtype;
 use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller

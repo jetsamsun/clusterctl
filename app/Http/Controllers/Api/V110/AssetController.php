@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers\Api\V110;
 
-use App\AssetDetail;
+use App\Models\AssetDetail;
 use App\Http\Controllers\ApiController;
-use App\UserInfo;
-use App\UserLevel;
-use App\UserWithdraw;
+use App\Models\UserInfo;
+use App\Models\UserLevel;
+use App\Models\UserWithdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

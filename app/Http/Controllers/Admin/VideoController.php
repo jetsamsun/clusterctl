@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\ListOtype;
-use App\ScreenOtype;
-use App\StarList;
-use App\VideoAdminLog;
-use App\VideoList;
-use App\VideoOtype;
+use App\Models\ListOtype;
+use App\Models\ScreenOtype;
+use App\Models\StarList;
+use App\Models\VideoAdminLog;
+use App\Models\VideoList;
+use App\Models\VideoOtype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -209,6 +209,26 @@ class VideoController extends AdminController
         $data['videotime'] = explode(':',$data['videotime']);
 
         return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype'));
+    }
+    public function transcodevideo(Request $request,$vid){
+        if($request->isMethod('post')){
+            return response()->json(array('code'=>1,'msg'=>"已添加后台转码"));
+        }
+
+        // 导航分类
+        $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
+        // 视频分类
+        $secondotype = VideoOtype::select('oid','otypename')->get()->toArray();
+        // 筛选条件
+        $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
+        foreach($screen as $key=>$value){
+            $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
+            $screen[$key]['son'] = $son;
+        }
+        // 明星列表
+        $star =  StarList::select('sid','uname')->get()->toArray();
+
+        return view('video.transcode',compact('vid','firstotype','secondotype','star','screen'));
     }
     public function delvideo(Request $request){
         $vid = $request->input('vid');

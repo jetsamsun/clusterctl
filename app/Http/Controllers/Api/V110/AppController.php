@@ -2,10 +2,10 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\ShareLogs;
-use App\UserClick;
-use App\UserInfo;
-use App\Vip;
+use App\Models\ShareLogs;
+use App\Models\UserClick;
+use App\Models\UserInfo;
+use App\Models\Vip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

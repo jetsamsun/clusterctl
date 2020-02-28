@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\MsgLog;
+use App\Models\MsgLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

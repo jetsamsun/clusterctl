@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\UserInfo;
+use App\Models\UserInfo;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
