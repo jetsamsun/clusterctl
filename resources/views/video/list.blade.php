@@ -6,7 +6,7 @@
         {{--@else--}}
             {{--<a class="layui-btn layui-btn-sm layui-btn-primary" onclick="click_free(2)" >取消限免</a>--}}
         {{--@endif--}}
-        <span>*上传视频后，可执行转码切片</span>
+        <span>上传视频后可执行转码切片。</span>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>视频列表</legend>

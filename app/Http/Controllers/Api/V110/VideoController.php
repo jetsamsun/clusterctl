@@ -2,13 +2,13 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\LoginLogs;
-use App\StarList;
-use App\UserCollect;
-use App\UserInfo;
-use App\UserlookLogs;
-use App\VideoList;
-use App\VideoUserLog;
+use App\Models\LoginLogs;
+use App\Models\StarList;
+use App\Models\UserCollect;
+use App\Models\UserInfo;
+use App\Models\UserlookLogs;
+use App\Models\VideoList;
+use App\Models\VideoUserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

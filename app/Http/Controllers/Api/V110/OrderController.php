@@ -2,15 +2,15 @@
 namespace App\Http\Controllers\Api\V110;
 
 use App\Http\Controllers\ApiController;
-use App\OrderInfo;
-use App\OrderLogs;
-use App\UserInfo;
-use App\UserLevel;
+use App\Models\OrderInfo;
+use App\Models\OrderLogs;
+use App\Models\UserInfo;
+use App\Models\UserLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\UserLog;
+use App\Models\UserLog;
 
 //include __DIR__."/../../../../../public/upload/Alipay/AlipayUtils.php";
 include __DIR__."/../../../../../public/upload/HappyPay/HappyPayUtils.php";

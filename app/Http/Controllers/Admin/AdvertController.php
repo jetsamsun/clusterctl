@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\AdvertList;
+use App\Models\AdvertList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
