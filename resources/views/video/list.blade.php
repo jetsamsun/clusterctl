@@ -17,7 +17,9 @@
             <input class="layui-input" id="title" name="title" id="test-table-demoReload" autocomplete="off">
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <button class="layui-btn" id="transcode">转码</button>
     </div>
+
     <table class="layui-hide" lay-filter="demo" id="test"></table>
 
     <script type="text/html" id="is_free">
@@ -26,7 +28,7 @@
     </script>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="transcode">转码</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
@@ -89,6 +91,19 @@
                     where: {title: title}
                 });
             });
+            //复选
+            $('#transcode').on('click',function () {
+                let vid = '';
+                let obj = table.checkStatus('test').data;
+                for(let i=0; i<obj.length; i++) {
+                    if(i===0) {
+                        vid = obj[i].vid;
+                    } else {
+                        vid = vid+'_'+obj[i].vid;
+                    }
+                }
+                window.location.href = "/admin/video/transcode/"+vid;
+            });
             //监听锁定操作
             form.on('checkbox(is_free)', function(obj){
                 //layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
@@ -142,7 +157,7 @@
                 } else if(obj.event === 'transcode'){
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
                     vid = data.vid;
-                    window.location.href = "/admin/video/transcodevideo/"+vid;
+                    window.location.href = "/admin/video/transcode/"+vid;
                 }
             });
         });

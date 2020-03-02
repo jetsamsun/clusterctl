@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v1','namespace' => 'Api'], function () {
     Route::any('video/getVideoList', 'VideoController@getVideoList');
     Route::any('video/getVideoDetails', 'VideoController@getVideoDetails');
     Route::any('video/getRandomVideoList', 'VideoController@getRandomVideoList');
+    Route::any('video/execute', 'VideoController@execute');
 
     // msg
     Route::any('msg/subMsg', 'MsgController@subMsg');

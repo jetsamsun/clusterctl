@@ -20,6 +20,7 @@ Route::get('/admintv', function () {
     //return view('index.index');
     return redirect("/admin/index");
 });
+
 Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     // index
     Route::any('index','IndexController@index');
@@ -42,7 +43,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('video/editvideo/{id}', 'VideoController@editvideo');
     Route::any('video/videofree', 'VideoController@videofree');
     Route::any('video/clickfree', 'VideoController@clickfree');
-    Route::any('video/transcodevideo/{id}', 'VideoController@transcodevideo');
+    Route::any('video/transcode/{id}', 'VideoController@transcode');
 
     // star
     Route::any('star', 'StarController@star');
