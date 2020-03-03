@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 28/02/2020 18:43:26
+ Date: 03/03/2020 16:06:45
 */
 
 SET NAMES utf8mb4;
@@ -159,7 +159,7 @@ CREATE TABLE `app_login_logs`  (
   `uid` int(11) DEFAULT NULL,
   `logintime` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10168 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for app_menu_info
@@ -755,6 +755,30 @@ INSERT INTO `app_share_logs` VALUES (10012, 10191, '2019-03-28 00:00:00');
 INSERT INTO `app_share_logs` VALUES (10013, 10193, '2019-03-29 00:00:00');
 
 -- ----------------------------
+-- Table structure for app_siterate
+-- ----------------------------
+DROP TABLE IF EXISTS `app_siterate`;
+CREATE TABLE `app_siterate`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rate` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `width` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `heigth` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `default` tinyint(2) UNSIGNED DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of app_siterate
+-- ----------------------------
+INSERT INTO `app_siterate` VALUES (1, '240', '426', '240', 0);
+INSERT INTO `app_siterate` VALUES (2, '360', '640', '360', 1);
+INSERT INTO `app_siterate` VALUES (3, '480', '854', '480', 0);
+INSERT INTO `app_siterate` VALUES (4, '720', '1280', '720', 0);
+INSERT INTO `app_siterate` VALUES (5, '1080', '1920', '1080', 0);
+INSERT INTO `app_siterate` VALUES (6, '1440', '2560', '1440', 0);
+INSERT INTO `app_siterate` VALUES (7, '2160', '3840', '2160', 0);
+
+-- ----------------------------
 -- Table structure for app_sms_logs
 -- ----------------------------
 DROP TABLE IF EXISTS `app_sms_logs`;
@@ -776,7 +800,7 @@ CREATE TABLE `app_star_list`  (
   `pic` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '头像',
   `screenotype` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '筛选条件 10001,10002',
   PRIMARY KEY (`sid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10006 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10004 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_star_list
@@ -784,6 +808,33 @@ CREATE TABLE `app_star_list`  (
 INSERT INTO `app_star_list` VALUES (10001, '成龙', '/assets/uploads/image/star/2020/0228/1582874608391.png', '10020,10033');
 INSERT INTO `app_star_list` VALUES (10002, '李连杰', '/assets/uploads/image/star/2020/0228/1582874652317.png', '10018,10019');
 INSERT INTO `app_star_list` VALUES (10003, '周星驰', '/assets/uploads/image/star/2020/0228/1582874690516.png', '10018,10019,10033');
+
+-- ----------------------------
+-- Table structure for app_trans_log
+-- ----------------------------
+DROP TABLE IF EXISTS `app_trans_log`;
+CREATE TABLE `app_trans_log`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `data` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `time` int(12) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_trans_log
+-- ----------------------------
+INSERT INTO `app_trans_log` VALUES (42, 'CP1PtMBe', '转码准备', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583222697);
+INSERT INTO `app_trans_log` VALUES (43, 'CP1PtMBe', '开始转码', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222697);
+INSERT INTO `app_trans_log` VALUES (44, 'CP1PtMBe', '转码成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222716);
+INSERT INTO `app_trans_log` VALUES (45, 'CP1PtMBe', '开始切片', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222716);
+INSERT INTO `app_trans_log` VALUES (46, 'CP1PtMBe', '切片成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222717);
+INSERT INTO `app_trans_log` VALUES (47, 'CP1PtMBe', '删除转码文件', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222717);
+INSERT INTO `app_trans_log` VALUES (48, 'CP1PtMBe', '第一次组合m3u8 json数据', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222717);
+INSERT INTO `app_trans_log` VALUES (49, 'CP1PtMBe', '开始更新记录', '{\"m3u8\":\"{\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200303\\\\\\/CP1PtMBe\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200303\\/CP1PtMBe\\/360\\/CP1PtMBe.jpg\",\"gif\":\"\\/video\\/product\\/20200303\\/CP1PtMBe\\/360\\/CP1PtMBe.gif\",\"video\":\"\\/video\\/product\\/20200303\\/CP1PtMBe\\/360\\/CP1PtMBe.mp4\",\"nickname\":\"CP1PtMBe.mp4\",\"size\":\"35248982\",\"width\":1280,\"height\":720,\"bit_rate\":\"1432870\",\"duration\":\"196.760000\",\"audio\":\"aac\",\"vcode\":\"h264\"}', 1583222717);
+INSERT INTO `app_trans_log` VALUES (50, 'CP1PtMBe', '更新记录成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583222717);
+INSERT INTO `app_trans_log` VALUES (51, 'CP1PtMBe', '转码完毕', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583222717);
 
 -- ----------------------------
 -- Table structure for app_user_click
@@ -1566,7 +1617,7 @@ CREATE TABLE `app_video_admin_log`  (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `video_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1037 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for app_video_list
@@ -1576,6 +1627,8 @@ CREATE TABLE `app_video_list`  (
   `vid` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标题',
   `pic` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '封面图URL',
+  `gif` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `m3u8` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `content` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '简介',
   `otype` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1' COMMENT '1:mv      2:视频',
   `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '视频链接',
@@ -1591,14 +1644,23 @@ CREATE TABLE `app_video_list`  (
   `is_visible` int(2) DEFAULT 1,
   `play_urls` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `download_urls` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `video` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'video',
+  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
+  `size` bigint(20) DEFAULT NULL COMMENT '视频大小',
+  `width` int(10) DEFAULT NULL,
+  `height` int(10) DEFAULT NULL,
+  `bit_rate` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '比特率',
+  `duration` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '视频时长',
+  `audio` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `vcode` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`vid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10026 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_video_list
 -- ----------------------------
-INSERT INTO `app_video_list` VALUES (10024, '你被AI盯上了吗？', 'http://clusterctl.xyz:80/assets/uploads/image/video/2020/0228/1582876741041.png', '李开复AI·未来', '1,2', '/assets/uploads/files/video/1582876664948.mp4', '10006,10009', '10002,10003', '1,2', '10021,10022,10026,10029', '10001,10002', 0, '69', '00:03:02', '1582877448', 1, 'http://clusterctl.xyz/public/assets/product/5342655.m3u8', 'http://clusterctl.xyz/public/assets/product/5342655.m3u8');
-INSERT INTO `app_video_list` VALUES (10025, '人类下达的命令，AI会吗？', 'http://clusterctl.xyz:80/assets/uploads/image/video/2020/0228/1582877756718.png', 'AI世界', '1,2', '/assets/uploads/files/video/1582877683075.mp4', '10001,10002,10003', '10002,10003,10004', '2', '10021,10022,10023,10025,10027,10029', '10002,10003', 0, '23', '00:03:13', '1582877959', 1, 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8');
+INSERT INTO `app_video_list` VALUES (10024, '你被AI盯上了吗？', '/video/product/20200303/CP1PtMBe/360/CP1PtMBe.jpg', '/video/product/20200303/CP1PtMBe/360/CP1PtMBe.gif', '{\"360\":\"\\/video\\/product\\/20200303\\/CP1PtMBe\\/360\\/mmm.m3u8\"}', '李开复AI·未来', '1,2', '/assets/uploads/files/video/1582876664948.mp4', '10006,10009', '10002,10003', '1,2', '10021,10022,10026,10029', '10001,10002', 0, '69', '00:03:02', '1582877448', 1, 'http://clusterctl.xyz/public/assets/product/5342655.m3u8', 'http://clusterctl.xyz/public/assets/product/5342655.m3u8', '/video/product/20200303/CP1PtMBe/360/CP1PtMBe.mp4', 'CP1PtMBe.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264');
+INSERT INTO `app_video_list` VALUES (10025, '人类下达的命令，AI会吗？', 'http://clusterctl.xyz:80/assets/uploads/image/video/2020/0228/1582877756718.png', NULL, NULL, 'AI世界', '1,2', '/assets/uploads/files/video/1582877683075.mp4', '10001,10002,10003', '10002,10003,10004', '2', '10021,10022,10023,10025,10027,10029', '10002,10003', 0, '23', '00:03:13', '1582877959', 1, 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_video_otype

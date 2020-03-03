@@ -228,7 +228,6 @@ class VideoController extends AdminController
                 curl_setopt($ch, CURLOPT_TIMEOUT, 1);
                 $res = curl_exec($ch);
                 curl_close($ch);
-                die($res);
             }
             return response()->json(array('code'=>1,'msg'=>"已添加后台转码"));
         }
