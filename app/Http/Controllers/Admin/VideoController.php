@@ -7,6 +7,7 @@ use App\Models\ListOtype;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
 use App\Models\StarList;
+use App\Models\TransLog;
 use App\Models\VideoAdminLog;
 use App\Models\VideoList;
 use App\Models\VideoOtype;
@@ -314,6 +315,45 @@ class VideoController extends AdminController
     }
 
 
+    public function transqueue(Request $request) {
+        $data = VideoAdminLog::select('log_id')->get()->toArray();
+        return view('video.transqueue',compact('data'));
+    }
+    public function getTransLog(Request $request) {
+        $limit = $request->input('limit');
+        $title = $request->input('title');
+        $count = TransLog::select('*');
+        if($title){
+            $count = $count->where("msg",'like','%'.$title.'%');
+        }
+        $count = $count->count();
+
+        $dataTmp = TransLog::select('*');
+        if($title){
+            $dataTmp = $dataTmp->where("msg",'like','%'.$title.'%');
+        }
+        $dataTmp = $dataTmp->paginate($limit);
+
+        if($dataTmp){
+            $dataTmp = $dataTmp->toArray();
+            $dataTmp = $dataTmp['data'];
+
+            foreach($dataTmp as $key=>$value){
+                $dataTmp[$key]['src_file'] = 'dvd';
+                $dataTmp[$key]['src_rate'] = 'vdsv';
+                $dataTmp[$key]['src_size'] = 'sdv';
+                $dataTmp[$key]['src_bit'] = 'sdv';
+                $dataTmp[$key]['dir_path'] = 'sdv';
+                $dataTmp[$key]['dir_rate'] = 'sdv';
+                $dataTmp[$key]['dir_file'] = 'sv';
+                $dataTmp[$key]['dir_size'] = 'dv';
+                $dataTmp[$key]['starttime'] = 'dv';
+                $dataTmp[$key]['usetime'] = 'dv';
+                $dataTmp[$key]['cur_state'] = 'vd';
+            }
+        }
+        return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
+    }
     public function uploadlist()
     {
         $this->request->filter(['strip_tags']);

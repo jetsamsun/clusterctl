@@ -2,14 +2,14 @@
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
         {{--@if(!$data)--}}
-            {{--<a class="layui-btn layui-btn-sm layui-btn-primary"  onclick="click_free(1)" >一键限免</a>--}}
+        {{--<a class="layui-btn layui-btn-sm layui-btn-primary"  onclick="click_free(1)" >一键限免</a>--}}
         {{--@else--}}
-            {{--<a class="layui-btn layui-btn-sm layui-btn-primary" onclick="click_free(2)" >取消限免</a>--}}
+        {{--<a class="layui-btn layui-btn-sm layui-btn-primary" onclick="click_free(2)" >取消限免</a>--}}
         {{--@endif--}}
-        <span>温馨提示，同一个文件不要同时转码多次。</span>
+        <span>鉴于小伙伴的普遍反馈，先温馨提醒。</span>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>视频列表</legend>
+        <legend>转码队列</legend>
     </fieldset>
     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
         搜索标题：
@@ -17,7 +17,6 @@
             <input class="layui-input" id="title" name="title" id="test-table-demoReload" autocomplete="off">
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
-        <button class="layui-btn" id="transcode">转码</button>
     </div>
 
     <table class="layui-hide" lay-filter="demo" id="test"></table>
@@ -27,12 +26,11 @@
         <input type="checkbox" name="is_free" value="@{{d.vid }}" title="限免" lay-filter="is_free" @{{ d.is_free == 1 ? 'checked' : '' }}>
     </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="transcode">转码</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        {{--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--}}
     </script>
 
-    @section('script')
+@section('script')
     <script>
         layui.use('table', function(){
             var table = layui.table,$= layui.jquery,form = layui.form;
@@ -57,24 +55,23 @@
             }
             var tableIn = table.render({
                 elem: '#test'
-                ,url:'/admin/video/getVideoList'
+                ,url:'/admin/video/getTransLog'
                 ,page: true
                 ,limit:10    // 每页显示的条数
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
-                    ,{field:'vid', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'title',width:200, title: '标题'}
-                    ,{field:'pic',width:140, title: '展示图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'otype', width:150,title: '分类'}
-                    ,{field:'firstotype',width:150, title: '导航分类'}
-                    ,{field:'secondotype',width:150,  title: '视频分类'}
-                    ,{field:'screenotype',width:200,  title: '筛选条件'}
-                    ,{field:'star',width:200, title: '参演明星'}
-                    ,{field:'is_free', width:120, title: '是否限免', templet: '#is_free'}
-                    ,{field:'hotcount', title:'视频热度', width:120}
-                    ,{field:'videotime', title:'视频时长', width:120}
-                    ,{field:'createtime', title:'加入时间', width:220}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
+                    ,{field:'src_file',width:200, title: '源码文件'}
+                    ,{field:'src_rate', width:150,title: '源码码率'}
+                    ,{field:'src_size',width:150, title: '源码尺寸'}
+                    ,{field:'src_bit',width:150,  title: '源码大小'}
+                    ,{field:'dir_path',width:200,  title: '目标路径'}
+                    ,{field:'dir_rate',width:200, title: '目标码率'}
+                    ,{field:'dir_file', width:120, title: '目标文件'}
+                    ,{field:'dir_size', title:'目标尺寸', width:120}
+                    ,{field:'starttime', title:'开始时间', width:120}
+                    ,{field:'usetime', title:'耗时', width:220}
+                    ,{field:'cur_state', title:'当前状态', width:220}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:100}
                 ]]
             });
             //搜索
@@ -162,5 +159,5 @@
             });
         });
     </script>
-    @endsection
+@endsection
 @endsection

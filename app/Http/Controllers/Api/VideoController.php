@@ -42,6 +42,7 @@ class VideoController extends  ApiController{
         $dirpath = $this->productdir.$datestr.'/'.$randsring.'/';
 
 
+        TransLog::where('code',$randsring)->delete();
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'转码准备','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         foreach ($size_rate as $val) {
             $sizetmp = explode('-', $val);
@@ -67,9 +68,11 @@ class VideoController extends  ApiController{
                     if('success' == $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname)) {
                         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'切片成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
 
-                        if($default) { //切片完成是否删除源文件
-                            if(config('site.transm3u8del')) unlink($tovideodir);
-                            TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'删除转码文件','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
+                        if(!$default) { //切片完成是否删除源文件
+                            if (config('site.transm3u8del')) {
+                                unlink($tovideodir);
+                                TransLog::insertGetId(array('time' => time(), 'code' => $randsring, 'msg' => '删除转码文件', 'data' => json_encode(array('ids' => $ids, 'file' => $filename, 'rate' => $rate))));
+                            }
                         }
                         $flag = true;
                     }
