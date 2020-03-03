@@ -13,7 +13,7 @@
             <label class="layui-form-label"><font color="red">* </font>码率尺寸</label>
             <div class="layui-input-block">
                 @foreach($siterate as $value)
-                    <input type="checkbox" name="siterate[]" value="{{ $value['rate'] }}:{{ $value['width'] }}x{{ $value['heigth'] }}" lay-verify="required"  @if($value['default']==1) checked @endif lay-skin="primary" title="{{ $value['width'] }}x{{ $value['heigth'] }}">
+                    <input type="checkbox" name="siterate[]" value="{{ $value['rate'] }}-{{ $value['width'] }}x{{ $value['heigth'] }}" lay-verify="required"  @if($value['default']==1) checked @endif lay-skin="primary" title="{{ $value['width'] }}x{{ $value['heigth'] }}">
                 @endforeach
             </div>
         </div>

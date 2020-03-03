@@ -271,3 +271,35 @@ function signHuoshan($key_id, $array){
     }
     return md5($cipher);
 }
+/*自定设置环境变量*/
+function checkcmd($cmd) {
+    $path = shell_exec('echo $PATH');
+    if(strpos($path, $cmd) === false) {
+        putenv('PATH='.trim($path).':'.$cmd);
+    }
+
+    if(strpos(php_uname(), 'Windows') === false) {
+        $arr = explode('/',$cmd);
+        $cmd = $arr[count($arr)-1];
+    }
+    return $cmd;
+}
+/*创建目录*/
+function mk_dir($dir, $mode = 0755)
+{
+    if (is_dir($dir) || @mkdir($dir,$mode))
+        return true;
+    if (!mk_dir(dirname($dir),$mode))
+        return false;
+    return @mkdir($dir,$mode);
+}
+/*随机字符串*/
+function generate_random_string($length = 8)
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $randomString;
+}

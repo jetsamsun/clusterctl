@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
+
 class VideoController extends AdminController
 {
     public function video(){
@@ -225,8 +226,9 @@ class VideoController extends AdminController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-                curl_exec($ch);
+                $res = curl_exec($ch);
                 curl_close($ch);
+                die($res);
             }
             return response()->json(array('code'=>1,'msg'=>"已添加后台转码"));
         }
@@ -313,10 +315,6 @@ class VideoController extends AdminController
     }
 
 
-    public function clearredis() {
-        $redis = new Redis;
-        $redis->flushDB();
-    }
     public function uploadlist()
     {
         $this->request->filter(['strip_tags']);
@@ -516,170 +514,8 @@ class VideoController extends AdminController
         }
         return $this->view->fetch();
     }
-    public function clearqueue() {
-        $redis = new Redis;
-        while($result = $redis ->handler()->rPop('videoqueue')) {
-            $arr = explode('++', $result);
-            list($msg['ids'], $msg['size_rate'], $msg['randsring'], $msg['dirpath'], $msg['logpath'], $msg['type']) = $arr;
-
-            //解析日志
-            if(file_exists($msg['logpath'])) {
-                $logfile = fopen($msg['logpath'], "r");
-                $logs=[];
-                $i=0;
-                while(! feof($logfile))
-                { //输出文本中所有的行，直到文件结束为止。
-                    $logs[$i]= fgets($logfile);//fgets()函数从文件指针中读取一行
-                    $i++;
-                }
-                fclose($logfile);
-                $logs=array_filter($logs);
-
-                if(!empty($logs)) {
-                    $first = $logs[0];
-                    $last = $logs[count($logs)-1];
 
 
-                    $arr['start_time'] = substr($first,1,19);
-                    $arr['last_time'] = substr($last,1,19);
-                    $arr['cur_state'] = substr($last,strpos($last,' --> ')+5);
-                    $diff=time()-strtotime(substr($first,1,19));
-
-                    if(strpos($last,'转码完毕')===false && $diff < 86400) {
-                        $redis->handler()->lPush('videoqueue_x', $result);
-                        $idarr2[]=$msg['ids'];
-                    }
-                }
-            }
-        }
-        while($r = $redis->handler()->rPop('videoqueue_x')) {
-            $redis->handler()->lPush('videoqueue', $r);
-        }
-    }
-    public function transrecord($ids,$videodir,$tovideodir,$toimgedir,$togifdir,$size,$rate,$type='',$m3u8msg='', $logpath='',$randsring='') {
-        $xyz = new Xyz();
-
-        $this->model = model('app\common\model\Category');
-        $info = $this->model->where(array('name'=>$ids))->find();
-
-        if(!$info) {
-            //file_put_contents($logpath, date('Y-m-d H:i:s').' '.$videodir.' --> '.$size.' 插入！ '.$m3u8msg.PHP_EOL, FILE_APPEND);
-
-            $videomsg = $xyz->format($videodir);
-            $Category = new $this->model;
-            $Category->name = $ids;
-            $Category->type = $type;
-            $Category->m3u8 = $m3u8msg;
-
-            //file_put_contents($logpath, date('Y-m-d H:i:s').' '.$videodir.' --> '.$size.' 2  '.$m3u8msg.PHP_EOL, FILE_APPEND);
-
-            $Category->image = str_replace(PUBLIC_PATH, '/', $toimgedir);
-            $Category->gif = str_replace(PUBLIC_PATH, '/', $togifdir);
-            $Category->video = str_replace(PUBLIC_PATH, '/', $tovideodir);
-            $Category->nickname = $randsring.'.mp4';
-            $Category->size = $videomsg['size'];
-            $Category->width = $videomsg['width'];
-            $Category->height = $videomsg['height'];
-            $Category->bit_rate = $videomsg['bit_rate'];
-            $Category->duration = $videomsg['duration'];
-            $Category->audio = $videomsg['audio'];
-            $Category->vcode = $videomsg['video'];
-            $re = $Category->save();
-
-            //file_put_contents($logpath, date('Y-m-d H:i:s').' '.$videodir.' --> '.$size.' 插入状态 '.$re.PHP_EOL, FILE_APPEND);
-
-            $id = $Category->id;
-        } else {
-            $mp4 = $rate == config('site.trans_default_size')?str_replace(PUBLIC_PATH, '/', $tovideodir):$info->video;
-            $image = $rate == config('site.trans_default_size')?str_replace(PUBLIC_PATH, '/', $toimgedir):$info->image;
-            $gif = $rate == config('site.trans_default_size')?str_replace(PUBLIC_PATH, '/', $togifdir):$info->gif;
-            $info->video = $mp4;
-            $info->image = $image;
-            if($m3u8msg) $info->m3u8 = $m3u8msg;
-            $info->gif = $gif;
-            $info->save();
-            $id = $info->id;
-
-            //file_put_contents($logpath, date('Y-m-d H:i:s').' '.$videodir.' --> '.$size.' 更新转码信息成功！ '.PHP_EOL, FILE_APPEND);
-        }
-    }
-    public function transqueue()
-    {
-        $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax()) {
-            $redis = new Redis;
-            $rows = $redis->handler()->lrange("videoqueue", 0 ,-1);
-
-            $re = [];
-            foreach ($rows as $row) {
-                $arr = explode('++', $row);
-                list($msg['ids'], $msg['size_rate'], $msg['randsring'], $msg['dirpath'], $msg['logpath'], $msg['type']) = $arr;
-
-                $msg1 = $redis->handler()->hMget('video:'.$msg['ids'],array('video','audio','duration','width','height','dis_ratio','size','bit_rate','ext'));
-
-                $arr['dirpath'] = str_replace(ROOT_PATH,'/',$msg['dirpath']);
-                $arr['size'] = format_bytes($msg1['size']) ;
-                $arr['bit_rate'] = round((int)$msg1['bit_rate']/1024) ;
-                $arr['videodir'] = $msg['ids'];
-                $arr['width'] = $msg1['width'];
-                $arr['height'] = $msg1['height'];
-                $arr['tovideodir'] = $msg['randsring'].'.mp4';
-                $arr['ids'] = $msg['randsring'];
-
-
-                $size_rate = json_decode($msg['size_rate']);
-                $dest_rate = '';
-                $dest_size = '';
-                foreach ($size_rate as $val) {
-                    $sizetmp = explode('-', $val);
-                    if(!$dest_rate) $dest_rate = $sizetmp[0]; else $dest_rate .= '|'.$sizetmp[0];
-                    if(!$dest_size) $dest_size = $sizetmp[1]; else $dest_size .= '|'.$sizetmp[1];
-                }
-                $arr['dest_rate'] = $dest_rate;
-                $arr['dest_size'] = $dest_size;
-
-
-                //解析日志
-                if(file_exists($msg['logpath'])) {
-                    $logfile = fopen($msg['logpath'], "r");
-                    $logs=[];
-                    $i=0;
-                    while(! feof($logfile))
-                    { //输出文本中所有的行，直到文件结束为止。
-                        $logs[$i]= fgets($logfile);//fgets()函数从文件指针中读取一行
-                        $i++;
-                    }
-                    fclose($logfile);
-                    $logs=array_filter($logs);
-                    if(!empty($logs)) {
-                        $first = $logs[0];
-                        $last = $logs[count($logs)-1];
-
-                        $arr['start_time'] = substr($first,1,19);
-                        $arr['last_time'] = substr($last,1,19);
-                        $arr['cur_state'] = substr($last,strpos($last,' --> ')+5);
-
-                        $diff=time()-strtotime(substr($first,1,19));
-                        if(strpos($last,'转码完毕')!==false) {
-                            if(strpos(file_get_contents($msg['logpath']),'失败')!==false) {
-                                $arr['cur_state'] = 'fail';
-                            } else{
-                                $arr['cur_state'] = 'success';
-                            }
-                            $diff=strtotime($arr['last_time']) - strtotime($arr['start_time']);
-                        }
-                        $arr['use_time'] = format_time($diff);
-                    }
-                }
-
-
-                $re[] = $arr;
-            };
-            $result = array("total" => count($re), "rows" => $re);
-            return json($result);
-        }
-        return $this->view->fetch();
-    }
     public function manualslice()
     {
         $xyz = new Xyz();
@@ -724,39 +560,7 @@ class VideoController extends AdminController
         }
 
     }
-    public function gettranslog($ids)
-    {
-        $redis = new Redis;
-        $rows = $redis->handler()->lrange("videoqueue", 0 ,-1);
 
-        $logs=[];
-        foreach ($rows as $row) {
-            $arr = explode('++', $row);
-            list($msg['ids'], $msg['size_rate'], $msg['randsring'], $msg['dirpath'], $msg['logpath'], $msg['type']) = $arr;
-
-            if($msg['randsring'] == $ids) {
-                //解析日志
-                if(file_exists($msg['logpath'])) {
-                    $logfile = fopen($msg['logpath'], "r");
-
-                    $i=0;
-                    while(! feof($logfile))
-                    { //输出文本中所有的行，直到文件结束为止。
-                        $logs[$i]= fgets($logfile);//fgets()函数从文件指针中读取一行
-                        $i++;
-                    }
-                    fclose($logfile);
-                    $logs=array_filter($logs);
-                    foreach ($logs as $v) {
-                        //echo $v.PHP_EOL;
-                    }
-                }
-            }
-        }
-
-        $this->view->assign("logs", $logs);
-        return $this->view->fetch();
-    }
 
 
     /*上传图片文件*/

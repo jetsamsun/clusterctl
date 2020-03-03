@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Models\LoginLogs;
+use App\Models\SiteRate;
 use App\Models\StarList;
 use App\Models\UserCollect;
 use App\Models\UserInfo;
@@ -10,114 +11,97 @@ use App\Models\VideoList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use App\Libs\Xyz;
+
 
 class VideoController extends  ApiController{
+    function __construct() {
+        set_time_limit(0);
+        $this->uploaddir = env('PUBLIC_PATH').'/assets/uploads/files/video/';  // '/video/upload/'
+        $this->productdir = env('PUBLIC_PATH').'/video/product/';
+        $this->tmpdir = env('PUBLIC_PATH').'/video/tmp/';
+    }
+
     public function execute() {
-        $redis = new Redis;
         $xyz = new Xyz();
-
-        $type = $_POST['type'];
-        $ids = $_POST['ids'];
+        $type = '';
         $size_rate = json_decode($_POST['size_rate']);
-        $videodir = $this->uploaddir.$ids;
 
+        $row = VideoList::where('vid',$_POST['ids'])->get()->toArray();
+        $row = $row[0];
+        $filename = str_replace('/assets/uploads/files/video/', '', $row['url']);
+        $videodir = $this->uploaddir.$filename;
+        $videomsg = $xyz->format($videodir);  //源文件数据
 
-        $this->model = model('app\common\model\Category');
-        $info = $this->model->where(array('name'=>$ids))->find();
-        if($info) {
-            $randsring = explode('.',pathinfo($info->video)['basename'])[0];
-        } else {
+        $datestr = date('Ymd');
+        $randsring = $row['randsring'];
+        if(!$randsring) {
             $randsring = generate_random_string();
         }
-        $logpath = createpath(ROOR_PATH.'runtime/log/'.date('Ym').'/'.$randsring.'_log.txt');
-        $dirpath = $this->productdir.date('Ymd').'/'.$randsring.'/';
-
-        $st = time();
-        file_put_contents($logpath, '['.date('Y-m-d H:i:s', $st).']&nbsp&nbsp'.$ids.' --> '.$_POST['size_rate'].' 转码准备...'.PHP_EOL);
-        $redis ->handler()->lPush('videoqueue', $ids.'++'.$_POST['size_rate'].'++'.$randsring.'++'.$dirpath.'++'.$logpath.'++'.$type);
+        $dirpath = $this->productdir.$datestr.'/'.$randsring.'/';
 
         foreach ($size_rate as $val) {
             $sizetmp = explode('-', $val);
             $rate = $sizetmp[0];
             $size = $sizetmp[1];
+            $default = SiteRate::where('default',1)->where('rate',$rate)->get()->toArray(); //是否默认码率
 
-
-            $dirtmp = $dirpath.$rate.'/';
-            mkdirss($dirtmp);
+            $dirtmp = $dirpath.$rate.'/';  mk_dir($dirtmp);
             $tovideodir = $dirtmp.$randsring.'.mp4';
             $toimgedir = $dirtmp.$randsring.'.jpg';
             $togifdir = $dirtmp.$randsring.'.gif';
 
 
-            file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 开始转码... '.PHP_EOL, FILE_APPEND);
-
-            file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 正在转码... '.PHP_EOL, FILE_APPEND);
-
-            $stx = time();
-            $msg = $xyz->transcode($videodir, $tovideodir, $toimgedir, $togifdir, $size, $rate);
-            if($msg) {
-                file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 转码成功 '.format_time(time()-$stx).PHP_EOL, FILE_APPEND);
-
-
-                $m3u8arr=[];
-                $muname = config('site.trans_m3u8') ? config('site.trans_m3u8') : 'index.m3u8';
-                $info = $this->model->where(array('name'=>$ids))->find();
-                if($info) { //拼接
-                    $m3u8arr = json_decode($info->m3u8, true);
-                    if(!$m3u8arr) $m3u8arr=[];
-                    $m3u8arr[$rate] = str_replace(PUBLIC_PATH,'/',dirname($tovideodir).'/'.$muname);
-                    ksort($m3u8arr);
-                } else {  //第一次加入
-                    $m3u8arr[$rate] = str_replace(PUBLIC_PATH,'/',dirname($tovideodir).'/'.$muname);
-                    ksort($m3u8arr);
-                }
-
+            if('success' == $xyz->transcode($videodir, $tovideodir, $toimgedir, $togifdir, $size, $rate)) {
+                $m3u8arr = [];
+                $muname = 'mmm.m3u8';
+                $flag = false;
 
                 if(config('site.transm3u8')) {  //判断是否切片
-                    file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 开始切片... '.PHP_EOL, FILE_APPEND);
-
-                    file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 正在切片... '.PHP_EOL, FILE_APPEND);
-
-
-                    $re = $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname, 180, $logpath);
-                    if($re) {
-                        if(config('site.trans_default_size') != $rate) { //切片完成是否删除源文件
+                    if('success' == $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname)) {
+                        if($default) { //切片完成是否删除源文件
                             if(config('site.transm3u8del')) unlink($tovideodir);
                         }
-
-                        file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 切片成功 '.PHP_EOL, FILE_APPEND);
-                    } else { //切片失败
-                        file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 切片失败 '.PHP_EOL, FILE_APPEND);
-
-                        $m3u8arr[$rate] = '';
+                        $flag = true;
                     }
-                } else {
-                    $m3u8arr[$rate] = '';
                 }
 
+                if($flag) {
+                    $info = VideoList::where('vid', $_POST['ids'])->get()->toArray();
+                    $info = $info[0];
 
-                file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 正在保存... '.PHP_EOL, FILE_APPEND);
+                    if ($info['m3u8']) { //拼接
+                        $m3u8arr = json_decode($info['m3u8'], true);
+                        if (!$m3u8arr) $m3u8arr = [];
+                        $m3u8arr[$rate] = str_replace(env('PUBLIC_PATH'), '', dirname($tovideodir) . '/' . $muname);
+                        ksort($m3u8arr);
+                    } else {  //第一次加入
+                        $m3u8arr[$rate] = str_replace(env('PUBLIC_PATH'), '', dirname($tovideodir) . '/' . $muname);
+                        ksort($m3u8arr);
+                    }
+                }
 
-                $this->transrecord($ids,$videodir,$tovideodir,$toimgedir,$togifdir,$size,$rate,$type,json_encode($m3u8arr), $logpath, $randsring);
+                //更新数据
+                $update['m3u8'] = !empty($m3u8arr) ? $m3u8arr : $row['m3u8'];
+                $update['pic'] = str_replace(env('PUBLIC_PATH'), '', $toimgedir);
+                $update['gif'] = str_replace(env('PUBLIC_PATH'), '', $togifdir);
+                $update['video'] = !empty($default) ? str_replace(env('PUBLIC_PATH'), '', $tovideodir) : $row['video'];
+                $update['nickname'] = $randsring.'.mp4';
+                $update['size'] = $videomsg['size'];
+                $update['width'] = $videomsg['width'];
+                $update['height'] = $videomsg['height'];
+                $update['bit_rate'] = $videomsg['bit_rate'];
+                $update['duration'] = $videomsg['duration'];
+                $update['audio'] = $videomsg['audio'];
+                $update['vcode'] = $videomsg['video'];
 
-                file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 保存成功 '.PHP_EOL, FILE_APPEND);
-
-
-
-            } else {  //转码失败
-                file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> ['.$size.'] 转码失败 '.PHP_EOL, FILE_APPEND);
-
+                VideoList::where('vid', $_POST['ids'])->update($update);
             }
         }
 
         if(config('site.tanscodedel')) {
             unlink($videodir);   //转码完成是否删除源文件
-            file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp'.$ids.' --> 删除源文件 '.PHP_EOL, FILE_APPEND);
         }
-
-
-        file_put_contents($logpath, '['.date('Y-m-d H:i:s').']&nbsp&nbsp【success】'.$ids.' --> '.$_POST['size_rate'].' 转码完毕 '.format_time(time()-$st).PHP_EOL, FILE_APPEND);
-
     }
     /**
      * @param Request $request

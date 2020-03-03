@@ -16,4 +16,5 @@ return array(
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     '5e8fe2a5ffaded85af682684fe3bbf5a' => $vendorDir . '/mews/captcha/src/helpers.php',
     '674ecfbe14ee3b42f526d02cb29f5a68' => $baseDir . '/app/Common/Function.php',
+    '636a8289a7d590a462098f1be2f7d981' => $baseDir . '/app/Libs/Xyz.php',
 );
