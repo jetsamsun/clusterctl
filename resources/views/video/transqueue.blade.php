@@ -26,7 +26,7 @@
         <input type="checkbox" name="is_free" value="@{{d.vid }}" title="限免" lay-filter="is_free" @{{ d.is_free == 1 ? 'checked' : '' }}>
     </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
         {{--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--}}
     </script>
 
@@ -57,19 +57,19 @@
                 elem: '#test'
                 ,url:'/admin/video/getTransLog'
                 ,page: true
-                ,limit:10    // 每页显示的条数
+                ,limit:1000    // 每页显示的条数
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'src_file',width:200, title: '源码文件'}
                     ,{field:'src_rate', width:150,title: '源码码率'}
                     ,{field:'src_size',width:150, title: '源码尺寸'}
                     ,{field:'src_bit',width:150,  title: '源码大小'}
-                    ,{field:'dir_path',width:200,  title: '目标路径'}
-                    ,{field:'dir_rate',width:200, title: '目标码率'}
-                    ,{field:'dir_file', width:120, title: '目标文件'}
-                    ,{field:'dir_size', title:'目标尺寸', width:120}
-                    ,{field:'starttime', title:'开始时间', width:120}
-                    ,{field:'usetime', title:'耗时', width:220}
+                    ,{field:'dir_path',width:350,  title: '目标目录'}
+                    ,{field:'dir_rate',width:150, title: '目标码率'}
+                    ,{field:'dir_file', width:150, title: '目标文件'}
+                    ,{field:'dir_size', title:'目标尺寸', width:200}
+                    ,{field:'starttime', title:'开始时间', width:180}
+                    ,{field:'usetime', title:'耗时', width:120}
                     ,{field:'cur_state', title:'当前状态', width:220}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:100}
                 ]]
@@ -147,14 +147,10 @@
                         });
                         layer.close(index);
                     });
-                } else if(obj.event === 'edit'){
+                } else if(obj.event === 'look'){
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
-                    vid = data.vid;
-                    window.location.href = "/admin/video/editvideo/"+vid;
-                } else if(obj.event === 'transcode'){
-                    //layer.alert('编辑行：<br>'+ JSON.stringify(data))
-                    vid = data.vid;
-                    window.location.href = "/admin/video/transcode/"+vid;
+                    code = data.code;
+                    window.location.href = "/admin/video/translogs/"+code;
                 }
             });
         });

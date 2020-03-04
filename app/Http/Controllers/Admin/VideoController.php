@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoController extends AdminController
 {
+    function __construct() {
+        set_time_limit(0);
+        $this->uploaddir = env('PUBLIC_PATH').'/assets/uploads/files/video/';  // '/video/upload/'
+        $this->productdir = env('PUBLIC_PATH').'/video/product/';
+        $this->tmpdir = env('PUBLIC_PATH').'/video/tmp/';
+    }
+
     public function video(){
         $data = VideoAdminLog::select('log_id')->get()->toArray();
         return view('video.list',compact('data'));
@@ -322,11 +329,6 @@ class VideoController extends AdminController
     public function getTransLog(Request $request) {
         $limit = $request->input('limit');
         $title = $request->input('title');
-        $count = TransLog::select('*');
-        if($title){
-            $count = $count->where("msg",'like','%'.$title.'%');
-        }
-        $count = $count->count();
 
         $dataTmp = TransLog::select('*');
         if($title){
@@ -338,21 +340,125 @@ class VideoController extends AdminController
             $dataTmp = $dataTmp->toArray();
             $dataTmp = $dataTmp['data'];
 
-            foreach($dataTmp as $key=>$value){
-                $dataTmp[$key]['src_file'] = 'dvd';
-                $dataTmp[$key]['src_rate'] = 'vdsv';
-                $dataTmp[$key]['src_size'] = 'sdv';
-                $dataTmp[$key]['src_bit'] = 'sdv';
-                $dataTmp[$key]['dir_path'] = 'sdv';
-                $dataTmp[$key]['dir_rate'] = 'sdv';
-                $dataTmp[$key]['dir_file'] = 'sv';
-                $dataTmp[$key]['dir_size'] = 'dv';
-                $dataTmp[$key]['starttime'] = 'dv';
-                $dataTmp[$key]['usetime'] = 'dv';
-                $dataTmp[$key]['cur_state'] = 'vd';
+            $arr = [];
+            foreach($dataTmp as $k=>$v){
+                $arr[$v['code']][] = $v;
+            }
+
+            $dataTmp = [];
+            $curs = [];
+            foreach($arr as $k=>$v){
+                $arr3=[];
+                $index = 0;
+
+                $st = 0;
+                $et = 0;
+                $cur_state = '';
+                foreach($v as $vv){
+                    $data = json_decode($vv['data']);
+
+                    $code = $vv['code'];
+                    $time = $vv['time'];
+                    $msg = $vv['msg'];
+                    $ids = $data->ids;
+                    $file = $data->file;
+
+                    if($index==0) {
+                        $arr3['src_file'] = $file;
+                        $arr3['dir_file'] = $code.'.mp4';
+                        $arr3['code'] = $code;
+                        $arr3['ids'] = $ids;
+
+                        $video = VideoList::where('vid',$ids)->value('video');
+                        $arr3['date'] = explode('/', $video)[3];
+
+
+                        $rastr = '';
+                        $sistr = '';
+                        $rasi = '';
+                        $cnt = 0;
+                        foreach ($data->size_rate as $rk=>$ra) {
+                            $ras = explode('-', $ra);
+                            if($cnt==0) {
+                                $rastr = $ras[0].'p';
+                                $sistr = $ras[1];
+                                $rasi = $ra;
+                            } else {
+                                $rastr = $rastr.'|'.$ras[0].'p';
+                                $sistr = $sistr.'|'.$ras[1];
+                                $rasi = $rasi.'|'.$ra;
+                            }
+                            $cnt++;
+                        }
+                        $arr3['dir_rate'] = $rastr;
+                        $arr3['dir_size'] = $sistr;
+
+                        $st = $time;
+                    }
+
+                    if(isset($data->size_rate)) {
+                        $cur_state = $msg;
+                    } else {
+                        $cur_state = $data->rate.'p '.$msg;
+                    }
+                    $curs[]=$file.' '.$cur_state;
+
+                    $et = $time;
+                    $index++;
+                }
+
+                $arr3['dir_path'] = str_replace(env('ROOR_PATH'), '', $this->productdir).$arr3['date'].'/'.$code.'/';
+
+                $arr3['starttime'] = date('Y-m-d H:i:s',$st);
+                $arr3['usetime'] = format_time($et - $st);
+                $arr3['cur_state'] = $cur_state;
+
+                if(isset($arr3['ids'])) {
+                    $row = VideoList::where('vid',$arr3['ids'])->get()->toArray();
+                    $row = $row[0];
+                    
+                    if(!empty($row['size']) ) {
+                        $arr3['src_bit'] = format_bytes($row['size']) ;
+                        $arr3['src_rate'] = round((int)$row['bit_rate']/1024).'kbps' ;
+                        $arr3['src_size'] = $row['width'].'x'.$row['height'];
+                    }
+                }
+
+                $dataTmp[] = $arr3;
             }
         }
-        return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
+        return response()->json(array('code'=>0,'msg'=>'','count'=>count($dataTmp),'data'=>$dataTmp));
+    }
+    public function translogs($code) {
+        $logs = TransLog::where('code',$code)->get();
+        $arr = [];
+        foreach($logs as $v){
+            $data = json_decode($v['data']);
+            $code = $v['code'];
+            $time = $v['time'];
+
+            if(isset($data->size_rate)) {
+                $rasi='';
+                $cnt=0;
+                foreach ($data->size_rate as $rk=>$ra) {
+                    if($cnt==0) {
+                        $rasi = $ra;
+                    } else {
+                        $rasi = $rasi.'|'.$ra;
+                    }
+                    $cnt++;
+                }
+                $str = '['.date('Y-m-d H:i:s',$time) .'] '.$rasi.' '.$v['msg'];
+            } else if(isset($data->rate)) {
+                $str = '['.date('Y-m-d H:i:s',$time) .'] '.$data->rate.'p '.$v['msg'];
+            } else {
+                $str = '['.date('Y-m-d H:i:s',$time) .'] '.$v['msg'];
+            }
+
+            $arr[] = $str;
+        }
+        $logs = $arr;
+        return view('video.translogs',compact('code','logs'));
     }
     public function uploadlist()
     {
@@ -554,7 +660,6 @@ class VideoController extends AdminController
         return $this->view->fetch();
     }
 
-
     public function manualslice()
     {
         $xyz = new Xyz();
@@ -599,8 +704,6 @@ class VideoController extends AdminController
         }
 
     }
-
-
 
     /*上传图片文件*/
     public function uploadVideoImg(Request $request)

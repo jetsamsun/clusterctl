@@ -46,6 +46,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('video/transcode/{id}', 'VideoController@transcode');
     Route::any('transqueue', 'VideoController@transqueue');
     Route::any('video/getTransLog', 'VideoController@getTransLog');
+    Route::any('video/translogs/{code}', 'VideoController@translogs');
 
     // star
     Route::any('star', 'StarController@star');

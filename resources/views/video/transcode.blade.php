@@ -46,7 +46,7 @@
                     success: function (res) {
                         if(res.code === 1){
                             layer.msg(res.msg, {icon: 1, time: 1000}, function () {
-                                //window.location.href = "/admin/video";
+                                window.location.href = "/admin/video";
                             });
                         }else{
                             layer.msg(res.msg, {icon: 2, anim: 6, time: 1000});

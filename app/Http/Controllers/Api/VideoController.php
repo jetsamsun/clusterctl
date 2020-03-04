@@ -41,8 +41,23 @@ class VideoController extends  ApiController{
         }
         $dirpath = $this->productdir.$datestr.'/'.$randsring.'/';
 
+        //检测清理日志
+        $endtime = 0;
+        $flag = false;
+        $logs = TransLog::where('code',$randsring)->get();
+        foreach ($logs as $log) {
+            if(strpos($log['msg'],'转码完毕')!==false) {
+                $flag = true; //标记删除
+            }
+            $endtime = $log['time'];
+        }
+        if($flag || time()-$endtime>24*3600) {
+            TransLog::where('code',$randsring)->delete();
+        }
 
-        TransLog::where('code',$randsring)->delete();
+
+
+
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'转码准备','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         foreach ($size_rate as $val) {
             $sizetmp = explode('-', $val);
@@ -110,11 +125,8 @@ class VideoController extends  ApiController{
                 $update['audio'] = $videomsg['audio'];
                 $update['vcode'] = $videomsg['video'];
 
-                TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'开始更新记录','data'=>json_encode($update)));
                 if($res = VideoList::where('vid', $ids)->update($update)) {
                     TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
-                } else {
-                    TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录失败','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
                 }
             }
         }

@@ -303,3 +303,38 @@ function generate_random_string($length = 8)
     }
     return $randomString;
 }
+/*格式化时间格式*/
+function format_time($time,$sign=0)
+{
+    $h = $m = $s = 0;
+    $str = '';
+    $s = floor($time%60);
+    $m = floor($time/60)%60;
+    $h = floor($time/60/60);
+    if($sign==0){
+        if($h>0)  return $str = $h."时".$m."分".$s.'秒';
+        if($m>0)  return $str = $m."分".$s.'秒';
+        return $str = $s.'秒';
+    }
+    if($sign==1){
+        if($m<10) $m = '0'.$m;
+        if($s<10) $s = '0'.$s;
+        if($h>0)  return $str = $h.":".$m.":".$s;
+        if($m>0)  return $str = '00:'.$m.":".$s;
+        return $str = '00:00:'.$s;
+    }
+}
+/**
+ * 将字节转换为可读文本
+ * @param int    $size      大小
+ * @param string $delimiter 分隔符
+ * @return string
+ */
+function format_bytes($size, $delimiter = '')
+{
+    $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+    for ($i = 0; $size >= 1024 && $i < 6; $i++) {
+        $size /= 1024;
+    }
+    return round($size, 2) . $delimiter . $units[$i];
+}
