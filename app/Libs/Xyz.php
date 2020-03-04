@@ -81,7 +81,7 @@ class Xyz {
                 $arr['duration'] = $row->duration;
                 $arr['width'] = $row->width;
                 $arr['height'] = $row->height;
-                $arr['dis_ratio']= $row->display_aspect_ratio;
+                $arr['dis_ratio']= isset($row->display_aspect_ratio)?$row->display_aspect_ratio:'';
             }
             if($row->codec_type=='audio'){
                 $arr['audio'] = $row->codec_name;

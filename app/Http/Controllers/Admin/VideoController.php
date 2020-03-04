@@ -96,36 +96,40 @@ class VideoController extends AdminController
             $secondotype = $request->input('otype3');
             $secondbestotype = $request->input('secondbestotype');
             $hotcount = $request->input('hotcount');
-            $videotime = $request->input('videotime');
+            $designation = $request->input('designation');
+            $imdb = $request->input('imdb');
+            $score = $request->input('score');
             $screen = $request->input('screen');
             $star = $request->input('star');
             $content = $request->input('content');
             $play_urls = $request->input('play_urls');
             $download_urls = $request->input('download_urls');
-            if( !$otype || !$firstotype || !$secondotype || !$secondbestotype || !$screen || !$star){
-                return response()->json(array('code'=>0,'msg'=>"分类/条件/明星是必填项"));
-            }
-            if(count($secondotype)>15){
-                return response()->json(array('code'=>0,'msg'=>"新闻分类过多"));
-            }
-            $otype = implode(',',$otype);
-            $firstotype = implode(',',$firstotype);
-            $secondotype = implode(',',$secondotype);
-            $secondbestotype = implode(',',$secondbestotype);
+
+            if(!empty($otype)) $otype = implode(',',$otype);
+            if(!empty($firstotype)) $firstotype = implode(',',$firstotype);
+            if(!empty($secondotype)) $secondotype = implode(',',$secondotype);
+            if(!empty($secondbestotype)) $secondbestotype = implode(',',$secondbestotype);
+
             // 排序后  ,拼接 筛选条件+明星
-            sort($screen);
-            $screen = implode(',',$screen);
-            sort($star);
-            $star = implode(',',$star);
-            $videotime = implode(':',$videotime);
+            if(!empty($screen)) {
+                sort($screen);
+                $screen = implode(',', $screen);
+            }
+            if(!empty($star)) {
+                sort($star);
+                $star = implode(',', $star);
+            }
+
             if($pic){
                 if(substr($pic,0,7)!="http://"){
                     $pic = $this->urlPic().$pic;
                 }
             }
+
             $reg = DB::table('video_list')->insert(array(
                 'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
-                'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,'videotime'=>$videotime,
+                'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,
+                'designation'=>$designation,'imdb'=>$imdb,'score'=>$score,
                 'screenotype'=>$screen,'star'=>$star,'content'=>$content,
                 'pic'=>$pic,'url'=>$url,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
                 'createtime'=>strtotime(date('Y-m-d H:i:s')),'is_visible'=>1

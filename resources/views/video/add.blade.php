@@ -84,13 +84,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">番号</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="designation"  autocomplete="off" placeholder="请输入番号" class="layui-input">
+                    <input type="text" name="designation"  autocomplete="off" placeholder="请输入番号" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">IMDB</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="imdb"  autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
+                    <input type="text" name="imdb"  autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
