@@ -64,16 +64,27 @@
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'vid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'title',width:200, title: '标题'}
-                    ,{field:'pic',width:140, title: '展示图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'otype', width:150,title: '分类'}
+                    ,{field:'pic',width:100, title: '封面图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
+                    ,{field:'gif',width:100, title: '动态图',templet: '<div><img src="@{{ d.gif  }}" width="30px" height="40px" ></div>'}
+
+                    ,{field:'url', width:400,title: '源文件'}
+                    ,{field:'src_bit', width:100,title: '源视频大小'}
+                    ,{field:'src_size', width:100,title: '源文件尺寸'}
+                    ,{field:'videotime', width:100,title: '视频时长'}
+                    ,{field:'ext', width:200,title: '格式'}
+                    ,{field:'src_rate', width:100,title: '源码率'}
+                    ,{field:'vcode', width:100,title: '编码'}
+                    ,{field:'acode', width:100,title: '音频'}
+                    ,{field:'dis_ratio', width:100,title: '显示比例'}
+                    ,{field:'video', width:400,title: '目标文件'}
+
+                    ,{field:'otype', width:150,title: '类型'}
                     ,{field:'firstotype',width:150, title: '导航分类'}
                     ,{field:'secondotype',width:150,  title: '视频分类'}
                     ,{field:'screenotype',width:200,  title: '筛选条件'}
                     ,{field:'star',width:200, title: '参演明星'}
-                    ,{field:'is_free', width:120, title: '是否限免', templet: '#is_free'}
-                    ,{field:'hotcount', title:'视频热度', width:120}
-                    ,{field:'videotime', title:'视频时长', width:120}
-                    ,{field:'createtime', title:'加入时间', width:220}
+                    ,{field:'hotcount', title:'视频热度', width:100}
+                    ,{field:'createtime', title:'加入时间', width:200}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
                 ]]
             });

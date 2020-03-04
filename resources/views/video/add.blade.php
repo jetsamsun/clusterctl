@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>展示图</label>
+            <label class="layui-form-label">展示图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
                     <span id="showimg">
@@ -24,7 +24,7 @@
                         <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
                     </a>
                 </div>
-                <input type="hidden" lay-verify="required" name="imgval" id="imgval">
+                <input type="hidden" name="imgval" id="imgval">
                 <p id="demoText"></p>
             </div>
         </div>
@@ -37,50 +37,30 @@
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label"><font color="red">* </font>m3u8地址：</label>
+            <label class="layui-form-label"> m3u8地址：</label>
             <div class="layui-input-block">
-                <textarea placeholder="多个地址用|分割（例如：http://www.480p.m3u8|http://www.720p.m3u8|http://www.1080p.m3u8）" name="play_urls" lay-verify="required" class="layui-textarea"></textarea>
+                <textarea placeholder="多个地址用|分割（例如：http://www.480p.m3u8|http://www.720p.m3u8|http://www.1080p.m3u8）" name="play_urls"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label"><font color="red">* </font>下载地址：</label>
+            <label class="layui-form-label">下载地址：</label>
             <div class="layui-input-block">
-                <textarea placeholder="多个地址用|分割（例如：http://www.480p.mp4|http://www.720p.mp4|http://www.1080p.mp4）" name="download_urls" lay-verify="required" class="layui-textarea"></textarea>
+                <textarea placeholder="多个地址用|分割（例如：http://www.480p.mp4|http://www.720p.mp4|http://www.1080p.mp4）" name="download_urls"  class="layui-textarea"></textarea>
             </div>
         </div>
-        {{--<div class="layui-form-item">--}}
-            {{--<label class="layui-form-label"><font color="red">* </font>上传视频</label>--}}
-            {{--<div class="layui-input-block">--}}
-                {{--<div class="layui-upload">--}}
-                    {{--<button type="button" class="layui-btn layui-btn-normal" id="testList">选择视频</button>--}}
-                    {{--<div class="layui-upload-list">--}}
-                        {{--<table class="layui-table">--}}
-                            {{--<thead>--}}
-                            {{--<tr><th>文件名</th>--}}
-                                {{--<th>大小</th>--}}
-                                {{--<th>状态</th>--}}
-                                {{--<th>操作</th>--}}
-                            {{--</tr></thead>--}}
-                            {{--<tbody id="demoList"></tbody>--}}
-                        {{--</table>--}}
-                    {{--</div>--}}
-                    {{--<button type="button" class="layui-btn" id="testListAction">开始上传</button>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-            {{--<div id="upload_img_list"></div>--}}
-        {{--</div>--}}
+
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>视频类型</label>
+            <label class="layui-form-label"><font color="red">* </font>类型</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="otype[]" lay-skin="primary" title="MV"  value="1" >
                 <input type="checkbox" name="otype[]" lay-skin="primary" title="视频" value="2">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>导航分类</label>
+            <label class="layui-form-label">导航分类</label>
             <div class="layui-input-block">
                 @foreach($firstotype as $value)
-                    <input type="checkbox" name="otype2[]" value="{{ $value['oid'] }}" lay-verify="required"  lay-skin="primary" title="{{ $value['otypename'] }}">
+                    <input type="checkbox" name="otype2[]" value="{{ $value['oid'] }}"  lay-skin="primary" title="{{ $value['otypename'] }}">
                 @endforeach
             </div>
         </div>
@@ -93,7 +73,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>最新/热门</label>
+            <label class="layui-form-label">最新/热门</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="secondbestotype[]" lay-skin="primary" title="最新"  value="1" >
                 <input type="checkbox" name="secondbestotype[]" lay-skin="primary" title="热门" value="2">
@@ -102,28 +82,32 @@
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label"><font color="red">* </font>视频热度</label>
+                <label class="layui-form-label">番号</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="hotcount"  lay-verify="required" autocomplete="off" placeholder="请输入视频热度" class="layui-input">
+                    <input type="number" name="designation"  autocomplete="off" placeholder="请输入番号" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label"><font color="red">* </font>视频时长</label>
-                <div class="layui-input-inline" style="width: 50px">
-                    <input type="text" name="videotime[]" lay-verify="required" maxlength="2" value="00" autocomplete="off" placeholder="时" class="layui-input">
+                <label class="layui-form-label">IMDB</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="imdb"  autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
                 </div>
-                <div class="layui-form-mid">:</div>
-                <div class="layui-input-inline" style="width: 50px">
-                    <input type="text" name="videotime[]" lay-verify="required" maxlength="2" value="00" autocomplete="off" placeholder="分" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">评分</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="score"   autocomplete="off" placeholder="请输入视频评分" class="layui-input">
                 </div>
-                <div class="layui-form-mid">:</div>
-                <div class="layui-input-inline" style="width: 50px">
-                    <input type="text" name="videotime[]" lay-verify="required" maxlength="2" value="00" autocomplete="off" placeholder="秒" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">热度</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="hotcount"  autocomplete="off" placeholder="请输入视频热度" class="layui-input">
                 </div>
             </div>
         </div>
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label"><font color="red">* </font>筛选条件</label>
+            <label class="layui-form-label">筛选条件</label>
             <div class="layui-input-block">
                 <table class="layui-table">
                     <colgroup>
@@ -136,7 +120,7 @@
                         <td>{{ $value['otypename'] }}</td>
                         <td>
                         @foreach($value['son'] as $v)
-                            <input type="checkbox" name="screen[]" value="{{ $v['oid'] }}" lay-verify="required"  lay-skin="primary" title="{{ $v['otypename'] }}">
+                            <input type="checkbox" name="screen[]" value="{{ $v['oid'] }}"  lay-skin="primary" title="{{ $v['otypename'] }}">
                         @endforeach
                         </td>
                     </tr>
@@ -147,24 +131,19 @@
             </div>
         </div>
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label"><font color="red">* </font>参演明星</label>
+            <label class="layui-form-label">参演明星</label>
             <div class="layui-input-block">
                 @foreach($star as $value)
                 <input type="checkbox" name="star[]" value="{{ $value['sid'] }}" lay-skin="primary" title="{{ $value['uname'] }}">
                 @endforeach
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否限免</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="is_free" value="1" title="限免">
-            </div>
-        </div>
+
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label"><font color="red">* </font>视频简介</label>
+            <label class="layui-form-label">视频简介</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" name="content" lay-verify="required" class="layui-textarea"></textarea>
+                <textarea placeholder="请输入内容" name="content" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">

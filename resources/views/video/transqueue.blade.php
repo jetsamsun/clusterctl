@@ -60,6 +60,7 @@
                 ,limit:1000    // 每页显示的条数
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
+                    ,{field:'ids', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'src_file',width:200, title: '源码文件'}
                     ,{field:'src_rate', width:150,title: '源码码率'}
                     ,{field:'src_size',width:150, title: '源码尺寸'}

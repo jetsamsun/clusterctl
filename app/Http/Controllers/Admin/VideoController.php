@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use app\Libs\Xyz;
 use App\Models\ListOtype;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
@@ -34,15 +35,13 @@ class VideoController extends AdminController
     public function getVideoList(Request $request){
         $limit = $request->input('limit');
         $title = $request->input('title');
-        $count = VideoList::select('vid','title','pic','otype','firstotype',
-            'secondotype','screenotype','star','is_free','createtime');
+        $count = VideoList::select('*');
         if($title){
             $count = $count->where("title",'like','%'.$title.'%');
         }
         $count = $count->where('is_visible',1)->count();
 
-        $dataTmp = VideoList::select('vid','title','pic','otype','firstotype',
-            'secondotype','screenotype','star','is_free','hotcount','videotime','createtime');
+        $dataTmp = VideoList::select('*');
         if($title){
             $dataTmp = $dataTmp->where("title",'like','%'.$title.'%');
         }
@@ -53,12 +52,34 @@ class VideoController extends AdminController
             $dataTmp = $dataTmp['data'];
 
             foreach($dataTmp as $key=>$value){
+                if(!empty($value['size']) ) {
+                    $dataTmp[$key]['src_bit'] = format_bytes($value['size']) ;
+                    $dataTmp[$key]['src_rate'] = round((int)$value['bit_rate']/1024).'kbps' ;
+                    $dataTmp[$key]['src_size'] = $value['width'].'x'.$value['height'];
+                    $dataTmp[$key]['videotime'] = format_time($value['duration']);
+                    $dataTmp[$key]['vcode'] = $value['vcode'];
+                    $dataTmp[$key]['acode'] = $value['audio'];
+                    $dataTmp[$key]['ext'] = $value['ext'];
+                    $dataTmp[$key]['dis_ratio'] = $value['dis_ratio'];
+                } else {
+                    $xyz = new Xyz();
+                    $videodir = env('PUBLIC_PATH').$value['url'];
+                    $videomsg = $xyz->format($videodir);  //源文件数据
+                    $dataTmp[$key]['src_bit'] = format_bytes($videomsg['size']) ;
+                    $dataTmp[$key]['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
+                    $dataTmp[$key]['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
+                    $dataTmp[$key]['videotime'] = format_time($videomsg['duration']);
+                    $dataTmp[$key]['vcode'] = $videomsg['video'];
+                    $dataTmp[$key]['acode'] = $videomsg['audio'];
+                    $dataTmp[$key]['ext'] = $videomsg['ext'];
+                    $dataTmp[$key]['dis_ratio'] = $videomsg['dis_ratio'];
+                }
+
                 $dataTmp[$key]['otype'] = $this->getotype($value['otype']);
                 $dataTmp[$key]['firstotype'] = $this->getfirstotype($value['firstotype']);
                 $dataTmp[$key]['secondotype'] = $this->getsecondotype($value['secondotype']);
                 $dataTmp[$key]['screenotype'] = $this->getscreenotype($value['screenotype']);
                 $dataTmp[$key]['star'] = $this->getStarName($value['star']);
-                //$dataTmp[$key]['videotime'] = gmstrftime('%H:%M:%S',$value["videotime"]);
                 $dataTmp[$key]['createtime'] = date('Y-m-d H:i:s',$value['createtime']);
             }
         }
@@ -78,7 +99,6 @@ class VideoController extends AdminController
             $videotime = $request->input('videotime');
             $screen = $request->input('screen');
             $star = $request->input('star');
-            $is_free = empty($request->input('is_free'))?0:$request->input('is_free');
             $content = $request->input('content');
             $play_urls = $request->input('play_urls');
             $download_urls = $request->input('download_urls');
@@ -106,7 +126,7 @@ class VideoController extends AdminController
             $reg = DB::table('video_list')->insert(array(
                 'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
                 'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,'videotime'=>$videotime,
-                'screenotype'=>$screen,'star'=>$star,'is_free'=>$is_free,'content'=>$content,
+                'screenotype'=>$screen,'star'=>$star,'content'=>$content,
                 'pic'=>$pic,'url'=>$url,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
                 'createtime'=>strtotime(date('Y-m-d H:i:s')),'is_visible'=>1
             ));
@@ -222,10 +242,35 @@ class VideoController extends AdminController
     }
     public function transcode(Request $request,$vid){
         if($request->isMethod('post')){
+            //检测清理日志
+            $logs = TransLog::get();
+            foreach ($logs as $log) {
+                if(strpos($log['msg'],'转码完毕')!==false) {
+                    TransLog::where('code',$log['code'])->delete();
+                }
+            }
+
             $idarr = explode('_', $vid);
             foreach ($idarr as $v) {
                 $post['ids'] = $v;
                 $post['size_rate'] = json_encode($_POST['siterate']);
+
+                //检测当前对应日志
+                $last = 0;
+                $nickname = VideoList::where('vid',$v)->value('nickname');
+                if($nickname) {
+                    $randsring = str_replace('.mp4', '', $nickname);
+                    $logs = TransLog::where('code',$randsring)->get();
+                    foreach ($logs as $log) {
+                        $last = $log['time'];
+                    }
+                    if(time()-$last>3*3600) {  //产出超过3小时的发送异常而没有成功的记录
+                        TransLog::where('code',$randsring)->delete();
+                    } else {
+                        return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
+                    }
+                }
+
 
                 $url = url('api/v1/video/execute');
                 $ch = curl_init();
@@ -323,8 +368,7 @@ class VideoController extends AdminController
 
 
     public function transqueue(Request $request) {
-        $data = VideoAdminLog::select('log_id')->get()->toArray();
-        return view('video.transqueue',compact('data'));
+        return view('video.transqueue');
     }
     public function getTransLog(Request $request) {
         $limit = $request->input('limit');
@@ -421,6 +465,13 @@ class VideoController extends AdminController
                         $arr3['src_bit'] = format_bytes($row['size']) ;
                         $arr3['src_rate'] = round((int)$row['bit_rate']/1024).'kbps' ;
                         $arr3['src_size'] = $row['width'].'x'.$row['height'];
+                    } else {
+                        $xyz = new Xyz();
+                        $videodir = env('PUBLIC_PATH').$row['url'];
+                        $videomsg = $xyz->format($videodir);  //源文件数据
+                        $arr3['src_bit'] = format_bytes($videomsg['size']) ;
+                        $arr3['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
+                        $arr3['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
                     }
                 }
 

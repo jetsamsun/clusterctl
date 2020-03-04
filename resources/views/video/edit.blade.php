@@ -85,7 +85,7 @@
             {{--</div>--}}
         {{--</div>--}}
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>视频分类</label>
+            <label class="layui-form-label"><font color="red">* </font>类型</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(1,$data['otype'])) checked @endif title="MV"  value="1" >
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(2,$data['otype'])) checked @endif title="视频" value="2">
