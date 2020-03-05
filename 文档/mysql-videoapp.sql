@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 04/03/2020 18:51:20
+ Date: 05/03/2020 16:18:27
 */
 
 SET NAMES utf8mb4;
@@ -109,6 +109,80 @@ INSERT INTO `app_asset_detail` VALUES (10080, 10209, 10210, NULL, 3.00, '+', '15
 INSERT INTO `app_asset_detail` VALUES (10081, 10208, 10210, NULL, 1.50, '+', '1553819639');
 INSERT INTO `app_asset_detail` VALUES (10082, 10207, 10210, NULL, 0.45, '+', '1553819639');
 INSERT INTO `app_asset_detail` VALUES (10083, 10205, 10210, NULL, 0.30, '+', '1553819639');
+
+-- ----------------------------
+-- Table structure for app_config
+-- ----------------------------
+DROP TABLE IF EXISTS `app_config`;
+CREATE TABLE `app_config`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '变量名',
+  `group` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '分组',
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '变量标题',
+  `tip` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '变量描述',
+  `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '类型:string,text,int,bool,array,datetime,date,file',
+  `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '变量值',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '变量字典数据',
+  `rule` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '验证规则',
+  `extend` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '扩展属性',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of app_config
+-- ----------------------------
+INSERT INTO `app_config` VALUES (1, 'name', 'basic', 'Site name', '请填写站点名称', 'string', 'FastAdmin', '', 'required', '');
+INSERT INTO `app_config` VALUES (2, 'beian', 'basic', 'Beian', '粤ICP备15000000号-1', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (3, 'cdnurl', 'basic', 'Cdn url', '如果静态资源使用第三方云储存请配置该值', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (4, 'version', 'basic', 'Version', '如果静态资源有变动请重新配置该值', 'string', '1.0.1', '', 'required', '');
+INSERT INTO `app_config` VALUES (5, 'timezone', 'basic', 'Timezone', '', 'string', 'Asia/Shanghai', '', 'required', '');
+INSERT INTO `app_config` VALUES (6, 'forbiddenip', 'basic', 'Forbidden ip', '一行一条记录', 'text', '', '', '', '');
+INSERT INTO `app_config` VALUES (7, 'languages', 'basic', 'Languages', '', 'array', '{\"backend\":\"zh-cn\",\"frontend\":\"zh-cn\"}', '', 'required', '');
+INSERT INTO `app_config` VALUES (8, 'fixedpage', 'basic', 'Fixed page', '请尽量输入左侧菜单栏存在的链接', 'string', 'dashboard', '', 'required', '');
+INSERT INTO `app_config` VALUES (9, 'categorytype', 'dictionary', 'Category type', '', 'array', '{\"default\":\"Default\",\"page\":\"Page\",\"article\":\"Article\",\"test\":\"Test\",\"video\":\"Video\"}', '', '', '');
+INSERT INTO `app_config` VALUES (10, 'configgroup', 'dictionary', 'Config group', '', 'array', '{\"basic\":\"Basic\",\"email\":\"Email\",\"dictionary\":\"Dictionary\",\"user\":\"User\",\"example\":\"Example\",\"trans\":\"转码设置\",\"watermark\":\"水印设置\",\"screenshot\":\"截图设置\",\"theft\":\"防盗设置\",\"sync\":\"同步设置\"}', '', '', '');
+INSERT INTO `app_config` VALUES (11, 'mail_type', 'email', 'Mail type', '选择邮件发送方式', 'select', '1', '[\"Please select\",\"SMTP\",\"Mail\"]', '', '');
+INSERT INTO `app_config` VALUES (12, 'mail_smtp_host', 'email', 'Mail smtp host', '错误的配置发送邮件会导致服务器超时', 'string', 'smtp.qq.com', '', '', '');
+INSERT INTO `app_config` VALUES (13, 'mail_smtp_port', 'email', 'Mail smtp port', '(不加密默认25,SSL默认465,TLS默认587)', 'string', '465', '', '', '');
+INSERT INTO `app_config` VALUES (14, 'mail_smtp_user', 'email', 'Mail smtp user', '（填写完整用户名）', 'string', '10000', '', '', '');
+INSERT INTO `app_config` VALUES (15, 'mail_smtp_pass', 'email', 'Mail smtp password', '（填写您的密码）', 'string', 'password', '', '', '');
+INSERT INTO `app_config` VALUES (16, 'mail_verify_type', 'email', 'Mail vertify type', '（SMTP验证方式[推荐SSL]）', 'select', '2', '[\"None\",\"TLS\",\"SSL\"]', '', '');
+INSERT INTO `app_config` VALUES (17, 'mail_from', 'email', 'Mail from', '', 'string', '10000@qq.com', '', '', '');
+INSERT INTO `app_config` VALUES (18, 'site_url', 'basic', '网站URL', '网站地址', 'string', 'http://fastadmin.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (19, 'video_dir', 'basic', '资源文件', '资源文件夹', 'string', '/video/product', '', '', '');
+INSERT INTO `app_config` VALUES (20, 'trans_url', 'basic', '转码域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (21, 'm3u8_url', 'basic', 'm3u8域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (22, 'site_dir', 'basic', '网站路径', '', 'string', '/', '', '', '');
+INSERT INTO `app_config` VALUES (23, 'site_front_on', 'basic', '网站前台', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (24, 'm3u8_on', 'basic', 'm3u8是否保留', '删除视频是否保留源文件', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (25, 'trans_mode', 'trans', '转码方式', '画质优先则转码速度变慢', 'select', 'veryfast', '{\"ultrafast\":\"极速转码\",\"veryfast\":\"速度优先\",\"fast\":\"均衡设置\",\"medium\":\"画质优先\"}', '', '');
+INSERT INTO `app_config` VALUES (26, 'trans_ts_mask', 'trans', 'Ts伪装', 'Ts伪装成其他文件，如：jpg，该功能只在开启m3u8防盗后有效', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (27, 'trans_ts_space', 'trans', 'Ts时长', '', 'number', '180', '', '', '');
+INSERT INTO `app_config` VALUES (28, 'trans_m3u8', 'trans', 'M3U8后缀', '', 'string', 'mmm.m3u8', '', '', '');
+INSERT INTO `app_config` VALUES (30, 'mark_space', 'watermark', '水印间距', '', 'string', '50:10', '', '', '');
+INSERT INTO `app_config` VALUES (31, 'mark_zs', 'watermark', '左上水印', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (32, 'mark_ys', 'watermark', '右上水印', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (33, 'mark_zx', 'watermark', '左下水印', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (34, 'mark_yx', 'watermark', '右下水印', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (35, 'shot_on', 'screenshot', '截图开关', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (37, 'shot_size', 'screenshot', '截图尺寸', '', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (38, 'shot_gif_on', 'screenshot', '动图开关', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (41, 'shot_gif_size', 'screenshot', '动图尺寸', '', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (42, 'thief_on', 'theft', '防盗开关', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (43, 'thief_direct', 'theft', '直接访问', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (45, 'thief_m3u8_on', 'theft', 'M3U8防盗', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (46, 'thief_freeip', 'theft', '放行域名', '留空为不限制，多个域名用竖线\"|\"隔开，如：www.123.com|www.baidu.com', 'text', 'www.baidu.com', '', '', '');
+INSERT INTO `app_config` VALUES (47, 'sync_on', 'sync', '同步开关', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (48, 'sync_address', 'sync', '同步地址', '', 'string', 'http://fastadmin.te/api/video/index', '', '', '');
+INSERT INTO `app_config` VALUES (49, 'sync_key', 'sync', '同步秘钥', '', 'string', 'sdfsdfdfsfsdfsdfsdfsdf', '', '', '');
+INSERT INTO `app_config` VALUES (50, 'shot_gif_space', 'screenshot', '截取间隔', '用于截取图片合成动图', 'number', '1', '', '', '');
+INSERT INTO `app_config` VALUES (51, 'img_url', 'basic', '图片域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (52, 'trans_default_size', 'trans', '必选大小', '', 'radio', '360', '{\"2160\":\"2160p：3840x2160\",\"1440\":\"1440p：2560x1440\",\"1080\":\"1080p：1920x1080\",\"720\":\"720p：1280x720\",\"480\":\"480p：854x480\",\"360\":\"360p：640x360\",\"240\":\"240p：426x240\"}', '', '');
+INSERT INTO `app_config` VALUES (53, 'trans_secret_on', 'trans', '加密开关', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (54, 'transm3u8', 'trans', '是否切片', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (55, 'transm3u8del', 'trans', '切片完成删除源文件', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (56, 'tanscodedel', 'trans', '转码完成删除源文件', '', 'switch', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for app_list_otype

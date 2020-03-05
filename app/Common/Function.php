@@ -338,3 +338,10 @@ function format_bytes($size, $delimiter = '')
     }
     return round($size, 2) . $delimiter . $units[$i];
 }
+
+function site_url($msg) {
+    return $msg;
+}
+function config_item($msg) {
+    return $msg;
+}

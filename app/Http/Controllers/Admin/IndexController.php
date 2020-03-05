@@ -21,6 +21,15 @@ class IndexController extends AdminController
         return view('index.index',compact('sumcount',"vipcount","onlinecount"));
     }
 
+    public function transet(){
+        return view('index.transet');
+    }
+
+    public function watermark(){
+        $page = "";
+        return view('index.watermark',compact('page'));
+    }
+
     // 修改密码
     public function changePwd(Request $request){
         if($request->isMethod('post')){

@@ -62,17 +62,17 @@ class VideoController extends AdminController
                     $dataTmp[$key]['ext'] = $value['ext'];
                     $dataTmp[$key]['dis_ratio'] = $value['dis_ratio'];
                 } else {
-                    $xyz = new Xyz();
-                    $videodir = env('PUBLIC_PATH').$value['url'];
-                    $videomsg = $xyz->format($videodir);  //源文件数据
-                    $dataTmp[$key]['src_bit'] = format_bytes($videomsg['size']) ;
-                    $dataTmp[$key]['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
-                    $dataTmp[$key]['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
-                    $dataTmp[$key]['videotime'] = format_time($videomsg['duration']);
-                    $dataTmp[$key]['vcode'] = $videomsg['video'];
-                    $dataTmp[$key]['acode'] = $videomsg['audio'];
-                    $dataTmp[$key]['ext'] = $videomsg['ext'];
-                    $dataTmp[$key]['dis_ratio'] = $videomsg['dis_ratio'];
+//                    $xyz = new Xyz();
+//                    $videodir = env('PUBLIC_PATH').$value['url'];
+//                    $videomsg = $xyz->format($videodir);  //源文件数据
+//                    $dataTmp[$key]['src_bit'] = format_bytes($videomsg['size']) ;
+//                    $dataTmp[$key]['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
+//                    $dataTmp[$key]['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
+//                    $dataTmp[$key]['videotime'] = format_time($videomsg['duration']);
+//                    $dataTmp[$key]['vcode'] = $videomsg['video'];
+//                    $dataTmp[$key]['acode'] = $videomsg['audio'];
+//                    $dataTmp[$key]['ext'] = $videomsg['ext'];
+//                    $dataTmp[$key]['dis_ratio'] = $videomsg['dis_ratio'];
                 }
 
                 $dataTmp[$key]['otype'] = $this->getotype($value['otype']);
