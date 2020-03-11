@@ -12,8 +12,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>码率尺寸</label>
             <div class="layui-input-block">
-                @foreach($siterate as $value)
-                    <input type="checkbox" name="siterate[]" value="{{ $value['rate'] }}-{{ $value['width'] }}x{{ $value['heigth'] }}" lay-verify="required"  @if($value['default']==1) checked @endif lay-skin="primary" title="{{ $value['width'] }}x{{ $value['heigth'] }}">
+                <?php $rates = json_decode($siterate['content']); ?>
+                @foreach($rates as $k=>$v)
+                    <input type="checkbox" name="siterate[]" value="{{ $v }}" lay-verify="required"  @if($siterate['value'] == $k) checked @endif lay-skin="primary" title="{{ $v }}">
                 @endforeach
             </div>
         </div>

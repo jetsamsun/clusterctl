@@ -51,9 +51,9 @@ class VideoController extends  ApiController{
 
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'转码准备','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         foreach ($size_rate as $val) {
-            $sizetmp = explode('-', $val);
-            $rate = $sizetmp[0];
-            $size = $sizetmp[1];
+            $sizetmp = explode('：', $val);
+            $rate = str_replace('p', '', trim($sizetmp[0]));
+            $size = trim($sizetmp[1]);
             $default = SiteRate::where('default',1)->where('rate',$rate)->get()->toArray(); //是否默认码率
 
             $dirtmp = $dirpath.$rate.'/';  mk_dir($dirtmp);

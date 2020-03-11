@@ -298,7 +298,7 @@ class VideoController extends AdminController
             return response()->json(array('code'=>1,'msg'=>"已添加后台转码"));
         }
 
-        $siterate = SiteRate::get()->toArray();
+        $siterate = Config::where('name','trans_default_size')->get()->toArray(); $siterate = $siterate[0];
         return view('video.transcode',compact('vid','siterate'));
     }
     public function delvideo(Request $request){
@@ -435,9 +435,9 @@ class VideoController extends AdminController
                         $rasi = '';
                         $cnt = 0;
                         foreach ($data->size_rate as $rk=>$ra) {
-                            $ras = explode('-', $ra);
+                            $ras = explode('：', $ra);
                             if($cnt==0) {
-                                $rastr = $ras[0].'p';
+                                $rastr = $ras[0];
                                 $sistr = $ras[1];
                                 $rasi = $ra;
                             } else {
@@ -505,6 +505,7 @@ class VideoController extends AdminController
                 $rasi='';
                 $cnt=0;
                 foreach ($data->size_rate as $rk=>$ra) {
+                    $ra = str_replace('：', ':', $ra);
                     if($cnt==0) {
                         $rasi = $ra;
                     } else {
