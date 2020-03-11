@@ -1,15 +1,23 @@
 <?php
 namespace app\Libs;
 
+use App\Models\Config;
+
 class Xyz {
     function __construct() {
         set_time_limit(0);
+
+        $cfgs = Config::get();
+        foreach ($cfgs as $v) {
+            $this->cfgs[$v['name']] = $v['value'];
+        }
+
         if(strpos(php_uname(), 'Windows') !== false) {
-            $this->sypath = env('PUBLIC_PATH').'/ffmpeg/packs/watermark.png';
-            $this->ffmpeg = env('PUBLIC_PATH').'/ffmpeg/ffmpeg.exe';
-            $this->ffprobe = env('PUBLIC_PATH').'/ffmpeg/ffprobe.exe';
+            $this->sypath = './ffmpeg/packs/xxx';
+            $this->ffmpeg = PUBLIC_PATH.'/ffmpeg/ffmpeg.exe';
+            $this->ffprobe = PUBLIC_PATH.'/ffmpeg/ffprobe.exe';
         } else {
-            $this->sypath = env('PUBLIC_PATH').'/ffmpeg/packs/watermark.png';
+            $this->sypath = PUBLIC_PATH.'/ffmpeg/packs/xxx';
             $this->ffmpeg = '/usr/local/ffmpeg/bin/ffmpeg';
             $this->ffprobe = '/usr/local/ffmpeg/bin/ffprobe';
         }
@@ -40,7 +48,7 @@ class Xyz {
         }
         //速度
         $prearr = array('ultrafast','superfast','faster','fast','medium','slow','slower');
-        $mupreset = config('site.trans_mode') ? config('site.trans_mode') : 'fast';
+        $mupreset = $this->cfgs['trans_mode'] ? $this->cfgs['trans_mode'] : 'fast';
         if(!in_array($mupreset, $prearr) || $mupreset == 'medium') $mupreset = '';
         $preset = !empty($mupreset) ? '-preset:v '.$mupreset : '';
 
@@ -49,8 +57,9 @@ class Xyz {
 		} else {
 			$make_command = $this->ffmpeg." -y  -i  $src_path $preset -c:v libx264 -c:a aac -strict -2 $watermark  $kbps  $change  $m3u8_path";
 		}
+
         exec($make_command,$arr,$log);
-        
+
         if($log == 0){
             return 'success';
         } else {
@@ -95,7 +104,7 @@ class Xyz {
     }
     //视频截图JPG
     function vodtojpg($src_path,$obj_path, $time = 5){
-        $jpgsize = config('site.shot_size');
+        $jpgsize = $this->cfgs['shot_size'];
         $size = !empty($jpgsize) ? '-s '.$jpgsize : '';
         $tmp = explode('/', $obj_path);
         $filename = end($tmp);
@@ -111,8 +120,8 @@ class Xyz {
     function vodtogif($src_path,$obj_path){
         $gif_pos = 3;//开始位置
         $gif_len = 3;//截取时长
-        $Gif_Size = '';
-        $size = !empty($Gif_Size)?'-s '.Gif_Size:'';
+        $Gif_Size = $this->cfgs['shot_gif_size'];
+        $size = !empty($Gif_Size)?'-s '.$Gif_Size:'';
         $gif_command = $this->ffmpeg.' -y -ss '.$gif_pos.' -t '.$gif_len.' -i '.$src_path.' '.$size.' -f gif '.$obj_path;
         $gif = exec($gif_command,$arr,$log);
         if($log==0){
@@ -124,45 +133,46 @@ class Xyz {
     //水印OR字幕
     function watermark_zm(){
         $cmd = '';
-        $markspace = config('site.mark_space') ? config('site.mark_space') : '10:10';
+        $markspace = $this->cfgs['mark_space'] ? $this->cfgs['mark_space'] : '10:10';
+        $sypath = $this->sypath;
         //左上
-        if( config('site.mark_zs') ){
-            $cmd = '-vf "movie='.$this->sypath.'.png[wm1];[in][wm1]overlay='.$markspace.'[out]"';
+        if( $this->cfgs['mark_zs'] ){
+            $cmd = '-vf "movie='.$sypath.'.png[wm1];[in][wm1]overlay='.$markspace.'[out]"';
         }
         //右上
-        if( config('site.mark_ys') ){
+        if( $this->cfgs['mark_ys'] ){
             $mar_arr = explode(':', $markspace);
             $mar1 = intval($mar_arr[0]);
             $mar2 = intval($mar_arr[1]);
             $wm = 'overlay=main_w-overlay_w-'.$mar1.':'.$mar2;
             if(empty($cmd)){
-                $cmd = '-vf "movie='.$this->sypath.'.png[wm2];[in][wm2]'.$wm.'[out]"';
+                $cmd = '-vf "movie='.$sypath.'.png[wm2];[in][wm2]'.$wm.'[out]"';
             }else{
-                $cmd = str_replace('[in]', 'movie='.$this->sypath.'.png[wm2];[in][wm2]'.$wm.'[a];[a]', $cmd);
+                $cmd = str_replace('[in]', 'movie='.$sypath.'.png[wm2];[in][wm2]'.$wm.'[a];[a]', $cmd);
             }
         }
         //左下
-        if( config('site.mark_zx') ){
+        if( $this->cfgs['mark_zx'] ){
             $mar_arr = explode(':', $markspace);
             $mar1 = intval($mar_arr[0]);
             $mar2 = intval($mar_arr[1]);
             $wm = 'overlay='.$mar1.':main_h-overlay_h-'.$mar2;
             if(empty($cmd)){
-                $cmd = '-vf "movie='.$this->sypath.'.png[wm3];[in][wm3]'.$wm.'[out]"';
+                $cmd = '-vf "movie='.$sypath.'.png[wm3];[in][wm3]'.$wm.'[out]"';
             }else{
-                $cmd = str_replace('[in]', 'movie='.$this->sypath.'.png[wm3];[in][wm3]'.$wm.'[b];[b]', $cmd);
+                $cmd = str_replace('[in]', 'movie='.$sypath.'.png[wm3];[in][wm3]'.$wm.'[b];[b]', $cmd);
             }
         }
         //右下
-        if( config('site.mark_yx') ){
+        if( $this->cfgs['mark_yx'] ){
             $mar_arr = explode(':', $markspace);
             $mar1 = intval($mar_arr[0]);
             $mar2 = intval($mar_arr[1]);
             $wm = 'overlay=main_w-overlay_w-'.$mar1.':main_h-overlay_h-'.$mar2;
             if(empty($cmd)){
-                $cmd = '-vf "movie='.$this->sypath.'.png[wm4];[in][wm4]'.$wm.'[out]"';
+                $cmd = '-vf "movie='.$sypath.'.png[wm4];[in][wm4]'.$wm.'[out]"';
             }else{
-                $cmd = str_replace('[in]', 'movie='.$this->sypath.'.png[wm4];[in][wm4]'.$wm.'[c];[c]', $cmd);
+                $cmd = str_replace('[in]', 'movie='.$sypath.'.png[wm4];[in][wm4]'.$wm.'[c];[c]', $cmd);
             }
         }
         return $cmd;
@@ -194,7 +204,7 @@ class Xyz {
      */
     function generateimages($src_path, $obj_path, $image_pre, $stime, $etime, $ra = 1)
     {
-        $ra = config('site.shot_gif_space') ? config('site.shot_gif_space') : $ra;
+        $ra = $this->cfgs['shot_gif_space'] ? $this->cfgs['shot_gif_space'] : $ra;
         $command = $this->ffmpeg." -y -i $src_path -f image2 -r $ra -ss $stime -to $etime  $obj_path".$image_pre."%3d.jpg";
         exec($command,$arr,$log);
         if($log==0){
@@ -218,7 +228,7 @@ class Xyz {
     }
     function transm3u8($src_path, $obj_path, $space=180)
     {
-        $space = config('site.trans_ts_space') ? config('site.trans_ts_space') : $space;
+        $space = $this->cfgs['trans_ts_space'] ? $this->cfgs['trans_ts_space'] : $space;
         $ts_path = dirname($obj_path);
         $aes = $this->m3u8aes($ts_path);
         
@@ -237,7 +247,7 @@ class Xyz {
     }
     //m3u8加密
     function m3u8aes($path){
-        if(!config('site.trans_secret_on')) return '';
+        if(!$this->cfgs['trans_secret_on']) return '';
         $src_str = '0123456789abcdefghijklmnopqrstuvwxyz';
         $aes_key = substr(str_shuffle($src_str), 0, 16);
         if(substr($path, -1)!='/') $path .= '/';

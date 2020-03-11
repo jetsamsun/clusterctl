@@ -27,6 +27,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('changePwd','IndexController@changePwd');
     Route::any('transet','IndexController@transet');
     Route::any('watermark','IndexController@watermark');
+    Route::any('shots','IndexController@shots');
 
     // login
     Route::any('login','LoginController@login');

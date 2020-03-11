@@ -6,6 +6,8 @@
         <link href="{{ URL::asset('/lyear/css/style.min.css') }}" rel="stylesheet">
     @endsection
 
+    <div class="hidden lyear-layout-sidebar-scroll"></div>
+
     <!--页面主要内容-->
     <div class="row">
         <div class="col-lg-12">
@@ -14,74 +16,65 @@
                     <li> <a href="{{ url('/admin/index') }}">基础配置</a> </li>
                     <li class="active"> <a href="{{ url('/admin/transet') }}">转码设置</a> </li>
                     <li> <a href="{{ url('/admin/watermark') }}">水印设置</a> </li>
+                    <li> <a href="{{ url('/admin/shots') }}">截图设置</a> </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active">
 
-                        <form action="#!" method="post" name="edit-form" class="edit-form">
+                        <form action="{{url('admin/transet')}}" method="post" id="formid" name="edit-form" class="edit-form">
+                            @foreach($cfgs as $v)
+                                @if($v->type == 'switch')
+                                    <div class="form-group">
+                                        <label class="btn-block" for="{{$v->name}}">{{$v->title}}</label>
+                                        <label class="lyear-switch switch-solid switch-primary">
+                                            <input name="{{$v->name}}" type="checkbox" @if($v->value==1) checked @endif ><span></span>
+                                        </label>
+                                        <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                    </div>
+                                @elseif($v->type == 'string')
+                                    <div class="form-group">
+                                        <label for="{{$v->name}}">{{$v->title}}</label>
+                                        <input class="form-control" type="text" id="{{$v->name}}" name="{{$v->name}}" value="{{$v->value}}" >
+                                        <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                    </div>
+                                @elseif($v->type == 'number')
+                                    <div class="form-group">
+                                        <label for="{{$v->name}}">{{$v->title}}</label>
+                                        <input class="form-control" type="number" id="{{$v->name}}" name="{{$v->name}}" value="{{$v->value}}" >
+                                        <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                    </div>
+                                @elseif($v->type == 'select')
+                                    <div class="form-group">
+                                        <label for="{{$v->name}}">{{$v->title}}</label>
+                                        <div class="form-controls">
+                                            <select name="{{$v->name}}" class="form-control">
+                                                <?php $mode = json_decode($v->content); ?>
+                                                @foreach($mode as $km=>$vm)
+                                                <option value="{{$km}}" @if($v->value==$km) selected @endif>{{$vm}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                    </div>
+                                @elseif($v->type == 'radio')
+                                    <div class="form-group">
+                                    <label for="{{$v->name}}">{{$v->title}}</label>
+                                    <div class="controls-box">
+                                        <?php $default = json_decode($v->content); ?>
+                                        @foreach($default as $ks=>$vs)
+                                            <label style="margin-bottom: 5px;" class="lyear-radio radio-primary">
+                                                <input type="radio" name="{{$v->name}}" @if($v->value==$ks) checked @endif value="{{$ks}}"><span>{{$vs}}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                    <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                    </div>
+                                @endif
+                            @endforeach
+
+
                             <div class="form-group">
-                                <label for="trans_mode">转码方式</label>
-                                <div class="form-controls">
-                                    <select name="trans_mode" class="form-control">
-                                        <option value="ABC">极速转码</option>
-                                        <option value="ICBC" selected>速度优先</option>
-                                        <option value="BOC">均衡设置</option>
-                                        <option value="CCB">画质优先</option>
-                                    </select>
-                                </div>
-                                <small class="help-block">变量名：<code>{$site.trans_mode}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="trans_ts_mask">Ts伪装</label>
-                                <input class="form-control" type="text" id="trans_ts_mask" name="trans_ts_mask" value="" placeholder="Ts伪装成其他文件，如：jpg，该功能只在开启m3u8防盗后有效" >
-                                <small class="help-block">变量名：<code>{$site.trans_ts_mask}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="trans_ts_space">Ts时长</label>
-                                <input class="form-control" type="number" id="trans_ts_space" name="trans_ts_space" value="180" placeholder="" >
-                                <small class="help-block">变量名：<code>{$site.trans_ts_space}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="trans_m3u8">M3U8后缀</label>
-                                <input class="form-control" type="text" id="trans_m3u8" name="trans_m3u8" value="mmm.m3u8" placeholder="" >
-                                <small class="help-block">变量名：<code>{$site.trans_m3u8}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="trans_default_size">默认尺寸</label>
-                                <div class="controls-box">
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>2160p：3840x2160</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>1440p：2560x1440</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>1080p：1920x1080</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>720p：1280x720</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>480p：854x480</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]" checked><span>360p：640x360</span>
-                                    </label>
-                                    <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                        <input type="checkbox" name="trans_default_size[]"><span>240p：426x240</span>
-                                    </label>
-                                </div>
-                                <small class="help-block">变量名：<code>{$site.trans_default_size}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <label class="btn-block" for="trans_secret_on">是否加密</label>
-                                <label class="lyear-switch switch-solid switch-primary">
-                                    <input name="trans_secret_on" type="checkbox" checked ><span></span>
-                                </label>
-                                <small class="help-block">变量名：<code>{$site.trans_secret_on}</code></small>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary m-r-5">确 定</button>
+                                <button type="button" class="btn btn-primary m-r-5 confirm">确 定</button>
                                 <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                             </div>
                         </form>
@@ -102,5 +95,20 @@
         <!--消息提示-->
         <script type="text/javascript" src="{{ URL::asset('/lyear/js/bootstrap-notify.min.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('/lyear/js/lightyear.js') }}"></script>
+
+        <script>
+            $('.confirm').on('click',function () {
+                $.post($("#formid").attr('action'),$("#formid").serialize(),function (ret) {
+                    if(ret.code===1) {
+                        lightyear.notify(ret.msg+'，页面即将刷新~', 'success', 2000);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        lightyear.notify(ret.msg, 'danger', 2000);
+                    }
+                },'json');
+            });
+        </script>
     @endsection
 @endsection

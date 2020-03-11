@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
 use app\Libs\Xyz;
+use App\Models\Config;
 use App\Models\ListOtype;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
@@ -23,9 +24,15 @@ class VideoController extends AdminController
 {
     function __construct() {
         set_time_limit(0);
-        $this->uploaddir = env('PUBLIC_PATH').'/assets/uploads/files/video/';  // '/video/upload/'
-        $this->productdir = env('PUBLIC_PATH').'/video/product/';
-        $this->tmpdir = env('PUBLIC_PATH').'/video/tmp/';
+
+        $cfgs = Config::get();
+        foreach ($cfgs as $v) {
+            $this->cfgs[$v['name']] = $v['value'];
+        }
+
+        $this->uploaddir = PUBLIC_PATH.$this->cfgs['upload_dir'].'/';
+        $this->productdir = PUBLIC_PATH.$this->cfgs['video_dir'].'/';
+        $this->tmpdir = PUBLIC_PATH.'/video/tmp/';
     }
 
     public function video(){
@@ -63,7 +70,7 @@ class VideoController extends AdminController
                     $dataTmp[$key]['dis_ratio'] = $value['dis_ratio'];
                 } else {
 //                    $xyz = new Xyz();
-//                    $videodir = env('PUBLIC_PATH').$value['url'];
+//                    $videodir = PUBLIC_PATH.$value['url'];
 //                    $videomsg = $xyz->format($videodir);  //源文件数据
 //                    $dataTmp[$key]['src_bit'] = format_bytes($videomsg['size']) ;
 //                    $dataTmp[$key]['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
@@ -260,9 +267,10 @@ class VideoController extends AdminController
                 $post['ids'] = $v;
                 $post['size_rate'] = json_encode($_POST['siterate']);
 
+
                 //检测当前对应日志
                 $last = 0;
-                $nickname = VideoList::where('vid',$v)->value('nickname');
+                $nickname = VideoList::where('vid',$v)->get();
                 if($nickname) {
                     $randsring = str_replace('.mp4', '', $nickname);
                     $logs = TransLog::where('code',$randsring)->get();
@@ -456,7 +464,7 @@ class VideoController extends AdminController
                     $index++;
                 }
 
-                $arr3['dir_path'] = str_replace(env('ROOR_PATH'), '', $this->productdir).$arr3['date'].'/'.$code.'/';
+                $arr3['dir_path'] = str_replace(ROOR_PATH, '', $this->productdir).$arr3['date'].'/'.$code.'/';
 
                 $arr3['starttime'] = date('Y-m-d H:i:s',$st);
                 $arr3['usetime'] = format_time($et - $st);
@@ -472,7 +480,7 @@ class VideoController extends AdminController
                         $arr3['src_size'] = $row['width'].'x'.$row['height'];
                     } else {
                         $xyz = new Xyz();
-                        $videodir = env('PUBLIC_PATH').$row['url'];
+                        $videodir = PUBLIC_PATH.$row['url'];
                         $videomsg = $xyz->format($videodir);  //源文件数据
                         $arr3['src_bit'] = format_bytes($videomsg['size']) ;
                         $arr3['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
@@ -730,11 +738,11 @@ class VideoController extends AdminController
         $rate = $_POST['rate'];
         $date = $videostr[3];
         $month = substr($date,0,6);
-        $logpath = createpath(ROOR_PATH.'runtime/log/'.$month.'/'.$randsring.'_log.txt');
+        $logpath = createpath(ROOR_PATH.'/runtime/log/'.$month.'/'.$randsring.'_log.txt');
         $dirpath = $this->productdir.$date.'/'.$randsring.'/';
 
 
-        $muname = config('site.trans_m3u8') ? config('site.trans_m3u8') : 'index.m3u8';
+        $muname = $this->cfgs['trans_m3u8'] ? $this->cfgs['trans_m3u8'] : 'index.m3u8';
         $re = $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname);
         if($re) {
             $this->model = model('app\common\model\Category');
@@ -750,15 +758,14 @@ class VideoController extends AdminController
             $info->m3u8 = json_encode($m3u8arr);
             $info->save();
 
-            if(config('site.trans_default_size') != $rate) { //切片完成是否删除源文件
-                if(config('site.transm3u8del')) unlink($tovideodir);
+            if($this->cfgs['trans_default_size'] != $rate) { //切片完成是否删除源文件
+                if($this->cfgs['transm3u8del']) unlink($tovideodir);
             }
 
-            return array('code'=>0, 'msg'=>'切片成功','data'=>config('site.m3u8_url').$m3u8file);
+            return array('code'=>0, 'msg'=>'切片成功','data'=>$this->cfgs['m3u8_url'].$m3u8file);
         } else { //切片失败
             return array('code'=>-1, 'msg'=>'切片失败');
         }
-
     }
 
     /*上传图片文件*/

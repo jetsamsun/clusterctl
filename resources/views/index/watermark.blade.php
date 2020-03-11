@@ -16,45 +16,31 @@
                         <li> <a href="{{ url('/admin/index') }}">基础配置</a> </li>
                         <li> <a href="{{ url('/admin/transet') }}">转码设置</a> </li>
                         <li class="active"> <a href="{{ url('/admin/watermark') }}">水印设置</a> </li>
+                        <li> <a href="{{ url('/admin/shots') }}">截图设置</a> </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active">
-                            <form action="#!" method="post" name="edit-form" class="edit-form">
+                            <form action="{{url('admin/watermark')}}" method="post" id="formid" name="edit-form" class="edit-form">
+                                @foreach($cfgs as $v)
+                                    @if($v->type == 'switch')
+                                        <div class="form-group">
+                                            <label class="btn-block" for="{{$v->name}}">{{$v->title}}</label>
+                                            <label class="lyear-switch switch-solid switch-primary">
+                                                <input name="{{$v->name}}" type="checkbox" @if($v->value==1) checked @endif ><span></span>
+                                            </label>
+                                            <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                        </div>
+                                    @elseif($v->type == 'string')
+                                        <div class="form-group">
+                                            <label for="{{$v->name}}">{{$v->title}}</label>
+                                            <input class="form-control" type="text" id="{{$v->name}}" name="{{$v->name}}" value="{{$v->value}}" >
+                                            <small class="help-block">变量名：<code>{$site.{{$v->name}}}</code></small>
+                                        </div>
+                                    @endif
+                                @endforeach
+
                                 <div class="form-group">
-                                    <label for="mark_space">水印间距</label>
-                                    <input class="form-control" type="text" id="mark_space" name="mark_space" value="50:10" placeholder="" >
-                                    <small class="help-block">变量名：<code>{$site.mark_space}</code></small>
-                                </div>
-                                <div class="form-group">
-                                    <label class="btn-block" for="mark_zs">左上水印</label>
-                                    <label class="lyear-switch switch-solid switch-primary">
-                                        <input name="mark_zs" type="checkbox" checked ><span></span>
-                                    </label>
-                                    <small class="help-block">变量名：<code>{$site.mark_zs}</code></small>
-                                </div>
-                                <div class="form-group">
-                                    <label class="btn-block" for="mark_ys">右上水印</label>
-                                    <label class="lyear-switch switch-solid switch-primary">
-                                        <input name="mark_ys" type="checkbox"><span></span>
-                                    </label>
-                                    <small class="help-block">变量名：<code>{$site.mark_ys}</code></small>
-                                </div>
-                                <div class="form-group">
-                                    <label class="btn-block" for="mark_zx">左下水印</label>
-                                    <label class="lyear-switch switch-solid switch-primary">
-                                        <input name="mark_zx" type="checkbox"><span></span>
-                                    </label>
-                                    <small class="help-block">变量名：<code>{$site.mark_zx}</code></small>
-                                </div>
-                                <div class="form-group">
-                                    <label class="btn-block" for="mark_yx">右下水印</label>
-                                    <label class="lyear-switch switch-solid switch-primary">
-                                        <input name="mark_yx" type="checkbox"><span></span>
-                                    </label>
-                                    <small class="help-block">变量名：<code>{$site.mark_yx}</code></small>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary m-r-5">确 定</button>
+                                    <button type="button" class="btn btn-primary m-r-5 confirm">确 定</button>
                                     <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                                 </div>
                             </form>
@@ -81,6 +67,21 @@
 
     <!--标签插件-->
     <script src="{{ URL::asset('/lyear/js/jquery-tags-input/jquery.tagsinput.min.js') }}"></script>
+
+    <script>
+        $('.confirm').on('click',function () {
+            $.post($("#formid").attr('action'),$("#formid").serialize(),function (ret) {
+                if(ret.code===1) {
+                    lightyear.notify(ret.msg+'，页面即将刷新~', 'success', 2000);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    lightyear.notify(ret.msg, 'danger', 2000);
+                }
+            },'json');
+        });
+    </script>
     @endsection
 @endsection
 

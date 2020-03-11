@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
 use App\Http\Controllers\AdminController;
+use App\Models\Config;
 use App\Models\LoginLogs;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
@@ -11,23 +12,80 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends AdminController
 {
-    public function index(){
-        $count = 0;
-        $sumcount = UserInfo::select('uid')->count(); // 总人数
-        $vipcount = UserInfo::select('uid')->where("vipendtime",">",strtotime(date("Y-m-d H:i:s")))->count(); // vip人数
-        $onlinecount = LoginLogs::select("id")
-            ->whereBetween("logintime",[strtotime(date("Y-m-d H:i:s"))-7200,strtotime(date("Y-m-d H:i:s"))])
-            ->count();
-        return view('index.index',compact('sumcount',"vipcount","onlinecount"));
+    public function index(Request $request){
+        $cfgs = Config::where('group', 'basic')->get();
+
+        if($request->isMethod('post')){
+            $data = $_POST;
+            foreach ($cfgs as $v) {
+                if(isset($data[$v->name])) {
+                    if($v->type=='switch') $data[$v->name] = 1;
+                    Config::where('name',$v->name)->update(array('value'=>$data[$v->name]));
+                } else {
+                    if($v->type=='switch') Config::where('name',$v->name)->update(array('value'=>0));
+                }
+            }
+            return response()->json(array('code'=>1,'msg'=>"修改成功"));
+        }
+
+        return view('index.index',compact('cfgs'));
     }
 
-    public function transet(){
-        return view('index.transet');
+    public function transet(Request $request){
+        $cfgs = Config::where('group', 'trans')->get();
+
+        if($request->isMethod('post')){
+            $data = $_POST;
+            foreach ($cfgs as $v) {
+                if(isset($data[$v->name])) {
+                    if($v->type=='switch') $data[$v->name] = 1;
+                    Config::where('name',$v->name)->update(array('value'=>$data[$v->name]));
+                } else {
+                    if($v->type=='switch') Config::where('name',$v->name)->update(array('value'=>0));
+                }
+            }
+            return response()->json(array('code'=>1,'msg'=>"修改成功"));
+        }
+
+        return view('index.transet',compact('cfgs'));
     }
 
-    public function watermark(){
-        $page = "";
-        return view('index.watermark',compact('page'));
+    public function watermark(Request $request){
+        $cfgs = Config::where('group', 'watermark')->get();
+
+        if($request->isMethod('post')){
+            $data = $_POST;
+            foreach ($cfgs as $v) {
+                if(isset($data[$v->name])) {
+                    if($v->type=='switch') $data[$v->name] = 1;
+                    Config::where('name',$v->name)->update(array('value'=>$data[$v->name]));
+                } else {
+                    if($v->type=='switch') Config::where('name',$v->name)->update(array('value'=>0));
+                }
+            }
+            return response()->json(array('code'=>1,'msg'=>"修改成功"));
+        }
+
+        return view('index.watermark',compact('cfgs'));
+    }
+
+    public function shots(Request $request){
+        $cfgs = Config::where('group', 'screenshot')->get();
+
+        if($request->isMethod('post')){
+            $data = $_POST;
+            foreach ($cfgs as $v) {
+                if(isset($data[$v->name])) {
+                    if($v->type=='switch') $data[$v->name] = 1;
+                    Config::where('name',$v->name)->update(array('value'=>$data[$v->name]));
+                } else {
+                    if($v->type=='switch') Config::where('name',$v->name)->update(array('value'=>0));
+                }
+            }
+            return response()->json(array('code'=>1,'msg'=>"修改成功"));
+        }
+
+        return view('index.shots', compact( 'cfgs'));
     }
 
     // 修改密码
