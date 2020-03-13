@@ -36,6 +36,11 @@ class VideoController extends AdminController
     }
 
     public function video(){
+        $xyz = new Xyz();
+        $videodir = $this->uploaddir.'1584072030208.mp4';
+        $videomsg = $xyz->format($videodir);  //源文件数据
+        dd($videomsg);
+
         $data = VideoAdminLog::select('log_id')->get()->toArray();
         return view('video.list',compact('data'));
     }
@@ -151,7 +156,8 @@ class VideoController extends AdminController
         // 导航分类
         $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
         // 视频分类
-        $secondotype = VideoOtype::select('oid','otypename')->get()->toArray();
+        $secondotype = VideoOtype::select('*')->get()->toArray();
+        $tree = getTree($secondotype);
         // 筛选条件
         $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
         foreach($screen as $key=>$value){
@@ -161,7 +167,7 @@ class VideoController extends AdminController
         // 明星列表
         $star =  StarList::select('sid','uname')->get()->toArray();
 
-        return view('video.add',compact('firstotype','secondotype','star','screen'));
+        return view('video.add',compact('firstotype','secondotype','star','screen','tree'));
     }
     public function editvideo(Request $request,$vid){
         if($request->isMethod('post')){
@@ -231,7 +237,8 @@ class VideoController extends AdminController
         // 导航分类
         $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
         // 视频分类
-        $secondotype = VideoOtype::select('oid','otypename')->get()->toArray();
+        $secondotype = VideoOtype::select('*')->get()->toArray();
+        $tree = getTree($secondotype);
         // 筛选条件
         $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
         foreach($screen as $key=>$value){
@@ -250,7 +257,19 @@ class VideoController extends AdminController
         $data['star'] = explode(',',$data['star']);           // 明星
         $data['videotime'] = explode(':',$data['videotime']);
 
-        return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype'));
+        if($data['m3u8']) {
+            $str = array();
+            $m3u8 = json_decode($data['m3u8']);
+            $siteurl = Config::where('name','site_url')->value('value');
+            foreach ($m3u8 as $k=>$v) {
+                $str[] = $siteurl . $v;
+            }
+            $data['m3u8'] = $str;
+        }
+
+        $cfgs = $this->cfgs;
+
+        return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype','tree','cfgs'));
     }
     public function transcode(Request $request,$vid){
         if($request->isMethod('post')){
@@ -427,7 +446,11 @@ class VideoController extends AdminController
                         $arr3['ids'] = $ids;
 
                         $video = VideoList::where('vid',$ids)->value('video');
-                        $arr3['date'] = explode('/', $video)[3];
+                        if(!empty($video)) {
+                            $arr3['date'] = explode('/', $video)[3];
+                        } else {
+                            $arr3['date'] = date('Ymd');
+                        }
 
 
                         $rastr = '';
@@ -479,12 +502,12 @@ class VideoController extends AdminController
                         $arr3['src_rate'] = round((int)$row['bit_rate']/1024).'kbps' ;
                         $arr3['src_size'] = $row['width'].'x'.$row['height'];
                     } else {
-                        $xyz = new Xyz();
-                        $videodir = PUBLIC_PATH.$row['url'];
-                        $videomsg = $xyz->format($videodir);  //源文件数据
-                        $arr3['src_bit'] = format_bytes($videomsg['size']) ;
-                        $arr3['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
-                        $arr3['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
+//                        $xyz = new Xyz();
+//                        $videodir = PUBLIC_PATH.$row['url'];
+//                        $videomsg = $xyz->format($videodir);  //源文件数据
+//                        $arr3['src_bit'] = format_bytes($videomsg['size']) ;
+//                        $arr3['src_rate'] = round((int)$videomsg['bit_rate']/1024).'kbps' ;
+//                        $arr3['src_size'] = $videomsg['width'].'x'.$videomsg['height'];
                     }
                 }
 
@@ -570,28 +593,31 @@ class VideoController extends AdminController
         }
         return $conname;
     }
-    public function cutjpg($src_path, $time)
+    public function cutjpg()
     {
+        $src_path = $_POST['src_path'];
+        $time = $_POST['time'];
+
         $src_path_new = PUBLIC_PATH.$src_path;
-        $obj_path = dirname($src_path_new).'/'.$time.'.jpg';
+        $obj_path = dirname($src_path_new).'/cover.jpg';
         $xyz = new Xyz();
         $re = $xyz->vodtojpg($src_path_new, $obj_path, $time);
         if ($re == 'ok') {
-            //保存入库
-            $image = str_replace(PUBLIC_PATH, '', $obj_path);
-            $this->model = model('app\common\model\Category');
-            $row = $this->model->where('video',$src_path)->find();
-            $cut_images = $row->cut_images?$row->cut_images.','.$image:$image;
-            $this->model->where('video',$src_path)->setField('cut_images', $cut_images);
-            $ret['flag'] = 1;
-            $ret['info'] =  stripslashes(str_replace(PUBLIC_PATH, '', $obj_path));
-            $ret['msg'] =  '成功';
-        } else {
-            $ret['flag'] = 0;
-            $ret['info'] =  $re;
-            $ret['msg'] =  '失败';
+            return response()->json(array('code'=>1,'msg'=>'截图成功','data'=>str_replace(PUBLIC_PATH, '', $obj_path)));
         }
-        return json_encode($ret);
+        return response()->json(array('code'=>0,'msg'=>'截图失败'));
+    }
+    public function vodtogif() {
+        $xyz = new Xyz();
+        $src_path = PUBLIC_PATH.$_POST['src_path'];
+        $stime = $_POST['time'];
+        $etime = $this->cfgs['shot_gif_space'];
+        $obj_path = dirname($src_path).'/cover.gif';
+        $re = $xyz->vodtogif($src_path,$obj_path,$stime,$etime);
+        if ($re == 'ok') {
+            return response()->json(array('code'=>1,'msg'=>'生成gif动图成功','data'=>str_replace(PUBLIC_PATH, '', $obj_path)));
+        }
+        return response()->json(array('code'=>0,'msg'=>'生成gif动图失败'));
     }
     public function setmainjpg($src_path, $image_path)
     {
@@ -644,8 +670,11 @@ class VideoController extends AdminController
         }
         return json_encode($ret);
     }
-    public function generategif($src_path, $time)
+    public function generategif()
     {
+        $src_path = $_POST['src_path'];
+        $time = $_POST['time'];
+
         $arrtime = json_decode($time);
         $flag = 1;
         foreach ($arrtime as $val) {
@@ -667,18 +696,10 @@ class VideoController extends AdminController
         $re = $xyz->imagestogif($this->tmpdir.'%d.jpg', '.'.$obj_path);
         if ($re == 'ok') {
             //删除tmp
-            $this->deldir($this->tmpdir);
-            //保存gif
-            $this->model = model('app\common\model\Category');
-            $this->model->where('video',$src_path)->setField('gif', $obj_path);
-            $ret['flag'] = 1;
-            $ret['msg'] = '成功';
-            $ret['info'] = $obj_path . '?t=' . time();
-        } else {
-            $ret['flag'] = 0;
-            $ret['msg'] = '生成失败';
+            //$this->deldir($this->tmpdir);
+            return response()->json(array('code'=>1,'msg'=>'生成gif动图成功','data'=>str_replace(PUBLIC_PATH, '', $obj_path)));
         }
-        return json_encode($ret);
+        return response()->json(array('code'=>0,'msg'=>'生成gif动图失败'));
     }
     public function tmpfilerename(){
         $tmpdir = $this->tmpdir;

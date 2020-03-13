@@ -50,6 +50,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('transqueue', 'VideoController@transqueue');
     Route::any('video/getTransLog', 'VideoController@getTransLog');
     Route::any('video/translogs/{code}', 'VideoController@translogs');
+    Route::any('video/cutjpg', 'VideoController@cutjpg');
+    Route::any('video/vodtogif', 'VideoController@vodtogif');
 
     // star
     Route::any('star', 'StarController@star');

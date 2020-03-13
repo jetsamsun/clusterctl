@@ -84,12 +84,36 @@ class Xyz {
         $format = shell_exec($format_command);
         $json = json_decode($format);
         $audio = '';$video = '';
+
+        if(!isset($json->streams)) {
+            $temp['cmd'] = $format_command;
+            $temp['ret'] = $format;
+            file_put_contents(__DIR__.'/error_streams_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$src_path.PHP_EOL,FILE_APPEND);
+
+            $arr['video'] = '';
+            $arr['duration'] = 0;
+            $arr['width'] = 0;
+            $arr['height'] = 0;
+            $arr['dis_ratio']= '';
+            $arr['audio'] = '';
+            $arr['size'] = 0;
+            $arr['bit_rate'] = 0;
+            $arr['ext'] = '';
+
+            //return $arr;
+        }
+
         foreach($json->streams as $row){
             if($row->codec_type=='video'){
                 $arr['video'] = $row->codec_name;
                 $arr['duration'] = $row->duration;
                 $arr['width'] = $row->width;
                 $arr['height'] = $row->height;
+
+                if(!isset($row->display_aspect_ratio)) {
+                    file_put_contents(__DIR__.'/error_display_aspect_ratio_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$format.PHP_EOL,FILE_APPEND);
+                }
+
                 $arr['dis_ratio']= isset($row->display_aspect_ratio)?$row->display_aspect_ratio:'';
             }
             if($row->codec_type=='audio'){
@@ -117,9 +141,7 @@ class Xyz {
         }
     }
     //截取GIF
-    function vodtogif($src_path,$obj_path){
-        $gif_pos = 3;//开始位置
-        $gif_len = 3;//截取时长
+    function vodtogif($src_path,$obj_path,$gif_pos=3,$gif_len=3){
         $Gif_Size = $this->cfgs['shot_gif_size'];
         $size = !empty($Gif_Size)?'-s '.$Gif_Size:'';
         $gif_command = $this->ffmpeg.' -y -ss '.$gif_pos.' -t '.$gif_len.' -i '.$src_path.' '.$size.' -f gif '.$obj_path;

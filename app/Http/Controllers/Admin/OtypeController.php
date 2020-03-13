@@ -136,9 +136,11 @@ class OtypeController extends  AdminController{
         if($dataTmp){
             $dataTmp = $dataTmp->toArray();
             //$dataTmp = $dataTmp['data'];
-
+            $dataTmp = getTree($dataTmp);
             foreach($dataTmp as $key=>$value){
-                $dataTmp[$key]['otype'] = $value['otype']==1?"MV":"视频";
+                $otype = VideoOtype::where('oid',$value['otype'])->get()->toArray();
+                $dataTmp[$key]['otype'] = !empty($otype)?$otype[0]['otypename']:'--';
+                $dataTmp[$key]['otypename'] = $dataTmp[$key]['html'].$dataTmp[$key]['otypename'];
             }
         }
         return response()->json(array('code'=>0,'msg'=>'','data'=>$dataTmp));
@@ -160,14 +162,20 @@ class OtypeController extends  AdminController{
                 return response()->json(array('code'=>0,'msg'=>"新增失败"));
             }
         }
-
-        return view('otype.videootypeadd');
+        $videootype = VideoOtype::get()->toArray();
+        $tree = getTree($videootype);
+        return view('otype.videootypeadd',compact('tree'));
     }
     public function editvideootype(Request $request,$oid){
         if($request->isMethod('post')){
             $otypename = $request->input('otypename');
             $otype = $request->input('otype');
             $pic = $request->input('imgval');
+
+            if($oid == $otype) {
+                return response()->json(array('code'=>0,'msg'=>"父类不可选自己"));
+            }
+
             $reg = DB::table('video_otype')->where('oid',$oid)->update(array(
                 'otypename'=>$otypename,'otype'=>$otype,'pic'=>$pic
             ));
@@ -184,7 +192,10 @@ class OtypeController extends  AdminController{
             ->where('oid',$oid)
             ->first()->toArray();
 
-        return view('otype.videootypeedit',compact('oid','data'));
+        $videootype = VideoOtype::get()->toArray();
+        $tree = getTree($videootype);
+
+        return view('otype.videootypeedit',compact('oid','data','tree'));
     }
     public function delvideootype(Request $request){
         $oid = $request->input('oid');

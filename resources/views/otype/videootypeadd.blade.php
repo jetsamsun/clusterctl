@@ -15,17 +15,18 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>分类</label>
+            <label class="layui-form-label">分类</label>
             <div class="layui-input-block">
-                <select name="otype" lay-filter="myselect"  lay-verify="required">
-                    <option value=""></option>
-                    <option  value="1">MV</option>
-                    <option  value="5">视频</option>
+                <select name="otype" lay-filter="myselect" >
+                    <option value="0"></option>
+                    @foreach($tree as $v)
+                    <option  value="{{$v['oid']}}">{{$v['html']}}{{$v['otypename']}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>展示图</label>
+            <label class="layui-form-label">展示图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
                     <span id="showimg">
@@ -34,7 +35,7 @@
                         <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
                     </a>
                 </div>
-                <input type="hidden" lay-verify="required" name="imgval" id="imgval">
+                <input type="hidden" name="imgval" id="imgval">
                 <p id="demoText"></p>
             </div>
         </div>

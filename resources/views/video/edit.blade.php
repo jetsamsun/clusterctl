@@ -14,13 +14,14 @@
                 <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" value="{{ $data['title'] }}">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">展示图</label>
-            <div class="layui-input-block">
+            <div class="layui-input-block" style="margin-left: 0px; float: left">
                 <div class="col-lg-2">
                     <span id="showimg">
                         @if($data['pic'])
-                            <img style="width:55px;height:55px;" src="{{ $data['pic'] }}">
+                            <img style="width:auto;max-height:55px;" src="{{ $data['pic'] }}">
                         @endif
                     </span>
                     <a href="javascript:;" id="img">
@@ -29,36 +30,83 @@
                 </div>
                 <input type="hidden"  name="imgval" id="imgval" value="{{ $data['pic'] }}">
                 <input type="hidden"  name="imgval_old" value="{{ $data['pic'] }}">
-                <p id="demoText"></p>
             </div>
+            @if($data['pic'])
+            <div class="layui-input-block" style="float: left">
+                <input type="text"  id="imgdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['pic']) {{$cfgs['site_url']}}{{$data['pic']}} @endif" readonly>
+                <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
+            </div>
+            @endif
+            <div style="clear: left"></div>
         </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">动态图</label>
+            <div class="layui-input-block" style="margin-left: 0px; float: left">
+                <div class="col-lg-2">
+                    <span id="showgif">
+                        @if($data['gif'])
+                            <img style="width:auto;max-height:55px;" src="{{ $data['gif'] }}">
+                        @endif
+                    </span>
+                    <a href="javascript:;" id="imggif">
+                        <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
+                    </a>
+                </div>
+                <input type="hidden"  name="imgvalgif" id="imgvalgif" value="{{ $data['gif'] }}">
+                <input type="hidden"  name="imgvalgif_old" value="{{ $data['gif'] }}">
+            </div>
+            @if($data['gif'])
+            <div class="layui-input-block" style="float: left">
+                <input type="text" id="gifdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['gif']) {{$cfgs['site_url']}}{{$data['gif']}} @endif" readonly>
+                <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
+            </div>
+            @endif
+            <div style="clear: left"></div>
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>视频</label>
             <div class="layui-input-block">
+                @if($data['video'])
                 <span id="video">
-                    @if($data['url'])
-                    <video width="220" height="140" controls autoplay>
-                        <source src="{{ $data['url'] }}" type="video/mp4">
+                    <video id="video-active" width="360" height="202" controls autoplay>
+                        <source src="{{ $data['video'] }}" type="video/mp4">
                     </video>
-                    @endif
                 </span>
-                <button type="button" class="layui-btn" id="files">上传视频</button>
-                <input type="hidden" lay-verify="required" id="filesval" name="filesval" value="{{ $data['url'] }}">
-                <input type="hidden" lay-verify="required" name="filesval_old" value="{{ $data['url'] }}">
+                <button type="button" class="layui-btn" onclick="zt()">截图</button>
+                <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
+                @else
+                <span id="video">
+                <video id="video-active" width="360" height="202" controls autoplay>
+                    <source src="{{ $data['url'] }}" type="video/mp4">
+                </video>
+                </span>
+                @endif
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">下载地址：</label>
+            <div class="layui-input-block">
+                <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if($data['video']) {{ $cfgs['site_url'] }}{{ $data['video'] }} @endif" readonly>
+                <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
+                <div style="clear: left"></div>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">m3u8地址：</label>
             <div class="layui-input-block">
-                <textarea placeholder="多个地址用|分割（例如：http://www.480p.m3u8|http://www.720p.m3u8|http://www.1080p.m3u8）" name="play_urls" class="layui-textarea">{{ $data['play_urls'] }}</textarea>
+                @if(!empty($data['m3u8']))
+                @foreach($data['m3u8'] as $v)
+                    <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="{{ $v }}" readonly>
+                    <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
+                    <div style="clear: left"></div>
+                @endforeach
+                @endif
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">下载地址：</label>
-            <div class="layui-input-block">
-                <textarea placeholder="多个地址用|分割（例如：http://www.480p.mp4|http://www.720p.mp4|http://www.1080p.mp4）" name="download_urls" class="layui-textarea">{{ $data['download_urls'] }}</textarea>
-            </div>
-        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>类型</label>
             <div class="layui-input-block">
@@ -77,9 +125,12 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>视频分类</label>
             <div class="layui-input-block">
-                @foreach($secondotype as $value)
-                    <input type="checkbox" name="otype3[]" value="{{ $value['oid'] }}" @if( in_array( $value['oid'],$data['secondotype'] ) ) checked @endif lay-verify="required"  lay-skin="primary" title="{{ $value['otypename'] }}">
-                @endforeach
+                <select name="otype3" lay-filter="myselect" >
+                    <option value="0"></option>
+                    @foreach($tree as $v)
+                        <option  value="{{$v['oid']}}" @if(in_array($v['oid'],$data['secondotype'])) selected @endif>{{$v['html']}}{{$v['otypename']}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <div class="layui-form-item">
@@ -142,9 +193,13 @@
         <div class="layui-form-item" pane="">
             <label class="layui-form-label">参演明星</label>
             <div class="layui-input-block">
-                @foreach($star as $value)
-                <input type="checkbox" @if(in_array($value['sid'],$data['star'])) checked @endif name="star[]" value="{{ $value['sid'] }}" lay-skin="primary" title="{{ $value['uname'] }}">
-                @endforeach
+
+                <select name="star"  style="width:120px;height:28px;" multiple="multiple">
+                    <option value="0"></option>
+                    @foreach($star as $value)
+                    <option  value="{{ $value['sid'] }}" @if(in_array($value['sid'],$data['star'])) checked @endif>{{ $value['uname'] }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
@@ -163,6 +218,53 @@
     </form>
 
     @section('script')
+    <script>
+        function copyUrl(th) {
+            var Url2 = $(th).prev();
+            Url2.select(); // 选择对象
+            try {
+                if (document.execCommand('copy', false, null)) {
+                    document.execCommand("Copy");
+                } else {
+                    alert("复制失败，请手动复制");
+                }
+            } catch (err) {
+                alert("复制失败，请手动复制");
+            }
+        }
+
+        // 截图
+        function zt() {
+            let siteurl = "{{$cfgs['site_url']}}";
+            let time = document.getElementById("video-active").currentTime;
+            let data = {
+                "src_path": "{{ $data['video'] }}",
+                "time": time
+            };
+
+            $.post("{{url('admin/video/cutjpg')}}",data,function (ret) {
+                if(ret.code===1) {
+                    $('#showimg').find('img').attr('src',ret.data+'?s='+Math.random());
+                    $('#imgdemo').val(siteurl+ret.data);
+                } else {
+                    alert(ret.msg);
+                }
+            },'json');
+        }
+
+        function gif_sz() {
+            let siteurl = "{{$cfgs['site_url']}}";
+            $.post("{{url('admin/video/vodtogif')}}",{src_path:"{{ $data['video'] }}",time:document.getElementById("video-active").currentTime},function (ret) {
+                if(ret.code===1) {
+                    $('#showgif').find('img').attr('src',ret.data+'?s='+Math.random());
+                    $('#gifdemo').val(siteurl+ret.data);
+                } else {
+                    alert(ret.msg);
+                }
+            });
+        }
+    </script>
+
     <script>
         layui.use('form', function(){
             var form = layui.form,$ = layui.jquery;
@@ -233,7 +335,7 @@
                 ,before: function(obj){
                     //预读本地文件示例，不支持ie8
                     obj.preview(function(index, file, result){
-                        $('#showimg').html('<img style="width:55px;height:55px;" src="'+result+'">');
+                        $('#showimg').html('<img style="width:auto;max-height:55px;" src="'+result+'">');
                         //$('#showimg').attr('src', result); //图片链接（base64）
                     });
                 }
@@ -277,7 +379,7 @@
                             $('#filesval').val(res.data.src);
                             layer.msg(res.msg, {icon: 1, time: 1000});
                         }else{
-                            layer.msg('视频已上传'+res.progress+"%");
+                            layer.msg('视频已上传'+parseInt(res.progress)+"%");
                         }
                     }
                     //this.error(index, upload,res.info);

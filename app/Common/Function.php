@@ -345,3 +345,35 @@ function site_url($msg) {
 function config_item($msg) {
     return $msg;
 }
+
+function getTree(&$list,$pid=0,$level=0,$html='├ ') {
+    static $tree = array();
+    foreach($list as $v) {
+        $arr = array();
+        if($v['otype'] == $pid) {
+            $arr['sort'] = $level;
+            $arr['otypename'] = $v['otypename'];
+            $arr['html'] = str_repeat($html,$level);
+            $arr['oid'] = $v['oid'];
+            $arr['otype'] = $v['otype'];
+            $arr['pic'] = $v['pic'];
+            $tree[] = $arr;
+            getTree($list, $v['oid'],$level+1,$html);
+        }
+    }
+    return $tree;
+}
+
+function getTree2(&$list,&$tree,$pid=0,$level=0,$html='--') {
+    foreach($list as $v) {
+        $arr = array();
+        if($v['otype'] == $pid) {
+            $arr['sort'] = $level;
+            $arr['name'] = $v['otypename'];
+            $arr['html'] = str_repeat($html,$level);
+            $arr['oid'] = $v['oid'];
+            getTree($list,$arr['son'], $v['oid'],$level+1,$html);
+            $tree[] = $arr;
+        }
+    }
+}

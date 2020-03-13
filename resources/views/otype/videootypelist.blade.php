@@ -33,8 +33,8 @@
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    ,{field:'otype', width:150,title: '父类'}
                     ,{field:'otypename', width:150,title: '分类名称'}
-                    ,{field:'otype', width:150,title: '分类'}
                     ,{field:'pic', width:150,title: '展示图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
                 ]]
