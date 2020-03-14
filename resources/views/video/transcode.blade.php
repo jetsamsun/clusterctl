@@ -18,12 +18,12 @@
                 @endforeach
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否切片</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="is_slice" value="1" title="切片" checked>
-            </div>
-        </div>
+        {{--<div class="layui-form-item">--}}
+            {{--<label class="layui-form-label">是否切片</label>--}}
+            {{--<div class="layui-input-block">--}}
+                {{--<input type="checkbox" name="is_slice" value="1" title="切片" checked>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="submit">开始转码</button>

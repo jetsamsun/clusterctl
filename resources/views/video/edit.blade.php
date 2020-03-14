@@ -1,4 +1,10 @@
 @extends('layouts.layouts')
+
+@section('css')
+{{--    <link href="{{ URL::asset('/bootstrap-select-1.13.9/dist/css/bootstrap.min.css') }}" rel="stylesheet" />--}}
+    <link href="{{ URL::asset('/bootstrap-select-1.13.9/dist/css/bootstrap-select.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
         鉴于小伙伴的普遍反馈，先温馨提醒。
@@ -32,10 +38,10 @@
                 <input type="hidden"  name="imgval_old" value="{{ $data['pic'] }}">
             </div>
             @if($data['pic'])
-            <div class="layui-input-block" style="float: left">
-                <input type="text"  id="imgdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['pic']) {{$cfgs['site_url']}}{{$data['pic']}} @endif" readonly>
-                <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
-            </div>
+                <div class="layui-input-block" style="float: left">
+                    <input type="text"  id="imgdemo" name="imgdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['pic']) {{$cfgs['site_url']}}{{$data['pic']}} @endif" readonly>
+                    <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
+                </div>
             @endif
             <div style="clear: left"></div>
         </div>
@@ -57,10 +63,10 @@
                 <input type="hidden"  name="imgvalgif_old" value="{{ $data['gif'] }}">
             </div>
             @if($data['gif'])
-            <div class="layui-input-block" style="float: left">
-                <input type="text" id="gifdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['gif']) {{$cfgs['site_url']}}{{$data['gif']}} @endif" readonly>
-                <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
-            </div>
+                <div class="layui-input-block" style="float: left">
+                    <input type="text" id="gifdemo" name="gifdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['gif']) {{$cfgs['site_url']}}{{$data['gif']}} @endif" readonly>
+                    <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
+                </div>
             @endif
             <div style="clear: left"></div>
         </div>
@@ -69,15 +75,15 @@
             <label class="layui-form-label"><font color="red">* </font>视频</label>
             <div class="layui-input-block">
                 @if($data['video'])
-                <span id="video">
+                    <span id="video">
                     <video id="video-active" width="360" height="202" controls autoplay>
                         <source src="{{ $data['video'] }}" type="video/mp4">
                     </video>
                 </span>
-                <button type="button" class="layui-btn" onclick="zt()">截图</button>
-                <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
+                    <button type="button" class="layui-btn" onclick="zt()">截图</button>
+                    <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
                 @else
-                <span id="video">
+                    <span id="video">
                 <video id="video-active" width="360" height="202" controls autoplay>
                     <source src="{{ $data['url'] }}" type="video/mp4">
                 </video>
@@ -94,15 +100,16 @@
                 <div style="clear: left"></div>
             </div>
         </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">m3u8地址：</label>
             <div class="layui-input-block">
                 @if(!empty($data['m3u8']))
-                @foreach($data['m3u8'] as $v)
-                    <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="{{ $v }}" readonly>
-                    <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
-                    <div style="clear: left"></div>
-                @endforeach
+                    @foreach($data['m3u8'] as $v)
+                        <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="{{ $v }}" readonly>
+                        <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
+                        <div style="clear: left"></div>
+                    @endforeach
                 @endif
             </div>
         </div>
@@ -114,6 +121,7 @@
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(2,$data['otype'])) checked @endif title="视频" value="2">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">导航分类</label>
             <div class="layui-input-block">
@@ -122,6 +130,7 @@
                 @endforeach
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>视频分类</label>
             <div class="layui-input-block">
@@ -133,6 +142,7 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">最新/热门</label>
             <div class="layui-input-block">
@@ -140,6 +150,7 @@
                 <input type="checkbox" name="secondbestotype[]" @if(in_array(2,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="热门" value="2">
             </div>
         </div>
+
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">番号</label>
@@ -166,6 +177,7 @@
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item" pane="">
             <label class="layui-form-label">筛选条件</label>
             <div class="layui-input-block">
@@ -176,28 +188,27 @@
                     </colgroup>
                     <tbody>
                     @foreach($screen as $value)
-                    <tr>
-                        <td>{{ $value['otypename'] }}</td>
-                        <td>
-                        @foreach($value['son'] as $v)
-                            <input type="checkbox" @if(in_array($v['oid'],$data['screenotype'])) checked @endif name="screen[]" value="{{ $v['oid'] }}"  lay-skin="primary" title="{{ $v['otypename'] }}">
-                        @endforeach
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $value['otypename'] }}</td>
+                            <td>
+                                @foreach($value['son'] as $v)
+                                    <input type="checkbox" @if(in_array($v['oid'],$data['screenotype'])) checked @endif name="screen[]" value="{{ $v['oid'] }}"  lay-skin="primary" title="{{ $v['otypename'] }}">
+                                @endforeach
+                            </td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>
 
             </div>
         </div>
+
         <div class="layui-form-item" pane="">
             <label class="layui-form-label">参演明星</label>
             <div class="layui-input-block">
-
-                <select name="star"  style="width:120px;height:28px;" multiple="multiple">
-                    <option value="0"></option>
+                <select name="star" multiple class="selectpicker form-control" id="number-multiple" data-container="body" data-live-search="true" title="Select a number" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
                     @foreach($star as $value)
-                    <option  value="{{ $value['sid'] }}" @if(in_array($value['sid'],$data['star'])) checked @endif>{{ $value['uname'] }}</option>
+                        <option  value="{{ $value['sid'] }}" @if(in_array($value['sid'],$data['star'])) selected @endif>{{ $value['uname'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -216,8 +227,59 @@
             </div>
         </div>
     </form>
+@endsection
 
-    @section('script')
+@section('script')
+{{--    <script src="{{ URL::asset('/bootstrap-select-1.13.9/dist/js/bootstrap.bundle.min.js') }}"></script>--}}
+{{--    <script src="{{ URL::asset('/bootstrap-select-1.13.9/dist/js/bootstrap-select.js') }}"></script>--}}
+
+    <script>
+        function copyUrl(th) {
+            var Url2 = $(th).prev();
+            Url2.select(); // 选择对象
+            try {
+                if (document.execCommand('copy', false, null)) {
+                    document.execCommand("Copy");
+                } else {
+                    alert("复制失败，请手动复制");
+                }
+            } catch (err) {
+                alert("复制失败，请手动复制");
+            }
+        }
+
+        // 截图
+        function zt() {
+            let siteurl = "{{$cfgs['site_url']}}";
+            let time = document.getElementById("video-active").currentTime;
+            let data = {
+                "src_path": "{{ $data['video'] }}",
+                "time": time
+            };
+
+            $.post("{{url('admin/video/cutjpg')}}",data,function (ret) {
+                if(ret.code===1) {
+                    $('#showimg').find('img').attr('src',ret.data+'?s='+Math.random());
+                    $('#imgdemo').val(siteurl+ret.data);
+                } else {
+                    alert(ret.msg);
+                }
+            },'json');
+        }
+
+        function gif_sz() {
+            let siteurl = "{{$cfgs['site_url']}}";
+            $.post("{{url('admin/video/vodtogif')}}",{src_path:"{{ $data['video'] }}",time:document.getElementById("video-active").currentTime},function (ret) {
+                if(ret.code===1) {
+                    $('#showgif').find('img').attr('src',ret.data+'?s='+Math.random());
+                    $('#gifdemo').val(siteurl+ret.data);
+                } else {
+                    alert(ret.msg);
+                }
+            });
+        }
+    </script>
+
     <script>
         function copyUrl(th) {
             var Url2 = $(th).prev();
@@ -269,37 +331,37 @@
         layui.use('form', function(){
             var form = layui.form,$ = layui.jquery;
 
-//            form.on('select(myselect)', function(data){
-//                var otype=data.value;
-//                $('#otype2').html('');
-//                $('#otype3').html('');
-//                $.ajax({
-//                    type: 'POST',
-//                    url: '/admin/getVideoOtype',
-//                    data: {otype:otype},
-//                    success: function(e){
-//                        $.each(e, function(key, val) {
-//                            var option1 = $("<option>").val(val.oid).text(val.otypename);
-//                            $("#otype2").append(option1);
-//                            form.render('select');
-//                        });
-//                        $("#otype2").get(0).selectedIndex=0;
-//                    }
-//                });
-//                $.ajax({
-//                    type: 'POST',
-//                    url: '/admin/getVideoOtype3',
-//                    data: {otype:otype},
-//                    success: function(res){
-//                        $.each(res, function(key, val) {
-//                            var option1 = $("<option>").val(val.oid).text(val.otypename);
-//                            $("#otype3").append(option1);
-//                            form.render('select');
-//                        });
-//                        $("#otype3").get(0).selectedIndex=0;
-//                    }
-//                });
-//            });
+            //            form.on('select(myselect)', function(data){
+            //                var otype=data.value;
+            //                $('#otype2').html('');
+            //                $('#otype3').html('');
+            //                $.ajax({
+            //                    type: 'POST',
+            //                    url: '/admin/getVideoOtype',
+            //                    data: {otype:otype},
+            //                    success: function(e){
+            //                        $.each(e, function(key, val) {
+            //                            var option1 = $("<option>").val(val.oid).text(val.otypename);
+            //                            $("#otype2").append(option1);
+            //                            form.render('select');
+            //                        });
+            //                        $("#otype2").get(0).selectedIndex=0;
+            //                    }
+            //                });
+            //                $.ajax({
+            //                    type: 'POST',
+            //                    url: '/admin/getVideoOtype3',
+            //                    data: {otype:otype},
+            //                    success: function(res){
+            //                        $.each(res, function(key, val) {
+            //                            var option1 = $("<option>").val(val.oid).text(val.otypename);
+            //                            $("#otype3").append(option1);
+            //                            form.render('select');
+            //                        });
+            //                        $("#otype3").get(0).selectedIndex=0;
+            //                    }
+            //                });
+            //            });
 
             //监听提交
             form.on('submit(submit)', function(data){
@@ -350,14 +412,14 @@
                         return layer.msg('上传成功');
                     }
                 }
-//                ,error: function(){
-//                    //演示失败状态，并实现重传
-//                    var demoText = $('#demoText');
-//                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-//                    demoText.find('.demo-reload').on('click', function(){
-//                        uploadInst.upload();
-//                    });
-//                }
+                //                ,error: function(){
+                //                    //演示失败状态，并实现重传
+                //                    var demoText = $('#demoText');
+                //                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                //                    demoText.find('.demo-reload').on('click', function(){
+                //                        uploadInst.upload();
+                //                    });
+                //                }
             });
 
             //指定允许上传的文件类型
@@ -388,25 +450,25 @@
                     // layer.close(layer.msg());//关闭上传提示窗口
                     top.layer.close(load);//关闭上传提示窗口
                     return layer.msg('上传失败');
-//                    var tr = demoListView.find('tr#upload-'+ index)
-//                            ,tds = tr.children();
-//                    tds.eq(2).html('<span style="color: #FF5722;">上传失败.'+info+'</span>');
-//                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                    //                    var tr = demoListView.find('tr#upload-'+ index)
+                    //                            ,tds = tr.children();
+                    //                    tds.eq(2).html('<span style="color: #FF5722;">上传失败.'+info+'</span>');
+                    //                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
                 }
-//                ,done: function(res){
-//                    console.log(res);
-//                    layer.close(loading);
-//                    //如果上传失败
-//                    if(res.code > 0){
-//                        return layer.msg('上传失败');
-//                    }
-//                    //上传成功
-//                    if(res.code ==0){
-//                        $("#video").html('<video id="video" width="220" height="140" controls autoplay><source src="'+res.data.src+'" type="video/mp4"></video>');
-//                        $('#filesval').val(res.data.src);
-//                        layer.msg(res.msg, {icon: 1, time: 1000});
-//                    }
-//                }
+                //                ,done: function(res){
+                //                    console.log(res);
+                //                    layer.close(loading);
+                //                    //如果上传失败
+                //                    if(res.code > 0){
+                //                        return layer.msg('上传失败');
+                //                    }
+                //                    //上传成功
+                //                    if(res.code ==0){
+                //                        $("#video").html('<video id="video" width="220" height="140" controls autoplay><source src="'+res.data.src+'" type="video/mp4"></video>');
+                //                        $('#filesval').val(res.data.src);
+                //                        layer.msg(res.msg, {icon: 1, time: 1000});
+                //                    }
+                //                }
             });
 
             var upurl = "{:url('/admin/uploadVideoFile',['author'=>'Ycl_24'])}";//上传图片地址
@@ -480,7 +542,7 @@
                     if(res.code == 0){ //上传成功
                         console.log(res.progress);
                         var tr = demoListView.find('tr#upload-'+ index)
-                                ,tds = tr.children();
+                            ,tds = tr.children();
                         if(res.progress == '100'){
                             top.layer.close(load);//关闭上传提示窗口
                             tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
@@ -508,7 +570,7 @@
                     // layer.close(layer.msg());//关闭上传提示窗口
                     top.layer.close(load);//关闭上传提示窗口
                     var tr = demoListView.find('tr#upload-'+ index)
-                            ,tds = tr.children();
+                        ,tds = tr.children();
                     tds.eq(2).html('<span style="color: #FF5722;">上传失败.'+info+'</span>');
                     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
                 }
@@ -517,12 +579,11 @@
             function bytesToSize(bytes) {
                 if (bytes === 0) return '0 B';
                 var k = 1000, // or 1024
-                        sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-                        i = Math.floor(Math.log(bytes) / Math.log(k));
+                    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
 
                 return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
             }
         });
     </script>
-    @endsection
 @endsection

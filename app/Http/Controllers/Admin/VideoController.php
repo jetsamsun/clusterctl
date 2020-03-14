@@ -36,10 +36,10 @@ class VideoController extends AdminController
     }
 
     public function video(){
-        $xyz = new Xyz();
-        $videodir = $this->uploaddir.'1584072030208.mp4';
-        $videomsg = $xyz->format($videodir);  //源文件数据
-        dd($videomsg);
+//        $xyz = new Xyz();
+//        $videodir = $this->uploaddir.'1584072030208.mp4';
+//        $videomsg = $xyz->format($videodir);  //源文件数据
+//        dd($videomsg);
 
         $data = VideoAdminLog::select('log_id')->get()->toArray();
         return view('video.list',compact('data'));
@@ -173,9 +173,10 @@ class VideoController extends AdminController
         if($request->isMethod('post')){
             $title = $request->input('title');
             $otype = $request->input('otype');
-            $pic = $request->input('imgval');
+            $pic = $request->input('imgdemo');
+            $gif = $request->input('gifdemo');
             $imgval_old = $request->input('imgval_old');
-            $url = $request->input('filesval');
+            //$url = $request->input('filesval');
             $filesval_old = $request->input('filesval_old');
             $firstotype = $request->input('otype2');
             $secondotype = $request->input('otype3');
@@ -190,44 +191,50 @@ class VideoController extends AdminController
             $play_urls = $request->input('play_urls');
             $download_urls = $request->input('download_urls');
 
-            if(!empty($otype)) $otype = implode(',',$otype);
-            if(!empty($firstotype))  $firstotype = implode(',',$firstotype);
-            if(!empty($secondotype))  $secondotype = implode(',',$secondotype);
-            if(!empty($secondbestotype))  $secondbestotype = implode(',',$secondbestotype);
+
+            if(!empty($otype) && is_array($otype)) $otype = implode(',',$otype);
+            if(!empty($firstotype) && is_array($firstotype))  $firstotype = implode(',',$firstotype);
+            if(!empty($secondotype) && is_array($secondotype))  $secondotype = implode(',',$secondotype);
+            if(!empty($secondbestotype) && is_array($secondbestotype))  $secondbestotype = implode(',',$secondbestotype);
+
 
             if($pic){
                 if(substr($pic,0,7)!="http://"){
                     $pic = $this->urlPic().$pic;
                 }
             }
+            $pic = str_replace($this->cfgs['site_url'], '', $pic);
+            $gif = str_replace($this->cfgs['site_url'], '', $gif);
+
 
             // 排序后  ,拼接 筛选条件+明星
-            if(!empty($screen)) {
+            if(!empty($screen) && is_array($screen)) {
                 sort($screen);
                 $screen = implode(',', $screen);
             }
-            if(!empty($star)) {
+            if(!empty($star) && is_array($star)) {
                 sort($star);
                 $star = implode(',', $star);
             }
+
 
             $reg = DB::table('video_list')->where('vid',$vid)->update(array(
                 'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
                 'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,
                 'designation'=>$designation,'imdb'=>$imdb,'score'=>$score,
                 'screenotype'=>$screen,'star'=>$star,'content'=>$content,
-                'pic'=>$pic,'url'=>$url,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
+                'pic'=>$pic,'gif'=>$gif,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
             ));
-            if($pic != $imgval_old){
-                if( file_exists('.'.$imgval_old) ){
-                    unlink('.'.$imgval_old);
-                }
-            }
-            if($url != $filesval_old){
-                if( file_exists('.'.$imgval_old) ){
-                    unlink('.'.$filesval_old);
-                }
-            }
+//            if($pic != $imgval_old){
+//                if( file_exists('.'.$imgval_old) ){
+//                    unlink('.'.$imgval_old);
+//                }
+//            }
+//            if($url != $filesval_old){
+//                if( file_exists('.'.$imgval_old) ){
+//                    unlink('.'.$filesval_old);
+//                }
+//            }
             if($reg){
                 return response()->json(array('code'=>1,'msg'=>"编辑成功"));
             }else{
@@ -256,6 +263,7 @@ class VideoController extends AdminController
         $data['screenotype'] = explode(',',$data['screenotype']); // 筛选条件
         $data['star'] = explode(',',$data['star']);           // 明星
         $data['videotime'] = explode(':',$data['videotime']);
+
 
         if($data['m3u8']) {
             $str = array();
@@ -289,7 +297,7 @@ class VideoController extends AdminController
 
                 //检测当前对应日志
                 $last = 0;
-                $nickname = VideoList::where('vid',$v)->get();
+                $nickname = VideoList::where('vid',$v)->value('nickname');
                 if($nickname) {
                     $randsring = str_replace('.mp4', '', $nickname);
                     $logs = TransLog::where('code',$randsring)->get();
@@ -299,6 +307,11 @@ class VideoController extends AdminController
                     if(time()-$last>3*3600) {  //产出超过3小时的发送异常而没有成功的记录
                         TransLog::where('code',$randsring)->delete();
                     } else {
+                        return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
+                    }
+                } else {  //没有转过或还没生成
+                    $logs = TransLog::where('vid',$v)->get();
+                    if($logs) {
                         return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
                     }
                 }
@@ -388,12 +401,24 @@ class VideoController extends AdminController
     public function getVideoOtype(Request $request){
         $otype = $request->input('otype');
         $data = ListOtype::select('oid','otypename')->where('otype',$otype)->get()->toArray();
-
         return $data;
     }
     public function getVideoOtype3(Request $request){
         $otype = $request->input('otype');
         $data = VideoOtype::select('oid','otypename')->where('otype',$otype)->get()->toArray();
+        return $data;
+    }
+    public function getVideoOtype_3(Request $request){
+        $data = array();
+        for($i=0; $i<10; $i++) {
+            $v['name'] = 'dfg'.$i;
+            $v['open'] = false;
+            $v['checked'] = false;
+            $v['goods_num'] = 0;
+            $v['children'] = '';
+
+            $data[] = $v;
+        }
 
         return $data;
     }
@@ -490,7 +515,11 @@ class VideoController extends AdminController
                 $arr3['dir_path'] = str_replace(ROOR_PATH, '', $this->productdir).$arr3['date'].'/'.$code.'/';
 
                 $arr3['starttime'] = date('Y-m-d H:i:s',$st);
-                $arr3['usetime'] = format_time($et - $st);
+                if($et == $st) {
+                    $arr3['usetime'] = format_time(time() - $st);
+                } else {
+                    $arr3['usetime'] = format_time($et - $st);
+                }
                 $arr3['cur_state'] = $cur_state;
 
                 if(isset($arr3['ids'])) {

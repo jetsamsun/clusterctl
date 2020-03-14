@@ -52,6 +52,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('video/translogs/{code}', 'VideoController@translogs');
     Route::any('video/cutjpg', 'VideoController@cutjpg');
     Route::any('video/vodtogif', 'VideoController@vodtogif');
+    Route::any('getVideoOtype_3', 'VideoController@getVideoOtype_3');
 
     // star
     Route::any('star', 'StarController@star');

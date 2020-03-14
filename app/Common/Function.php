@@ -377,3 +377,24 @@ function getTree2(&$list,&$tree,$pid=0,$level=0,$html='--') {
         }
     }
 }
+
+//递归获取分类结构
+function recursionCate(&$arr=array()) {
+    if(!empty($arr)) {
+        foreach ($arr as &$v) {
+            $v['name'] = $v['local'];
+            $v['open'] = false;
+            $v['checked'] = false;
+            $ids=explode(',',$v['ids']);
+
+            //获取该分类下的商品数量
+            $v['goods_num']=0;
+
+            $tmp = getCateData($v['id']);
+            if (!empty($tmp)) {
+                $v['children'] = $tmp;
+                recursionCate($v['children']);
+            }
+        }
+    }
+}
