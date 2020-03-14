@@ -64,6 +64,7 @@
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'vid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'title',width:200, title: '标题'}
+                    ,{field:'status_txt',width:100, title: '是否转码'}
                     ,{field:'pic',width:100, title: '封面图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
                     ,{field:'gif',width:100, title: '动态图',templet: '<div><img src="@{{ d.gif  }}" width="30px" height="40px" ></div>'}
 
@@ -147,7 +148,7 @@
                             type: "POST", url: "/admin/video/delvideo",
                             data: { vid: data.vid }, dataType: "json",
                             success: function (e) {
-                                if (e.status == 1) {
+                                if (e.status === 1) {
                                     layer.msg('删除成功！', { time: 1500 }, function () {
                                         obj.del();
                                     });

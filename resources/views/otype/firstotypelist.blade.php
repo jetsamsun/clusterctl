@@ -33,7 +33,7 @@
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'otypename', width:150,title: '分类名称'}
-                    ,{field:'otype', width:150,title: '分类'}
+                    // ,{field:'otype', width:150,title: '分类'}
                     ,{field:'title_data', title: '标题'}
                     ,{field:'url_data', title: '安卓链接'}
                     ,{field:'ios_url_data', title: 'ios链接'}

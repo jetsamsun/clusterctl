@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item" pane="">
+        <div class="layui-form-item" pane="" style="display: none">
             <label class="layui-form-label"><font color="red">* </font>筛选条件</label>
             <div class="layui-input-block">
                 <table class="layui-table">

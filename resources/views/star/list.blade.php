@@ -36,7 +36,7 @@
                     ,{field:'sid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'uname',width:200, title: '明星名称'}
                     ,{field:'pic',width:140, title: '展示图',templet: '<div><img src="@{{ d.pic  }}" width="40px" height="60px" ></div>'}
-                    ,{field:'screenotype',width:250,  title: '筛选条件'}
+                    // ,{field:'screenotype',width:250,  title: '筛选条件'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
                 ]]
             });

@@ -14,14 +14,14 @@
                 <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label"><font color="red">* </font>分类</label>
             <div class="layui-input-block">
                 <select name="otype" lay-filter="myselect"  lay-verify="required">
                     <option value=""></option>
                     <option  value="1">明星</option>
                     <option  value="5">排行</option>
-                    <option  value="10">其他</option>
+                    <option  value="10" selected>其他</option>
                 </select>
             </div>
         </div>

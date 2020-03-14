@@ -34,12 +34,38 @@ class VideoController extends AdminController
         $this->productdir = PUBLIC_PATH.$this->cfgs['video_dir'].'/';
         $this->tmpdir = PUBLIC_PATH.'/video/tmp/';
     }
+    public function video() {
+        $conname = $this->scanvideo();  //扫描文件夹
 
-    public function video(){
-//        $xyz = new Xyz();
-//        $videodir = $this->uploaddir.'1584072030208.mp4';
-//        $videomsg = $xyz->format($videodir);  //源文件数据
-//        dd($videomsg);
+        foreach ($conname as $v) {  //遍历文件
+            $arr = explode('.', $v);
+            $ret = VideoList::where('title',$arr[0])->first();
+
+            if(!$ret) {
+                $insert['title'] = $arr[0];
+                $insert['url'] = str_replace(PUBLIC_PATH, '', $this->uploaddir.$v);
+                $insert['createtime'] = time();
+                $insert['name'] =  mt_rand(10101,99999).time().mt_rand(101,999).'.'.$arr[1];
+
+                $xyz = new Xyz();
+                $videodir = PUBLIC_PATH.$insert['url'];
+                $videomsg = $xyz->format($videodir);  //源文件数据
+                $insert['size'] = $videomsg['size'];   // '视频大小',
+                $insert['width'] = $videomsg['width'];
+                $insert['height'] = $videomsg['height'];
+                $insert['bit_rate'] = $videomsg['bit_rate'];  // '比特率',
+                $insert['duration'] = $videomsg['duration'];   // '视频时长',
+                $insert['audio'] = $videomsg['audio'];
+                $insert['vcode'] = $videomsg['video'];
+                $insert['ext'] = $videomsg['ext'];
+                $insert['dis_ratio'] = $videomsg['dis_ratio'];
+                $insert['acode'] = $videomsg['audio'];
+
+                if(!$bool = VideoList::insertGetId($insert)) {
+                    dd('扫描插入信息失败！');
+                }
+            }
+        }
 
         $data = VideoAdminLog::select('log_id')->get()->toArray();
         return view('video.list',compact('data'));
@@ -73,6 +99,14 @@ class VideoController extends AdminController
                     $dataTmp[$key]['acode'] = $value['audio'];
                     $dataTmp[$key]['ext'] = $value['ext'];
                     $dataTmp[$key]['dis_ratio'] = $value['dis_ratio'];
+
+                    if($value['status']==0) {
+                        $dataTmp[$key]['status_txt'] = '待转码';
+                    } else if($value['status']==1) {
+                        $dataTmp[$key]['status_txt'] = '已转码';
+                    } else {
+                        $dataTmp[$key]['status_txt'] = '转码异常';
+                    }
                 } else {
 //                    $xyz = new Xyz();
 //                    $videodir = PUBLIC_PATH.$value['url'];
@@ -294,6 +328,17 @@ class VideoController extends AdminController
                 $post['ids'] = $v;
                 $post['size_rate'] = json_encode($_POST['siterate']);
 
+                $url = VideoList::where('vid',$v)->value('url');
+                if(count($idarr)==1) {
+                    if (!file_exists('.' . $url)) {
+                        return response()->json(array('code'=>0,'msg'=>"源文件已删除"));
+                    }
+                } else {
+                    if (!file_exists('.' . $url)) {
+                        continue ;  //文件已删除，继续
+                    }
+                }
+
 
                 //检测当前对应日志
                 $last = 0;
@@ -304,13 +349,13 @@ class VideoController extends AdminController
                     foreach ($logs as $log) {
                         $last = $log['time'];
                     }
-                    if(time()-$last>3*3600) {  //产出超过3小时的发送异常而没有成功的记录
+                    if(time()-$last>6*3600) {  //产出超过3小时的发送异常而没有成功的记录
                         TransLog::where('code',$randsring)->delete();
                     } else {
                         return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
                     }
                 } else {  //没有转过或还没生成
-                    $logs = TransLog::where('vid',$v)->get();
+                    $logs = TransLog::where('vid',$v)->first();
                     if($logs) {
                         return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
                     }
@@ -337,16 +382,19 @@ class VideoController extends AdminController
         $vid = $request->input('vid');
         $data = VideoList::select('*')->where('vid',$vid)->first()->toArray();
         try {
-            if (file_exists('.' . $data['pic'])) {
-                unlink('.' . $data['pic']);
+            if(!empty($data['video'])) {  //删除目录
+                $arr = explode('/', $data['video']);
+                $path = './'.$arr[1].'/'.$arr[2].'/'.$arr[3].'/'.$arr[4];
+                deldir($path);
+                @rmdir($path);
             }
-            if (file_exists('.' . $data['url'])) {
+            if (file_exists('.' . $data['url'])) {  //删除源文件
                 unlink('.' . $data['url']);
             }
         } catch (\Throwable $th) {
             //throw $th;
         }
-        $reg = DB::table('video_list')->where('vid',$vid)->update(array('is_visible'=>0));
+        $reg = DB::table('video_list')->where('vid',$vid)->delete();
         if($reg){
             return response()->json(array('status'=>1));
         }else{
@@ -408,21 +456,6 @@ class VideoController extends AdminController
         $data = VideoOtype::select('oid','otypename')->where('otype',$otype)->get()->toArray();
         return $data;
     }
-    public function getVideoOtype_3(Request $request){
-        $data = array();
-        for($i=0; $i<10; $i++) {
-            $v['name'] = 'dfg'.$i;
-            $v['open'] = false;
-            $v['checked'] = false;
-            $v['goods_num'] = 0;
-            $v['children'] = '';
-
-            $data[] = $v;
-        }
-
-        return $data;
-    }
-
 
     public function transqueue(Request $request) {
         return view('video.transqueue');
@@ -593,32 +626,10 @@ class VideoController extends AdminController
         $absuploaddir = $this->uploaddir;
         $filename = scandir($absuploaddir);
         $conname = array();
-        $xyz = new Xyz();
-        $redis = new Redis();
-        foreach($filename as $k=>$v){
-            if($v=="." || $v==".."){continue;}
-            $arr = array(
-                'video',
-                'audio',
-                'duration',
-                'width',
-                'height',
-                'dis_ratio',
-                'size',
-                'bit_rate',
-                'ext'
-            );
-            $msg = $redis->handler()->hMget('video:'.$v,$arr);
-            if(!$msg['video']){
-                $msg = $xyz->format($absuploaddir.$v);
-                $redis->handler()->hMset('video:'.$v,$msg);
-            }
 
-            $msg['size'] = format_bytes($msg['size']);
-            $msg['duration'] = format_time($msg['duration']);
-            $msg['bit_rate'] = round((int)$msg['bit_rate']/1024) . 'kbps';
-            $msg['videoname'] = $v;
-            $conname[] = $msg;
+        foreach($filename as $k=>$v){
+            if($v=="." || $v=="..") continue;
+            $conname[] = $v;
         }
         return $conname;
     }

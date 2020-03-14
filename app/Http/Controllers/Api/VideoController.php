@@ -34,6 +34,7 @@ class VideoController extends  ApiController{
         $xyz = new Xyz();
         $ids = $_POST['ids'];
         $size_rate = json_decode($_POST['size_rate']);
+        $exp = false;
 
         $row = VideoList::where('vid',$ids)->get()->toArray();
         $row = $row[0];
@@ -88,6 +89,8 @@ class VideoController extends  ApiController{
                             }
                         }
                         $flag = true;
+                    } else {
+                        $exp = true;
                     }
                 }
 
@@ -129,8 +132,11 @@ class VideoController extends  ApiController{
                 if($res = VideoList::where('vid', $ids)->update($update)) {
                     TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
                 } else {
+                    $exp = true;
                     TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录失败','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate,'update'=>$update))));
                 }
+            } else {
+                $exp = true;
             }
         }
 
@@ -138,6 +144,13 @@ class VideoController extends  ApiController{
             unlink($videodir);   //转码完成是否删除源文件
             TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'删除源文件','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         }
+
+        if($exp) {
+            VideoList::where('vid', $ids)->update(array('status'=>2));
+        } else {
+            VideoList::where('vid', $ids)->update(array('status'=>1));
+        }
+
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'转码完毕','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
     }
     /**
@@ -165,7 +178,7 @@ class VideoController extends  ApiController{
         }
         $uid = $dataTmp['uid'];
 
-        $dataTmp = VideoList::select('vid','title','otype','pic','url','is_free');
+        $dataTmp = VideoList::select('vid','title','otype','pic','url','is_free','status');
         if($otype){ // mv 视频
             $dataTmp = $dataTmp->where('otype',$otype);
         }
@@ -201,6 +214,10 @@ class VideoController extends  ApiController{
                     $dataTmp[$key]['otype'] = 5;
                 }elseif($value['otype'] == 2){
                     $dataTmp[$key]['otype'] = 10;
+                }
+
+                if($value['pic']){
+                    $dataTmp[$key]['pic'] = $value['pic'];
                 }
 
                 $collect = UserCollect::select('cid')->where(['uid'=>$uid,'oid'=>$value['vid']])->where('otype','!=',1 )->first();

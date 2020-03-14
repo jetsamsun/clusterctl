@@ -313,6 +313,7 @@ class OtypeController extends  AdminController{
     public function getScreenDetailOtypeList(Request $request){
         $pid = $request->input('pid');
         $dataTmp = ScreenOtype::select('oid','otypename','otype','pid')->where('pid',$pid)->get();
+        $otypename = ScreenOtype::where('oid',$pid)->value('otypename');
 
         if($dataTmp){
             $dataTmp = $dataTmp->toArray();
@@ -320,11 +321,11 @@ class OtypeController extends  AdminController{
 
             foreach($dataTmp as $key=>$value){
                 if($value['otype']==1){
-                    $otype = "明星";
+                    $otype = $otypename; //"明星";
                 }elseif($value['otype']==5){
-                    $otype  ="排行";
+                    $otype  = $otypename; //"排行";
                 }elseif($value['otype']==10){
-                    $otype = "其他";
+                    $otype = $otypename; //"其他";
                 }
                 $dataTmp[$key]['otype'] = $otype;
             }

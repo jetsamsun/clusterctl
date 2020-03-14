@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label">最新/热门</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="secondbestotype[]" @if(in_array(1,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="最新"  value="1" >
@@ -179,7 +179,7 @@
         </div>
 
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label">筛选条件</label>
+            <label class="layui-form-label">标签分类</label>
             <div class="layui-input-block">
                 <table class="layui-table">
                     <colgroup>

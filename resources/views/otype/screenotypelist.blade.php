@@ -4,7 +4,7 @@
         <a class="layui-btn layui-btn-normal" href="{{ url('/admin/screenotype/addscreenotype') }}" >新增</a>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>筛选分类列表</legend>
+        <legend>标签分类列表</legend>
     </fieldset>
     {{--<div class="demoTable">--}}
         {{--搜索ID：--}}
@@ -35,7 +35,7 @@
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'otypename', width:150,title: '分类名称'}
-                    ,{field:'otype', width:150,title: '分类'}
+                    // ,{field:'otype', width:150,title: '分类'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:250}
                 ]]
             });

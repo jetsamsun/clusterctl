@@ -14,7 +14,7 @@
                 <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input" value="{{ $data['otypename'] }}">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label"><font color="red">* </font>视频分类</label>
             <div class="layui-input-block">
                 <select name="otype" lay-filter="myselect"  lay-verify="required">

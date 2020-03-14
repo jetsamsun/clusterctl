@@ -47,9 +47,11 @@ class StarController extends AdminController
             $pic = $request->input('imgval');
             $screen = $request->input('screen');
 
-            // 排序后  ,拼接 筛选条件+明星
-            sort($screen);
-            $screen = implode(',',$screen);
+            if($screen) {
+                // 排序后  ,拼接 筛选条件+明星
+                sort($screen);
+                $screen = implode(',', $screen);
+            }
 
             $reg = DB::table('star_list')->insert(array(
                 'uname'=>$uname, 'screenotype'=>$screen,'pic'=>$pic
@@ -76,9 +78,11 @@ class StarController extends AdminController
             $pic = $request->input('imgval');
             $screen = $request->input('screen');
 
-            // 排序后  ,拼接 筛选条件+明星
-            sort($screen);
-            $screen = implode(',',$screen);
+            if($screen) {
+                // 排序后  ,拼接 筛选条件+明星
+                sort($screen);
+                $screen = implode(',', $screen);
+            }
 
             $reg = DB::table('star_list')->where('sid',$sid)->update(array(
                 'uname'=>$uname, 'screenotype'=>$screen,'pic'=>$pic
