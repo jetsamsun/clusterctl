@@ -100,7 +100,7 @@ class Xyz {
             $arr['bit_rate'] = 0;
             $arr['ext'] = '';
 
-            //return $arr;
+            return $arr;
         }
 
         foreach($json->streams as $row){

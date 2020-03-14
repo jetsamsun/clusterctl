@@ -40,6 +40,9 @@ class VideoController extends  ApiController{
         $filename = str_replace('/assets/uploads/files/video/', '', $row['url']);
         $videodir = $this->uploaddir.$filename;
         $videomsg = $xyz->format($videodir);  //源文件数据
+        if(empty($videomsg['video'])) {
+            return ;
+        }
 
         $datestr = date('Ymd');
         if(!$row['video']) {
@@ -50,7 +53,6 @@ class VideoController extends  ApiController{
             $randsring = generate_random_string();
         }
         $dirpath = $this->productdir.$datestr.'/'.$randsring.'/';
-
 
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'转码准备','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         foreach ($size_rate as $val) {

@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 05/03/2020 16:18:27
+ Date: 14/03/2020 14:30:24
 */
 
 SET NAMES utf8mb4;
@@ -127,19 +127,11 @@ CREATE TABLE `app_config`  (
   `extend` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '扩展属性',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of app_config
 -- ----------------------------
-INSERT INTO `app_config` VALUES (1, 'name', 'basic', 'Site name', '请填写站点名称', 'string', 'FastAdmin', '', 'required', '');
-INSERT INTO `app_config` VALUES (2, 'beian', 'basic', 'Beian', '粤ICP备15000000号-1', 'string', '', '', '', '');
-INSERT INTO `app_config` VALUES (3, 'cdnurl', 'basic', 'Cdn url', '如果静态资源使用第三方云储存请配置该值', 'string', '', '', '', '');
-INSERT INTO `app_config` VALUES (4, 'version', 'basic', 'Version', '如果静态资源有变动请重新配置该值', 'string', '1.0.1', '', 'required', '');
-INSERT INTO `app_config` VALUES (5, 'timezone', 'basic', 'Timezone', '', 'string', 'Asia/Shanghai', '', 'required', '');
-INSERT INTO `app_config` VALUES (6, 'forbiddenip', 'basic', 'Forbidden ip', '一行一条记录', 'text', '', '', '', '');
-INSERT INTO `app_config` VALUES (7, 'languages', 'basic', 'Languages', '', 'array', '{\"backend\":\"zh-cn\",\"frontend\":\"zh-cn\"}', '', 'required', '');
-INSERT INTO `app_config` VALUES (8, 'fixedpage', 'basic', 'Fixed page', '请尽量输入左侧菜单栏存在的链接', 'string', 'dashboard', '', 'required', '');
 INSERT INTO `app_config` VALUES (9, 'categorytype', 'dictionary', 'Category type', '', 'array', '{\"default\":\"Default\",\"page\":\"Page\",\"article\":\"Article\",\"test\":\"Test\",\"video\":\"Video\"}', '', '', '');
 INSERT INTO `app_config` VALUES (10, 'configgroup', 'dictionary', 'Config group', '', 'array', '{\"basic\":\"Basic\",\"email\":\"Email\",\"dictionary\":\"Dictionary\",\"user\":\"User\",\"example\":\"Example\",\"trans\":\"转码设置\",\"watermark\":\"水印设置\",\"screenshot\":\"截图设置\",\"theft\":\"防盗设置\",\"sync\":\"同步设置\"}', '', '', '');
 INSERT INTO `app_config` VALUES (11, 'mail_type', 'email', 'Mail type', '选择邮件发送方式', 'select', '1', '[\"Please select\",\"SMTP\",\"Mail\"]', '', '');
@@ -149,26 +141,21 @@ INSERT INTO `app_config` VALUES (14, 'mail_smtp_user', 'email', 'Mail smtp user'
 INSERT INTO `app_config` VALUES (15, 'mail_smtp_pass', 'email', 'Mail smtp password', '（填写您的密码）', 'string', 'password', '', '', '');
 INSERT INTO `app_config` VALUES (16, 'mail_verify_type', 'email', 'Mail vertify type', '（SMTP验证方式[推荐SSL]）', 'select', '2', '[\"None\",\"TLS\",\"SSL\"]', '', '');
 INSERT INTO `app_config` VALUES (17, 'mail_from', 'email', 'Mail from', '', 'string', '10000@qq.com', '', '', '');
-INSERT INTO `app_config` VALUES (18, 'site_url', 'basic', '网站URL', '网站地址', 'string', 'http://fastadmin.xyz', '', '', '');
-INSERT INTO `app_config` VALUES (19, 'video_dir', 'basic', '资源文件', '资源文件夹', 'string', '/video/product', '', '', '');
-INSERT INTO `app_config` VALUES (20, 'trans_url', 'basic', '转码域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
-INSERT INTO `app_config` VALUES (21, 'm3u8_url', 'basic', 'm3u8域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
-INSERT INTO `app_config` VALUES (22, 'site_dir', 'basic', '网站路径', '', 'string', '/', '', '', '');
-INSERT INTO `app_config` VALUES (23, 'site_front_on', 'basic', '网站前台', '', 'switch', '0', '', '', '');
-INSERT INTO `app_config` VALUES (24, 'm3u8_on', 'basic', 'm3u8是否保留', '删除视频是否保留源文件', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (18, 'site_url', 'basic', '网站根路径', '网站地址', 'string', 'http://clusterctl.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (19, 'video_dir', 'basic', '转码文件路径', '资源文件夹', 'string', '/video/product', '', '', '');
 INSERT INTO `app_config` VALUES (25, 'trans_mode', 'trans', '转码方式', '画质优先则转码速度变慢', 'select', 'veryfast', '{\"ultrafast\":\"极速转码\",\"veryfast\":\"速度优先\",\"fast\":\"均衡设置\",\"medium\":\"画质优先\"}', '', '');
 INSERT INTO `app_config` VALUES (26, 'trans_ts_mask', 'trans', 'Ts伪装', 'Ts伪装成其他文件，如：jpg，该功能只在开启m3u8防盗后有效', 'string', '', '', '', '');
 INSERT INTO `app_config` VALUES (27, 'trans_ts_space', 'trans', 'Ts时长', '', 'number', '180', '', '', '');
 INSERT INTO `app_config` VALUES (28, 'trans_m3u8', 'trans', 'M3U8后缀', '', 'string', 'mmm.m3u8', '', '', '');
 INSERT INTO `app_config` VALUES (30, 'mark_space', 'watermark', '水印间距', '', 'string', '50:10', '', '', '');
 INSERT INTO `app_config` VALUES (31, 'mark_zs', 'watermark', '左上水印', '', 'switch', '1', '', '', '');
-INSERT INTO `app_config` VALUES (32, 'mark_ys', 'watermark', '右上水印', '', 'switch', '0', '', '', '');
-INSERT INTO `app_config` VALUES (33, 'mark_zx', 'watermark', '左下水印', '', 'switch', '0', '', '', '');
-INSERT INTO `app_config` VALUES (34, 'mark_yx', 'watermark', '右下水印', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (32, 'mark_ys', 'watermark', '右上水印', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (33, 'mark_zx', 'watermark', '左下水印', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (34, 'mark_yx', 'watermark', '右下水印', '', 'switch', '1', '', '', '');
 INSERT INTO `app_config` VALUES (35, 'shot_on', 'screenshot', '截图开关', '', 'switch', '1', '', '', '');
-INSERT INTO `app_config` VALUES (37, 'shot_size', 'screenshot', '截图尺寸', '', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (37, 'shot_size', 'screenshot', '截图尺寸', '', 'string', '360x202', '', '', '');
 INSERT INTO `app_config` VALUES (38, 'shot_gif_on', 'screenshot', '动图开关', '', 'switch', '1', '', '', '');
-INSERT INTO `app_config` VALUES (41, 'shot_gif_size', 'screenshot', '动图尺寸', '', 'string', '', '', '', '');
+INSERT INTO `app_config` VALUES (41, 'shot_gif_size', 'screenshot', '动图尺寸', '', 'string', '360x202', '', '', '');
 INSERT INTO `app_config` VALUES (42, 'thief_on', 'theft', '防盗开关', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (43, 'thief_direct', 'theft', '直接访问', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (45, 'thief_m3u8_on', 'theft', 'M3U8防盗', '', 'switch', '0', '', '', '');
@@ -176,13 +163,13 @@ INSERT INTO `app_config` VALUES (46, 'thief_freeip', 'theft', '放行域名', '�
 INSERT INTO `app_config` VALUES (47, 'sync_on', 'sync', '同步开关', '', 'switch', '1', '', '', '');
 INSERT INTO `app_config` VALUES (48, 'sync_address', 'sync', '同步地址', '', 'string', 'http://fastadmin.te/api/video/index', '', '', '');
 INSERT INTO `app_config` VALUES (49, 'sync_key', 'sync', '同步秘钥', '', 'string', 'sdfsdfdfsfsdfsdfsdfsdf', '', '', '');
-INSERT INTO `app_config` VALUES (50, 'shot_gif_space', 'screenshot', '截取间隔', '用于截取图片合成动图', 'number', '1', '', '', '');
-INSERT INTO `app_config` VALUES (51, 'img_url', 'basic', '图片域名', '', 'string', 'http://fastadmin.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (50, 'shot_gif_space', 'screenshot', '截取间隔', '用于截取图片合成动图', 'number', '5', '', '', '');
 INSERT INTO `app_config` VALUES (52, 'trans_default_size', 'trans', '必选大小', '', 'radio', '360', '{\"2160\":\"2160p：3840x2160\",\"1440\":\"1440p：2560x1440\",\"1080\":\"1080p：1920x1080\",\"720\":\"720p：1280x720\",\"480\":\"480p：854x480\",\"360\":\"360p：640x360\",\"240\":\"240p：426x240\"}', '', '');
 INSERT INTO `app_config` VALUES (53, 'trans_secret_on', 'trans', '加密开关', '', 'switch', '1', '', '', '');
 INSERT INTO `app_config` VALUES (54, 'transm3u8', 'trans', '是否切片', '', 'switch', '1', '', '', '');
-INSERT INTO `app_config` VALUES (55, 'transm3u8del', 'trans', '切片完成删除源文件', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (55, 'transm3u8del', 'trans', '切片完成删除文件', '', 'switch', '1', '', '', '');
 INSERT INTO `app_config` VALUES (56, 'tanscodedel', 'trans', '转码完成删除源文件', '', 'switch', '0', '', '', '');
+INSERT INTO `app_config` VALUES (57, 'upload_dir', 'basic', '上传文件路径', '源码文件夹', 'string', '/assets/uploads/files/video', '', '', '');
 
 -- ----------------------------
 -- Table structure for app_list_otype
@@ -738,7 +725,7 @@ CREATE TABLE `app_screen_otype`  (
   `otypename` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '分类名称',
   `pid` int(6) DEFAULT 0,
   PRIMARY KEY (`oid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10038 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10040 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_screen_otype
@@ -769,6 +756,8 @@ INSERT INTO `app_screen_otype` VALUES (10034, 1, '条件1', 0);
 INSERT INTO `app_screen_otype` VALUES (10035, 5, '条件2', 0);
 INSERT INTO `app_screen_otype` VALUES (10036, 5, '1MV', 10035);
 INSERT INTO `app_screen_otype` VALUES (10037, 10, '我的条件', 0);
+INSERT INTO `app_screen_otype` VALUES (10038, 10, '11', 10037);
+INSERT INTO `app_screen_otype` VALUES (10039, 10, '22', 10037);
 
 -- ----------------------------
 -- Table structure for app_seek_video
@@ -892,44 +881,30 @@ CREATE TABLE `app_trans_log`  (
   `code` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `data` text CHARACTER SET utf8 COLLATE utf8_general_ci,
-  `time` int(12) DEFAULT NULL
+  `time` int(12) DEFAULT NULL,
+  `date` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `vid` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `filename` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_trans_log
 -- ----------------------------
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码准备', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317609);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '开始转码', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317609);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '转码准备', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317610);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '开始转码', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317610);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '转码准备', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317611);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '开始转码', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\"}', 1583317611);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '转码准备', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317612);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '开始转码', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\"}', 1583317612);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '转码成功', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\"}', 1583317637);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '开始切片', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\"}', 1583317637);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '切片成功', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\"}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '拼接m3u8 json数据', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\"}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '更新记录失败', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"rate\":\"360\",\"update\":{\"m3u8\":\"{\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200304\\\\\\/vt4xNyuP\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200304\\/vt4xNyuP\\/360\\/vt4xNyuP.jpg\",\"gif\":\"\\/video\\/product\\/20200304\\/vt4xNyuP\\/360\\/vt4xNyuP.gif\",\"video\":\"\\/video\\/product\\/20200304\\/vt4xNyuP\\/360\\/vt4xNyuP.mp4\",\"nickname\":\"vt4xNyuP.mp4\",\"size\":\"21864361\",\"width\":1824,\"height\":1046,\"bit_rate\":\"4519881\",\"duration\":\"38.699900\",\"audio\":\"aac\",\"vcode\":\"h264\",\"acode\":\"aac\",\"ext\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"dis_ratio\":\"912:523\"}}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('vt4xNyuP', '转码完毕', '{\"ids\":\"10026\",\"file\":\"1583316502187.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '转码成功', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\"}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '开始切片', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\"}', 1583317638);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '切片成功', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\"}', 1583317639);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '拼接m3u8 json数据', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\"}', 1583317639);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '更新记录失败', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"rate\":\"360\",\"update\":{\"m3u8\":\"{\\\"240\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200304\\\\\\/HVh8h3Or\\\\\\/240\\\\\\/mmm.m3u8\\\",\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200304\\\\\\/HVh8h3Or\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200304\\/HVh8h3Or\\/360\\/HVh8h3Or.jpg\",\"gif\":\"\\/video\\/product\\/20200304\\/HVh8h3Or\\/360\\/HVh8h3Or.gif\",\"video\":\"\\/video\\/product\\/20200304\\/HVh8h3Or\\/360\\/HVh8h3Or.mp4\",\"nickname\":\"HVh8h3Or.mp4\",\"size\":\"7149817\",\"width\":368,\"height\":368,\"bit_rate\":\"258645\",\"duration\":\"220.871289\",\"audio\":\"aac\",\"vcode\":\"h264\",\"acode\":\"aac\",\"ext\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"dis_ratio\":\"\"}}', 1583317639);
-INSERT INTO `app_trans_log` VALUES ('HVh8h3Or', '转码完毕', '{\"ids\":\"10027\",\"file\":\"1583317139924.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317639);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317652);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '开始切片', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317652);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '转码成功', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317652);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '开始切片', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317652);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '切片成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '拼接m3u8 json数据', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '更新记录成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码完毕', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '切片成功', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '拼接m3u8 json数据', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '更新记录成功', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"rate\":\"360\"}', 1583317653);
-INSERT INTO `app_trans_log` VALUES ('5YwLN4ZH', '转码完毕', '{\"ids\":\"10025\",\"file\":\"1582877683075.mp4\",\"size_rate\":{\"1\":\"360-640x360\"}}', 1583317653);
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码准备', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"4\":\"480p\\uff1a854x480\",\"5\":\"360p\\uff1a640x360\"}}', 1584167204, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '正在转码', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/480\\/GHijKlFu.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/480\\/GHijKlFu.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/480\\/GHijKlFu.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/assets\\/uploads\\/files\\/video\\/1582876664948.mp4\"}', 1584167204, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '正在切片', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '切片成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '删除转码文件', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '拼接m3u8 json数据', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '更新记录成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"480\"}', 1584167238, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '正在转码', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/360\\/GHijKlFu.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/360\\/GHijKlFu.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200314\\/GHijKlFu\\/360\\/GHijKlFu.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/assets\\/uploads\\/files\\/video\\/1582876664948.mp4\"}', 1584167238, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1584167264, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '正在切片', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1584167264, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '切片成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1584167264, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '拼接m3u8 json数据', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1584167264, '20200314', '10024', '1582876664948.mp4');
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '更新记录成功', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"rate\":\"360\"}', 1584167264, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('GHijKlFu', '转码完毕', '{\"ids\":\"10024\",\"file\":\"1582876664948.mp4\",\"size_rate\":{\"4\":\"480p\\uff1a854x480\",\"5\":\"360p\\uff1a640x360\"}}', 1584167264, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_user_click
@@ -1755,16 +1730,19 @@ CREATE TABLE `app_video_list`  (
   `imdb` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT 'IMDB',
   `designation` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '番号',
   PRIMARY KEY (`vid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10029 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10032 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_video_list
 -- ----------------------------
-INSERT INTO `app_video_list` VALUES (10024, '你被AI盯上了吗？', '/video/product/20200304/GHijKlFu/360/GHijKlFu.jpg', '/video/product/20200304/GHijKlFu/360/GHijKlFu.gif', '{\"240\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/480\\/mmm.m3u8\",\"720\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/720\\/mmm.m3u8\",\"1080\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/1080\\/mmm.m3u8\"}', '李开复AI·未来', '1,2', '/assets/uploads/files/video/1582876664948.mp4', '10006,10009', '10002,10003', '1,2', '10021,10022,10026,10029', '10001,10002', 0, '69', '00:03:02', '1582877448', 1, 'http://clusterctl.xyz/public/assets/product/5342655.m3u8', 'http://clusterctl.xyz/public/assets/product/5342655.m3u8', '/video/product/20200304/GHijKlFu/360/GHijKlFu.mp4', 'GHijKlFu.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '0', '0', '0');
-INSERT INTO `app_video_list` VALUES (10025, '人类下达的命令，AI会吗？', '/video/product/20200304/5YwLN4ZH/360/5YwLN4ZH.jpg', '/video/product/20200304/5YwLN4ZH/360/5YwLN4ZH.gif', '{\"240\":\"\\/video\\/product\\/20200304\\/5YwLN4ZH\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200304\\/5YwLN4ZH\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200304\\/5YwLN4ZH\\/480\\/mmm.m3u8\",\"720\":\"\\/video\\/product\\/20200304\\/5YwLN4ZH\\/720\\/mmm.m3u8\"}', 'AI世界', '1,2', '/assets/uploads/files/video/1582877683075.mp4', '10001,10002,10003', '10002,10003,10004', '2', '10021,10022,10023,10025,10027,10029', '10002,10003', 0, '23', '00:03:13', '1582877959', 1, 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', '/video/product/20200304/5YwLN4ZH/360/5YwLN4ZH.mp4', '5YwLN4ZH.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '0', '0', '0');
+INSERT INTO `app_video_list` VALUES (10024, '你被AI盯上了吗？', '/video/product/20200314/GHijKlFu/360/GHijKlFu.jpg', '/video/product/20200314/GHijKlFu/360/GHijKlFu.gif', '{\"240\":\"\\/video\\/product\\/20200311\\/GHijKlFu\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200314\\/GHijKlFu\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200314\\/GHijKlFu\\/480\\/mmm.m3u8\",\"720\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/720\\/mmm.m3u8\",\"1080\":\"\\/video\\/product\\/20200304\\/GHijKlFu\\/1080\\/mmm.m3u8\"}', '李开复AI·未来', '1,2', '/assets/uploads/files/video/1582876664948.mp4', '10006,10009', '10026', '1,2', '10021,10022,10026,10029', '10002', 0, '69', '00:03:02', '1582877448', 1, NULL, NULL, '/video/product/20200314/GHijKlFu/360/GHijKlFu.mp4', 'GHijKlFu.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '0', '0', '0');
+INSERT INTO `app_video_list` VALUES (10025, '人类下达的命令，AI会吗？', '/video/product/20200312/5YwLN4ZH/360/5YwLN4ZH.jpg', '/video/product/20200312/5YwLN4ZH/360/5YwLN4ZH.gif', '{\"240\":\"\\/video\\/product\\/20200311\\/5YwLN4ZH\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200312\\/5YwLN4ZH\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200311\\/5YwLN4ZH\\/480\\/mmm.m3u8\",\"720\":\"\\/video\\/product\\/20200304\\/5YwLN4ZH\\/720\\/mmm.m3u8\"}', 'AI世界', '1,2', '/assets/uploads/files/video/1582877683075.mp4', '10001,10002,10003', '10002,10003,10004', '2', '10021,10022,10023,10025,10027,10029', '10002,10003', 0, '23', '00:03:13', '1582877959', 1, 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', 'http://clusterctl.xyz/public/assets/product/1582877683075.m3u8', '/video/product/20200312/5YwLN4ZH/360/5YwLN4ZH.mp4', '5YwLN4ZH.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '56', '5546', 'fsdf');
 INSERT INTO `app_video_list` VALUES (10026, 'efaerfs', '/video/product/20200304/vt4xNyuP/360/vt4xNyuP.jpg', '/video/product/20200304/vt4xNyuP/360/vt4xNyuP.gif', '{\"360\":\"\\/video\\/product\\/20200304\\/vt4xNyuP\\/360\\/mmm.m3u8\"}', NULL, '2', '/assets/uploads/files/video/1583316502187.mp4', NULL, '10003', NULL, NULL, NULL, 0, NULL, '0', '1583316942', 0, NULL, NULL, '/video/product/20200304/vt4xNyuP/360/vt4xNyuP.mp4', 'vt4xNyuP.mp4', 21864361, 1824, 1046, '4519881', '38.699900', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '912:523', 'aac', NULL, NULL, NULL);
-INSERT INTO `app_video_list` VALUES (10027, 'sgadfhdg', 'http://clusterctl.xyz:80/video/product/20200304/HVh8h3Or/360/HVh8h3Or.jpg', '/video/product/20200304/HVh8h3Or/360/HVh8h3Or.gif', '{\"240\":\"\\/video\\/product\\/20200304\\/HVh8h3Or\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200304\\/HVh8h3Or\\/360\\/mmm.m3u8\"}', NULL, '1', '/assets/uploads/files/video/1583317139924.mp4', NULL, '10001,10002', NULL, NULL, NULL, 0, '12', '0', '1583317149', 1, NULL, NULL, '/video/product/20200304/HVh8h3Or/360/HVh8h3Or.mp4', 'HVh8h3Or.mp4', 7149817, 368, 368, '258645', '220.871289', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', '45', 'K89', '日本');
-INSERT INTO `app_video_list` VALUES (10028, '111111111111111', NULL, NULL, NULL, NULL, '1', '/assets/uploads/files/video/1583318980794.mp4', NULL, '10004,10005', NULL, NULL, '10001', 0, NULL, '0', '1583318998', 1, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fsdf', 'sdafds');
+INSERT INTO `app_video_list` VALUES (10027, 'sgadfhdg', '/video/product/20200311/HVh8h3Or/240/HVh8h3Or.jpg', '/video/product/20200311/HVh8h3Or/240/HVh8h3Or.gif', '{\"240\":\"\\/video\\/product\\/20200311\\/HVh8h3Or\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200311\\/HVh8h3Or\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200311\\/HVh8h3Or\\/480\\/mmm.m3u8\"}', NULL, '1', '/assets/uploads/files/video/1583317139924.mp4', NULL, '10001,10002', NULL, NULL, NULL, 0, '12', '0', '1583317149', 1, NULL, NULL, '/video/product/20200311/HVh8h3Or/360/HVh8h3Or.mp4', 'HVh8h3Or.mp4', 7149817, 368, 368, '258645', '220.871289', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', '45', 'K89', '日本');
+INSERT INTO `app_video_list` VALUES (10028, '111111111111111', '/video/product/20200311/zzThuKdf/240/zzThuKdf.jpg', '/video/product/20200311/zzThuKdf/240/zzThuKdf.gif', '{\"240\":\"\\/video\\/product\\/20200311\\/zzThuKdf\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200311\\/zzThuKdf\\/360\\/mmm.m3u8\",\"480\":\"\\/video\\/product\\/20200311\\/zzThuKdf\\/480\\/mmm.m3u8\"}', NULL, '1', '/assets/uploads/files/video/1583318980794.mp4', NULL, '10004,10005', NULL, NULL, '10001', 0, NULL, '0', '1583318998', 1, NULL, NULL, '/video/product/20200311/zzThuKdf/360/zzThuKdf.mp4', 'zzThuKdf.mp4', 21864361, 1824, 1046, '4519881', '38.699900', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '912:523', 'aac', NULL, 'fsdf', 'sdafds');
+INSERT INTO `app_video_list` VALUES (10029, '转码变宽屏问题', '/video/product/20200312/1zikukPw/360/1zikukPw.jpg', '/video/product/20200312/1zikukPw/360/1zikukPw.gif', '{\"360\":\"\\/video\\/product\\/20200312\\/1zikukPw\\/360\\/mmm.m3u8\"}', NULL, '2', '/assets/uploads/files/video/1584023907522.mp4', NULL, '10026', NULL, NULL, NULL, 0, NULL, '0', '1584024159', 1, NULL, NULL, '/video/product/20200312/1zikukPw/360/1zikukPw.mp4', '1zikukPw.mp4', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (10030, 'test', NULL, NULL, NULL, NULL, NULL, '/assets/uploads/files/video/1584068887750.mp4', NULL, '0', NULL, NULL, NULL, 0, NULL, '0', '1584068922', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (10031, '【天然素人】缺少streams字段问题', '/video/product/20200313/xWZohvvv/360/xWZohvvv.jpg', '/video/product/20200313/xWZohvvv/360/xWZohvvv.gif', '{\"360\":\"\\/video\\/product\\/20200313\\/xWZohvvv\\/360\\/mmm.m3u8\"}', NULL, NULL, '/assets/uploads/files/video/1584072030208.mp4', NULL, '0', NULL, NULL, NULL, 0, NULL, '0', '1584072162', 1, NULL, NULL, '/video/product/20200313/xWZohvvv/360/xWZohvvv.mp4', 'xWZohvvv.mp4', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_video_otype
@@ -1776,32 +1754,14 @@ CREATE TABLE `app_video_otype`  (
   `otypename` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '分类名称',
   `pic` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`oid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10022 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10027 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_video_otype
 -- ----------------------------
-INSERT INTO `app_video_otype` VALUES (10001, 1, '综艺', '/assets/uploads/image/otype/2019/0319/1553001795572.png');
-INSERT INTO `app_video_otype` VALUES (10002, 1, '嫌疑', NULL);
-INSERT INTO `app_video_otype` VALUES (10003, 1, '剧情', NULL);
-INSERT INTO `app_video_otype` VALUES (10004, 1, '独家', NULL);
-INSERT INTO `app_video_otype` VALUES (10005, 1, '华语', NULL);
-INSERT INTO `app_video_otype` VALUES (10006, 5, '美国2', '/assets/uploads/image/otype/2019/0306/1551864322913.png');
-INSERT INTO `app_video_otype` VALUES (10007, 5, 'i暗战', NULL);
-INSERT INTO `app_video_otype` VALUES (10008, 5, '古代', NULL);
-INSERT INTO `app_video_otype` VALUES (10009, 5, '喜剧', NULL);
-INSERT INTO `app_video_otype` VALUES (10010, 5, '戏曲', '/assets/uploads/image/otype/2018/1109/1541750556014.jpg');
-INSERT INTO `app_video_otype` VALUES (10011, 5, '分类1', '/assets/uploads/image/otype/2019/0103/1546496975953.png');
-INSERT INTO `app_video_otype` VALUES (10012, 5, '分类2', '/assets/uploads/image/otype/2019/0103/1546496990303.png');
-INSERT INTO `app_video_otype` VALUES (10013, 5, '分类3', '/assets/uploads/image/otype/2019/0103/1546497003161.png');
-INSERT INTO `app_video_otype` VALUES (10014, 5, '分类4', '/assets/uploads/image/otype/2019/0103/1546497014143.png');
-INSERT INTO `app_video_otype` VALUES (10015, 5, '分类5', '/assets/uploads/image/otype/2019/0103/1546497026615.png');
-INSERT INTO `app_video_otype` VALUES (10016, 5, '说说说说说说说', '/assets/uploads/image/otype/2019/0104/1546583573334.png');
-INSERT INTO `app_video_otype` VALUES (10017, 5, '妮妮妮妮妮', '/assets/uploads/image/otype/2019/0104/1546583595032.png');
-INSERT INTO `app_video_otype` VALUES (10018, 5, '欧克欧克欧', '/assets/uploads/image/otype/2019/0104/1546583619796.png');
-INSERT INTO `app_video_otype` VALUES (10019, 1, '分类MV1', '/assets/uploads/image/otype/2019/0306/1551864258922.png');
-INSERT INTO `app_video_otype` VALUES (10020, 5, '分类视频1', '/assets/uploads/image/otype/2019/0306/1551864239845.jpg');
-INSERT INTO `app_video_otype` VALUES (10021, 5, 'jijiyy', '/assets/uploads/image/otype/2020/0228/1582875587576.png');
+INSERT INTO `app_video_otype` VALUES (10024, 0, '爱情片', NULL);
+INSERT INTO `app_video_otype` VALUES (10025, 0, '动作片', NULL);
+INSERT INTO `app_video_otype` VALUES (10026, 10024, '犯罪', NULL);
 
 -- ----------------------------
 -- Table structure for app_video_trouble
