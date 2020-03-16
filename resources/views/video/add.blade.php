@@ -54,7 +54,7 @@
                 <label class="layui-form-label">类型</label>
                 <div class="layui-input-block">
                     <input type="checkbox" name="otype[]" lay-skin="primary" title="MV"  value="1" >
-                    <input type="checkbox" name="otype[]" lay-skin="primary" title="视频" value="2">
+                    <input type="checkbox" name="otype[]" lay-skin="primary" checked title="视频" value="2">
                 </div>
             </div>
             <div class="layui-form-item">

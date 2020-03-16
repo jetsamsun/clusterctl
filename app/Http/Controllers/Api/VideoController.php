@@ -35,18 +35,18 @@ class VideoController extends  ApiController{
         $ids = $_POST['ids'];
         $size_rate = json_decode($_POST['size_rate']);
         $exp = false;
+        $is_delsrc = $_POST['is_delsrc'];
+        $is_slice = $_POST['is_slice'];
+
 
         $row = VideoList::where('vid',$ids)->get()->toArray();
         $row = $row[0];
-        $filename = str_replace('/assets/uploads/files/video/', '', $row['url']);
+        $filename = str_replace($this->cfgs['upload_dir'].'/', '', $row['url']);
         $videodir = $this->uploaddir.$filename;
         $videomsg = $xyz->format($videodir);  //源文件数据
-        if(empty($videomsg['video'])) {
-            return ;
-        }
 
         $datestr = date('Ymd');
-        if(!$row['video']) {
+        if($row['video']) {
             $datestr = explode('/', $row['video'])[3];
         }
         $randsring = str_replace('.mp4', '', $row['nickname']);
@@ -55,12 +55,17 @@ class VideoController extends  ApiController{
         }
         $dirpath = $this->productdir.$datestr.'/'.$randsring.'/';
 
+        if(empty($videomsg['video'])) {
+            TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'nostreamserror','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
+            return ;
+        }
+
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'转码准备','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         foreach ($size_rate as $val) {
             $sizetmp = explode('：', $val);
             $rate = str_replace('p', '', trim($sizetmp[0]));
             $size = trim($sizetmp[1]);
-            $default = SiteRate::where('default',1)->where('rate',$rate)->get()->toArray(); //是否默认码率
+            $default = SiteRate::where('default',1)->where('rate',$rate)->first(); //是否默认码率
 
             $dirtmp = $dirpath.$rate.'/';  mk_dir($dirtmp);
             $tovideodir = $dirtmp.$randsring.'.mp4';
@@ -69,6 +74,7 @@ class VideoController extends  ApiController{
 
 
             TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'正在转码','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate,'togifdir'=>$togifdir,'toimgedir'=>$toimgedir,'tovideodir'=>$tovideodir,'videodir'=>$videodir))));
+            VideoList::where('vid', $ids)->update(array('status'=>3));
             $res = $xyz->transcode($videodir, $tovideodir, $toimgedir, $togifdir, $size, $rate);
             if('success' == $res) {
                 TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'转码成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
@@ -77,7 +83,7 @@ class VideoController extends  ApiController{
                 $muname = 'mmm.m3u8';
                 $flag = false;
 
-                if($this->cfgs['transm3u8']) {  //判断是否切片
+                if($is_slice) {  //判断是否切片
                     TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'正在切片','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
                     if('success' == $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname)) {
                         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'切片成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
@@ -94,29 +100,30 @@ class VideoController extends  ApiController{
                     }
                 }
 
-                if($flag) {
-                    $info = VideoList::where('vid', $ids)->get()->toArray();
-                    $info = $info[0];
 
-                    if ($info['m3u8']) { //拼接
-                        $m3u8arr = json_decode($info['m3u8'], true);
-                        if (!$m3u8arr) $m3u8arr = [];
-                        $m3u8arr[$rate] = str_replace(PUBLIC_PATH, '', dirname($tovideodir) . '/' . $muname);
-                        ksort($m3u8arr);
-                        TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'拼接m3u8 json数据','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
+                $info = VideoList::where('vid', $ids)->get()->toArray();
+                $info = $info[0];
 
-                    } else {  //第一次加入
-                        $m3u8arr[$rate] = str_replace(PUBLIC_PATH, '', dirname($tovideodir) . '/' . $muname);
-                        ksort($m3u8arr);
-                        TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'第一次组合m3u8 json数据','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
-                    }
+                if ($info['m3u8']) { //拼接
+                    $m3u8arr = json_decode($info['m3u8'], true);
+                    if (!$m3u8arr) $m3u8arr = [];
+                    $m3u8arr[$rate] = $flag ? str_replace(PUBLIC_PATH, '', dirname($tovideodir) . '/' . $muname):'';
+                    ksort($m3u8arr);
+                    TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'拼接m3u8 json数据','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
+
+                } else {  //第一次加入
+                    $m3u8arr[$rate] = $flag ? str_replace(PUBLIC_PATH, '', dirname($tovideodir) . '/' . $muname):'';
+                    ksort($m3u8arr);
+                    TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'第一次组合m3u8 json数据','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
                 }
+
 
                 // 更新数据
                 $update['m3u8'] = !empty($m3u8arr) ? json_encode($m3u8arr) : $row['m3u8'];
                 $update['pic'] = str_replace(PUBLIC_PATH, '', $toimgedir);
                 $update['gif'] = str_replace(PUBLIC_PATH, '', $togifdir);
-                $update['video'] = !empty($default) ? str_replace(PUBLIC_PATH, '', $tovideodir) : $row['video'];
+                if($default) $update['video'] = str_replace(PUBLIC_PATH, '', $tovideodir);
+                $update['status'] = 3;  //正在转码
                 $update['nickname'] = $randsring.'.mp4';
                 $update['size'] = $videomsg['size'];
                 $update['width'] = $videomsg['width'];
@@ -140,7 +147,7 @@ class VideoController extends  ApiController{
             }
         }
 
-        if($this->cfgs['tanscodedel']) {
+        if($is_delsrc) {
             unlink($videodir);   //转码完成是否删除源文件
             TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'删除源文件','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
         }

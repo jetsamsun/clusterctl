@@ -1,4 +1,11 @@
 @extends('layouts.layouts')
+
+@section('css')
+    <link href="{{ URL::asset('/lyear/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('/lyear/css/materialdesignicons.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('/lyear/css/style.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
         {{--@if(!$data)--}}
@@ -18,6 +25,8 @@
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
         <button class="layui-btn" id="transcode">转码</button>
+        <button class="layui-btn layui-btn-danger" id="dels">删除</button>
+        {{--<button class="layui-btn" id="transfer">同步</button>--}}
     </div>
 
     <table class="layui-hide" lay-filter="demo" id="test"></table>
@@ -31,8 +40,28 @@
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
+@endsection
 
-    @section('script')
+@section('script')
+    <!--消息提示-->
+    <script type="text/javascript" src="{{ URL::asset('/lyear/js/bootstrap-notify.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('/lyear/js/lightyear.js') }}"></script>
+
+    <script>
+        $(function () {
+            //先将$data转成json编码，再用eval将json格式转为js数组
+            var arr = eval(<?php echo json_encode($no_display_aspect_ratio);?>);
+            for(let i in arr) {
+                lightyear.notify('[no_display_aspect_ratio] '+arr[i], 'danger', 1500);
+            }
+        });
+
+        $('#transfer').on('click',function () {
+            $.post("{{url('admin/video/syncdata')}}",{token:"{{csrf_token()}}"},function (ret) {
+                alert(ret.msg);
+            },'json');
+        });
+    </script>
     <script>
         layui.use('table', function(){
             var table = layui.table,$= layui.jquery,form = layui.form;
@@ -116,6 +145,31 @@
                 }
                 window.location.href = "/admin/video/transcode/"+vid;
             });
+            //批量删除
+            $('#dels').on('click',function () {
+                let vid = '';
+                let obj = table.checkStatus('test').data;
+                for(let i=0; i<obj.length; i++) {
+                    if(i===0) {
+                        vid = obj[i].vid;
+                    } else {
+                        vid = vid+'_'+obj[i].vid;
+                    }
+                }
+
+                layer.confirm('操作也将删除文件，确认删除吗?', function(index){
+                    $.post("{{url('admin/video/delsvideo')}}",{ids:vid},function (ret) {
+                        if(ret.code===1) {
+                            layer.msg(ret.msg, {icon: 1, time: 1000},function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.msg(ret.msg, {icon: 2, anim: 6, time: 1000});
+                        }
+                    },'json');
+                    layer.close(index);
+                });
+            });
             //监听锁定操作
             form.on('checkbox(is_free)', function(obj){
                 //layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
@@ -142,7 +196,7 @@
                 if(obj.event === 'detail'){
                     layer.msg('ID：'+ data.id + ' 的查看操作');
                 } else if(obj.event === 'del'){
-                    layer.confirm('确认删除吗?', function(index){
+                    layer.confirm('操作也将删除文件，确认删除吗?', function(index){
                         //obj.del();
                         $.ajax({
                             type: "POST", url: "/admin/video/delvideo",
@@ -174,5 +228,4 @@
             });
         });
     </script>
-    @endsection
 @endsection

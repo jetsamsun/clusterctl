@@ -88,7 +88,7 @@ class Xyz {
         if(!isset($json->streams)) {
             $temp['cmd'] = $format_command;
             $temp['ret'] = $format;
-            file_put_contents(__DIR__.'/error_streams_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$src_path.PHP_EOL,FILE_APPEND);
+//            file_put_contents(__DIR__.'/error_streams_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$src_path.PHP_EOL,FILE_APPEND);
 
             $arr['video'] = '';
             $arr['duration'] = 0;
@@ -111,7 +111,7 @@ class Xyz {
                 $arr['height'] = $row->height;
 
                 if(!isset($row->display_aspect_ratio)) {
-                    file_put_contents(__DIR__.'/error_display_aspect_ratio_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$format.PHP_EOL,FILE_APPEND);
+//                    file_put_contents(__DIR__.'/error_display_aspect_ratio_'.date('Y-m-d').'.txt', date('Y-m-d H:i:s').' '.$format.PHP_EOL,FILE_APPEND);
                 }
 
                 $arr['dis_ratio']= isset($row->display_aspect_ratio)?$row->display_aspect_ratio:'';

@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('uploadVideoImg', 'VideoController@uploadVideoImg');
     Route::any('uploadVideoFile', 'VideoController@uploadVideoFile');
     Route::any('video/delvideo', 'VideoController@delvideo');
+    Route::any('video/delsvideo', 'VideoController@delsvideo');
     Route::any('video/editvideo/{id}', 'VideoController@editvideo');
     Route::any('video/videofree', 'VideoController@videofree');
     Route::any('video/clickfree', 'VideoController@clickfree');
@@ -52,6 +53,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('video/translogs/{code}', 'VideoController@translogs');
     Route::any('video/cutjpg', 'VideoController@cutjpg');
     Route::any('video/vodtogif', 'VideoController@vodtogif');
+    Route::any('video/syncdata', 'VideoController@syncdata');
+    Route::any('video/manualslice', 'VideoController@manualslice');
 
     // star
     Route::any('star', 'StarController@star');

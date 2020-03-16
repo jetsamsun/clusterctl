@@ -61,6 +61,9 @@
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'ids', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    ,{field:'starttime', title:'开始时间', width:180}
+                    ,{field:'usetime', title:'耗时', width:120}
+                    ,{field:'cur_state', title:'当前状态', width:220}
                     ,{field:'src_file',width:200, title: '源码文件'}
                     ,{field:'src_rate', width:150,title: '源码码率'}
                     ,{field:'src_size',width:150, title: '源码尺寸'}
@@ -69,9 +72,6 @@
                     ,{field:'dir_rate',width:150, title: '目标码率'}
                     ,{field:'dir_file', width:150, title: '目标文件'}
                     ,{field:'dir_size', title:'目标尺寸', width:200}
-                    ,{field:'starttime', title:'开始时间', width:180}
-                    ,{field:'usetime', title:'耗时', width:120}
-                    ,{field:'cur_state', title:'当前状态', width:220}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:100}
                 ]]
             });

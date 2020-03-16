@@ -37,6 +37,7 @@ class VideoController extends AdminController
     public function video() {
         $conname = $this->scanvideo();  //扫描文件夹
 
+        $no_display_aspect_ratio = array();
         foreach ($conname as $v) {  //遍历文件
             $arr = explode('.', $v);
             $ret = VideoList::where('title',$arr[0])->first();
@@ -61,14 +62,24 @@ class VideoController extends AdminController
                 $insert['dis_ratio'] = $videomsg['dis_ratio'];
                 $insert['acode'] = $videomsg['audio'];
 
+                if(empty($insert['dis_ratio'])) {
+                    $no_display_aspect_ratio[] = $v;
+                }
+
+                if(empty($insert['size'])) {
+                    dd('文件['.$v.'] 获取解析失败！');
+                }
+
                 if(!$bool = VideoList::insertGetId($insert)) {
-                    dd('扫描插入信息失败！');
+                    dd('扫描信息插入失败！');
                 }
             }
         }
 
+
+        $cfgs = $this->cfgs;
         $data = VideoAdminLog::select('log_id')->get()->toArray();
-        return view('video.list',compact('data'));
+        return view('video.list',compact('data','no_display_aspect_ratio','cfgs'));
     }
     public function getVideoList(Request $request){
         $limit = $request->input('limit');
@@ -100,12 +111,18 @@ class VideoController extends AdminController
                     $dataTmp[$key]['ext'] = $value['ext'];
                     $dataTmp[$key]['dis_ratio'] = $value['dis_ratio'];
 
+                    if (!file_exists('.' . $value['url'])) {  //删除源文件
+                        $dataTmp[$key]['url'] = '(已删除)';
+                    }
+
                     if($value['status']==0) {
                         $dataTmp[$key]['status_txt'] = '待转码';
                     } else if($value['status']==1) {
                         $dataTmp[$key]['status_txt'] = '已转码';
-                    } else {
+                    } else if($value['status']==2) {
                         $dataTmp[$key]['status_txt'] = '转码异常';
+                    } else {
+                        $dataTmp[$key]['status_txt'] = '正在转码';
                     }
                 } else {
 //                    $xyz = new Xyz();
@@ -304,7 +321,7 @@ class VideoController extends AdminController
             $m3u8 = json_decode($data['m3u8']);
             $siteurl = Config::where('name','site_url')->value('value');
             foreach ($m3u8 as $k=>$v) {
-                $str[] = $siteurl . $v;
+                $str[$k] = $v;
             }
             $data['m3u8'] = $str;
         }
@@ -315,18 +332,35 @@ class VideoController extends AdminController
     }
     public function transcode(Request $request,$vid){
         if($request->isMethod('post')){
+            if(!isset($_POST['siterate'])) {
+                return response()->json(array('code'=>0,'msg'=>"请选择转码码率"));
+            }
+
+            $is_delsrc = 0;
+            if(isset($_POST['is_delsrc'])) {
+                $is_delsrc = 1;  //转码完成删除源文件
+            }
+
+            $is_slice = 0;
+            if(isset($_POST['is_slice'])) {
+                $is_slice = 1;   //切片
+            }
+
             //检测清理日志
             $logs = TransLog::get();
             foreach ($logs as $log) {
-                if(strpos($log['msg'],'转码完毕')!==false) {
+                if(strpos($log['msg'],'转码完毕')!==false || strpos($log['msg'],'nostreamserror')!==false) {
                     TransLog::where('code',$log['code'])->delete();
                 }
             }
 
             $idarr = explode('_', $vid);
             foreach ($idarr as $v) {
+                $post = [];
                 $post['ids'] = $v;
                 $post['size_rate'] = json_encode($_POST['siterate']);
+                $post['is_delsrc'] = $is_delsrc;
+                $post['is_slice'] = $is_slice;
 
                 $url = VideoList::where('vid',$v)->value('url');
                 if(count($idarr)==1) {
@@ -349,7 +383,7 @@ class VideoController extends AdminController
                     foreach ($logs as $log) {
                         $last = $log['time'];
                     }
-                    if(time()-$last>6*3600) {  //产出超过3小时的发送异常而没有成功的记录
+                    if(time()-$last>12*3600) {  //产出超过3小时的发送异常而没有成功的记录
                         TransLog::where('code',$randsring)->delete();
                     } else {
                         return response()->json(array('code'=>-1,'msg'=>"[".$v."]后台转码中"));
@@ -375,11 +409,20 @@ class VideoController extends AdminController
             return response()->json(array('code'=>1,'msg'=>"已添加后台转码"));
         }
 
+        $ids = explode('_', $vid);
+        $filestr = '';
+        foreach ($ids as $id) {
+            $url = VideoList::where('vid',$id)->value('url');
+            $file = str_replace($this->cfgs['upload_dir'], '', $url);
+            $filestr .= $file.' ';
+        }
+
+        $cfgs = $this->cfgs;
         $siterate = Config::where('name','trans_default_size')->get()->toArray(); $siterate = $siterate[0];
-        return view('video.transcode',compact('vid','siterate'));
+        return view('video.transcode',compact('vid','siterate','cfgs','filestr'));
     }
-    public function delvideo(Request $request){
-        $vid = $request->input('vid');
+    public function delvideo(Request $request,$idx=null){
+        $vid = empty($idx)?$request->input('vid'):$idx;
         $data = VideoList::select('*')->where('vid',$vid)->first()->toArray();
         try {
             if(!empty($data['video'])) {  //删除目录
@@ -396,9 +439,24 @@ class VideoController extends AdminController
         }
         $reg = DB::table('video_list')->where('vid',$vid)->delete();
         if($reg){
-            return response()->json(array('status'=>1));
+            return json_encode(array('status'=>1));
         }else{
-            return response()->json(array('status'=>0));
+            return json_encode(array('status'=>0));
+        }
+    }
+    public function delsvideo(Request $request){
+        if(!empty($_POST['ids'])) {
+            $ids = explode('_', $_POST['ids']);
+            foreach ($ids as $v) {
+                $jsonStr = $this->delvideo($request,$v);
+                $json = json_decode($jsonStr, true);
+                if($json['status']==0) {
+                    return response()->json(array('code' => 0, 'msg' => '删除失败'.'['.$v.']'));
+                }
+            }
+            return response()->json(array('code' => 1, 'msg' => '删除成功'));
+        } else {
+            return response()->json(array('code' => 0, 'msg' => '请选择删除项'));
         }
     }
     public function videofree(Request $request){
@@ -610,17 +668,6 @@ class VideoController extends AdminController
         $logs = $arr;
         return view('video.translogs',compact('code','logs'));
     }
-    public function uploadlist()
-    {
-        $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax()) {
-            $videos = $this->scanvideo() ;
-            $this->view->assign('videos', $videos);
-            $result = array("total" => count($videos), "rows" => $videos);
-            return json($result);
-        }
-        return $this->view->fetch();
-    }
     public function scanvideo()
     {
         $absuploaddir = $this->uploaddir;
@@ -658,6 +705,18 @@ class VideoController extends AdminController
             return response()->json(array('code'=>1,'msg'=>'生成gif动图成功','data'=>str_replace(PUBLIC_PATH, '', $obj_path)));
         }
         return response()->json(array('code'=>0,'msg'=>'生成gif动图失败'));
+    }
+
+    public function uploadlist()
+    {
+        $this->request->filter(['strip_tags']);
+        if ($this->request->isAjax()) {
+            $videos = $this->scanvideo() ;
+            $this->view->assign('videos', $videos);
+            $result = array("total" => count($videos), "rows" => $videos);
+            return json($result);
+        }
+        return $this->view->fetch();
     }
     public function setmainjpg($src_path, $image_path)
     {
@@ -789,32 +848,20 @@ class VideoController extends AdminController
     public function manualslice()
     {
         $xyz = new Xyz();
-        $redis = new Redis;
-
-
-        $videostr = explode('/',$_POST['video']);
-        // /video/product/20200217/TForfU7k/360/TForfU7k.mp4
-        $tovideodir = PUBLIC_PATH.$videostr[1].'/'.$videostr[2].'/'.$videostr[3].'/'.$videostr[4].'/'.$_POST['rate'].'/'.$videostr[6];
         $ids = $_POST['ids'];
-        $randsring = $videostr[4];
         $rate = $_POST['rate'];
-        $date = $videostr[3];
-        $month = substr($date,0,6);
-        $logpath = createpath(ROOR_PATH.'/runtime/log/'.$month.'/'.$randsring.'_log.txt');
-        $dirpath = $this->productdir.$date.'/'.$randsring.'/';
-
+        $videostr = explode('/',$_POST['src_path']);
+        $tovideodir = PUBLIC_PATH.'/'.$videostr[1].'/'.$videostr[2].'/'.$videostr[3].'/'.$videostr[4].'/'.$rate.'/'.$videostr[6];
 
         $muname = $this->cfgs['trans_m3u8'] ? $this->cfgs['trans_m3u8'] : 'index.m3u8';
         $re = $xyz->transm3u8($tovideodir, dirname($tovideodir).'/'.$muname);
-        if($re) {
-            $this->model = model('app\common\model\Category');
-            $info = $this->model->where(array('name'=>$ids))->find();
-
+        if($re == 'success') {
+            $info = VideoList::find($ids);
             $m3u8arr = json_decode($info->m3u8, true);
             if(!$m3u8arr) $m3u8arr=[];
 
             $m3u8file = dirname($tovideodir).'/'.$muname;
-            $m3u8arr[$rate] = str_replace(PUBLIC_PATH,'/', $m3u8file);
+            $m3u8arr[$rate] = str_replace(PUBLIC_PATH,'', $m3u8file);
             ksort($m3u8arr);
 
             $info->m3u8 = json_encode($m3u8arr);
@@ -824,10 +871,13 @@ class VideoController extends AdminController
                 if($this->cfgs['transm3u8del']) unlink($tovideodir);
             }
 
-            return array('code'=>0, 'msg'=>'切片成功','data'=>$this->cfgs['m3u8_url'].$m3u8file);
+            return response()->json(array('code'=>1,'msg'=>"切片成功",'data'=>$m3u8arr[$rate]));
         } else { //切片失败
-            return array('code'=>-1, 'msg'=>'切片失败');
+            return response()->json(array('code'=>1,'msg'=>"切片失败"));
         }
+    }
+    public function syncdata() {  //同步旧数据函数
+        return response()->json(array('code'=>1,'msg'=>"同步成功"));
     }
 
     /*上传图片文件*/
