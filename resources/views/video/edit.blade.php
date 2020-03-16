@@ -2,7 +2,7 @@
 
 @section('css')
 {{--    <link href="{{ URL::asset('/bootstrap-select-1.13.9/dist/css/bootstrap.min.css') }}" rel="stylesheet" />--}}
-    <link href="{{ URL::asset('/bootstrap-select-1.13.9/dist/css/bootstrap-select.css') }}" rel="stylesheet" />
+{{--    <link href="{{ URL::asset('/bootstrap-select-1.13.9/dist/css/bootstrap-select.css') }}" rel="stylesheet" />--}}
 @endsection
 
 @section('content')
