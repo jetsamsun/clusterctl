@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 16/03/2020 10:26:17
+ Date: 16/03/2020 18:02:51
 */
 
 SET NAMES utf8mb4;
@@ -127,7 +127,7 @@ CREATE TABLE `app_config`  (
   `extend` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '扩展属性',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of app_config
@@ -141,7 +141,7 @@ INSERT INTO `app_config` VALUES (14, 'mail_smtp_user', 'email', 'Mail smtp user'
 INSERT INTO `app_config` VALUES (15, 'mail_smtp_pass', 'email', 'Mail smtp password', '（填写您的密码）', 'string', 'password', '', '', '');
 INSERT INTO `app_config` VALUES (16, 'mail_verify_type', 'email', 'Mail vertify type', '（SMTP验证方式[推荐SSL]）', 'select', '2', '[\"None\",\"TLS\",\"SSL\"]', '', '');
 INSERT INTO `app_config` VALUES (17, 'mail_from', 'email', 'Mail from', '', 'string', '10000@qq.com', '', '', '');
-INSERT INTO `app_config` VALUES (18, 'site_url', 'basic', '网站根路径', '网站地址', 'string', 'http://clusterctl.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (18, 'site_url', 'basic', '网站URL', '网站地址', 'string', 'http://clusterctl.xyz', '', '', '');
 INSERT INTO `app_config` VALUES (19, 'video_dir', 'basic', '转码文件路径', '资源文件夹', 'string', '/video/product', '', '', '');
 INSERT INTO `app_config` VALUES (25, 'trans_mode', 'trans', '转码方式', '画质优先则转码速度变慢', 'select', 'veryfast', '{\"ultrafast\":\"极速转码\",\"veryfast\":\"速度优先\",\"fast\":\"均衡设置\",\"medium\":\"画质优先\"}', '', '');
 INSERT INTO `app_config` VALUES (26, 'trans_ts_mask', 'trans', 'Ts伪装', 'Ts伪装成其他文件，如：jpg，该功能只在开启m3u8防盗后有效', 'string', '', '', '', '');
@@ -170,6 +170,8 @@ INSERT INTO `app_config` VALUES (54, 'transm3u8', 'trans', '是否切片', '', '
 INSERT INTO `app_config` VALUES (55, 'transm3u8del', 'trans', '切片完成删除文件', '', 'switch', '1', '', '', '');
 INSERT INTO `app_config` VALUES (56, 'tanscodedel', 'trans', '转码完成删除源文件', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (57, 'upload_dir', 'basic', '上传文件路径', '源码文件夹', 'string', '/video/upload', '', '', '');
+INSERT INTO `app_config` VALUES (58, 'img_url', 'basic', '图片域名', '图片地址', 'string', 'http://clusterctl.xyz', '', '', '');
+INSERT INTO `app_config` VALUES (59, 'm3u8_url', 'basic', 'm3u8域名', 'm3u8地址', 'string', 'http://clusterctl.xyz', '', '', '');
 
 -- ----------------------------
 -- Table structure for app_list_otype
@@ -878,14 +880,14 @@ CREATE TABLE `app_trans_log`  (
 -- ----------------------------
 -- Records of app_trans_log
 -- ----------------------------
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '转码准备', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584323653, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '正在转码', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/ut3qqnrc\\/360\\/ut3qqnrc.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/ut3qqnrc\\/360\\/ut3qqnrc.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/ut3qqnrc\\/360\\/ut3qqnrc.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\"}', 1584323653, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '转码成功', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584323677, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '正在切片', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584323677, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '切片成功', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584323678, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '第一次组合m3u8 json数据', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584323678, '20200316', '10082', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '更新记录成功', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584323678, NULL, NULL, NULL);
-INSERT INTO `app_trans_log` VALUES ('ut3qqnrc', '转码完毕', '{\"ids\":\"10082\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584323678, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码准备', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584349998, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在转码', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\"}', 1584349998, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350022, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在切片', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '切片成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '拼接m3u8 json数据', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '更新记录失败', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"update\":{\"m3u8\":\"{\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200316\\\\\\/u3XXhQ81\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"gif\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"video\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"status\":3,\"nickname\":\"u3XXhQ81.mp4\",\"size\":\"31391061\",\"width\":1280,\"height\":720,\"bit_rate\":\"1215059\",\"duration\":\"206.640000\",\"audio\":\"aac\",\"vcode\":\"h264\",\"acode\":\"aac\",\"ext\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"dis_ratio\":\"16:9\"}}', 1584350023, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码完毕', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584350023, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_user_click
@@ -1714,15 +1716,15 @@ CREATE TABLE `app_video_list`  (
   `status` tinyint(2) UNSIGNED DEFAULT 0 COMMENT '0 = 待转码   1=转码完成  2=转码异常',
   PRIMARY KEY (`vid`) USING BTREE,
   UNIQUE INDEX `title`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10084 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10088 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_video_list
 -- ----------------------------
-INSERT INTO `app_video_list` VALUES (10080, '【天然素人】缺少streams字段问题', NULL, NULL, NULL, NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584272865', 1, NULL, NULL, NULL, '', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '917141584272865211.mp4', 0);
-INSERT INTO `app_video_list` VALUES (10081, '人类下达的命令，AI会吗？', NULL, NULL, NULL, NULL, '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584272866', 1, NULL, NULL, NULL, '', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '957371584272866114.mp4', 0);
-INSERT INTO `app_video_list` VALUES (10082, '你被AI盯上了吗？', '/video/product/20200316/ut3qqnrc/360/ut3qqnrc.jpg', '/video/product/20200316/ut3qqnrc/360/ut3qqnrc.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/ut3qqnrc\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/你被AI盯上了吗？.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584272866', 1, NULL, NULL, '/video/product/20200316/ut3qqnrc/360/ut3qqnrc.mp4', 'ut3qqnrc.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '262411584272866724.mp4', 1);
-INSERT INTO `app_video_list` VALUES (10083, '转码变宽屏问题', NULL, NULL, NULL, NULL, '2', '/video/upload/转码变宽屏问题.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584272866', 1, NULL, NULL, NULL, '', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '467921584272866980.mp4', 0);
+INSERT INTO `app_video_list` VALUES (10084, '【天然素人】缺少streams字段问题', '', '', NULL, NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', NULL, '10026', '1', NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, NULL, '', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '949101584329219462.mp4', 0);
+INSERT INTO `app_video_list` VALUES (10085, '人类下达的命令，AI会吗？', '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.jpg', '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.mp4', 'u3XXhQ81.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '488021584329219921.mp4', 2);
+INSERT INTO `app_video_list` VALUES (10086, '你被AI盯上了吗？', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.jpg', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/6yMqQAVG\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/你被AI盯上了吗？.mp4', NULL, '0', '1', NULL, '10001,10002', 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.mp4', '6yMqQAVG.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '964971584329220123.mp4', 1);
+INSERT INTO `app_video_list` VALUES (10087, '转码变宽屏问题', NULL, NULL, NULL, NULL, '2', '/video/upload/转码变宽屏问题.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584329220', 1, NULL, NULL, NULL, '', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '883161584329220384.mp4', 0);
 
 -- ----------------------------
 -- Table structure for app_video_otype

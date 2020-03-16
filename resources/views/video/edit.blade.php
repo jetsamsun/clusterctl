@@ -83,7 +83,7 @@
             </div>
 
             <div class="layui-input-block" style="float: left;  @if(!$data['pic']) display:none; @endif">
-                <input type="text"  id="imgdemo" name="imgdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['pic']) {{$cfgs['site_url']}}{{$data['pic']}} @endif" readonly>
+                <input type="text"  id="imgdemo" name="imgdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['pic']) {{$cfgs['img_url']}}{{$data['pic']}} @endif" readonly>
                 <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
             </div>
 
@@ -108,7 +108,7 @@
             </div>
 
             <div class="layui-input-block" style="float: left; @if(!$data['pic']) display:none; @endif">
-                <input type="text" id="gifdemo" name="gifdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['gif']) {{$cfgs['site_url']}}{{$data['gif']}} @endif" readonly>
+                <input type="text" id="gifdemo" name="gifdemo" style="margin-left: -50px; margin-top: 10px; width: 600px; float: left" class="layui-input fuz" value="@if($data['gif']) {{$cfgs['img_url']}}{{$data['gif']}} @endif" readonly>
                 <button type="button" class="layui-btn" style="margin-top: 10px; margin-left: 10px; float: left" onclick="copyUrl(this)">复制</button>
             </div>
 
@@ -139,7 +139,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">下载地址：</label>
             <div class="layui-input-block">
-                <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if($data['video']) {{ $cfgs['site_url'] }}{{ $data['video'] }} @else {{ $cfgs['site_url'] }}{{ $data['url'] }} @endif" readonly>
+                <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if($data['video']) {{ $cfgs['m3u8_url'] }}{{ $data['video'] }} @else {{ $cfgs['m3u8_url'] }}{{ $data['url'] }} @endif" readonly>
                 <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
                 <div style="clear: left"></div>
             </div>
@@ -150,7 +150,7 @@
             <div class="layui-input-block">
                 @if(!empty($data['m3u8']))
                     @foreach($data['m3u8'] as $k=>$v)
-                        <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if(!empty($v)) {{$cfgs['site_url']}}{{ $v }} @else {{$k}}p[待切片] @endif" readonly>
+                        <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if(!empty($v)) {{$cfgs['m3u8_url']}}{{ $v }} @else {{$k}}p[待切片] @endif" readonly>
                         @if(!empty($v))
                             <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
                         @else
