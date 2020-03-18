@@ -139,8 +139,7 @@ class VideoController extends  ApiController{
                 if($res = VideoList::where('vid', $ids)->update($update)) {
                     TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录成功','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate))));
                 } else {
-                    $exp = true;
-                    TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录失败','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate,'update'=>$update))));
+                    TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'更新记录失败或记录无变化','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate,'update'=>$update))));
                 }
             } else {
                 $exp = true;

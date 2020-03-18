@@ -120,10 +120,10 @@
             <div class="layui-input-block">
                 @if($data['video'])
                     <span id="video">
-                    <video id="video-active" width="360" height="202" controls autoplay>
-                        <source src="{{ $data['video'] }}" type="video/mp4">
-                    </video>
-                </span>
+                        <video id="video-active" width="360" height="202" controls autoplay>
+                            <source src="{{ $data['video'] }}" type="video/mp4">
+                        </video>
+                    </span>
                     <button type="button" class="layui-btn" onclick="zt()">截图</button>
                     <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
                 @else
