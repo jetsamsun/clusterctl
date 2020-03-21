@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use app\Libs\Xyz;
 use App\Models\Config;
 use App\Models\ListOtype;
+use App\Models\M3u8List;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
 use App\Models\StarList;
@@ -220,14 +221,34 @@ class VideoController extends AdminController
 
         return view('video.add',compact('firstotype','secondotype','star','screen','tree'));
     }
+    public function cusm3u8url(Request $request,$vid) {
+        $data = $_POST;
+        M3u8List::where('vid',$vid)->delete();
+        foreach ($data as $v) {
+            if(strpos($v, 'http://')!==false) {
+                $bool = M3u8List::insertGetId(array('vid' => $vid, 'url' => trim($v)));
+                if(!$bool) {
+                    return response()->json(array('code' => 0, 'msg' => "保存失败"));
+                }
+            } else {
+                return response()->json(array('code' => 0, 'msg' => "部分地址不合法"));
+            }
+        }
+        return response()->json(array('code'=>1,'msg'=>"保存成功"));
+    }
+    public function delm3u8url(Request $request,$vid) {
+        $data = $_POST;
+        $bool = M3u8List::where('vid',$vid)->where('url',trim($data['url']))->delete();
+        return response()->json(array('code'=>1,'msg'=>"移除成功"));
+    }
     public function editvideo(Request $request,$vid){
-        if($request->isMethod('post')){
+        if($request->isMethod('post')) {
             $title = $request->input('title');
             $otype = $request->input('otype');
             $pic = $request->input('imgdemo');
             $gif = $request->input('gifdemo');
             $imgval_old = $request->input('imgval_old');
-            //$url = $request->input('filesval');
+            // $url = $request->input('filesval');
             $filesval_old = $request->input('filesval_old');
             $firstotype = $request->input('otype2');
             $secondotype = $request->input('otype3');
@@ -316,19 +337,33 @@ class VideoController extends AdminController
         $data['videotime'] = explode(':',$data['videotime']);
 
 
+        $str_ = array();
         if($data['m3u8']) {
             $str = array();
             $m3u8 = json_decode($data['m3u8']);
             $siteurl = Config::where('name','site_url')->value('value');
             foreach ($m3u8 as $k=>$v) {
                 $str[$k] = $v;
+                $str_[] = $siteurl.$v;
             }
             $data['m3u8'] = $str;
         }
 
+        $m3u8 = M3u8List::where('vid',$vid)->get()->toArray();
+        $m3u8items = [];
+        if($m3u8) {
+            foreach ($m3u8 as $v) {
+                if (in_array($v['url'], $str_)) {
+                    continue;
+                } else {
+                    $m3u8items[] = $v['url'];
+                }
+            }
+        }
+
         $cfgs = $this->cfgs;
 
-        return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype','tree','cfgs'));
+        return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype','tree','cfgs','m3u8items'));
     }
     public function transcode(Request $request,$vid){
         if($request->isMethod('post')){

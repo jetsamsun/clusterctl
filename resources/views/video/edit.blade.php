@@ -146,17 +146,30 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">m3u8地址：</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">m3u8地址<span><a href="javascript:void(0);" class="" onclick="addm3u8addr(this)">(+)</a></span>：</label>
+            <div class="layui-input-block m3u8items">
                 @if(!empty($data['m3u8']))
                     @foreach($data['m3u8'] as $k=>$v)
-                        <input type="text"  style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz" value="@if(!empty($v)) {{$cfgs['m3u8_url']}}{{ $v }} @else {{$k}}p[待切片] @endif" readonly>
-                        @if(!empty($v))
-                            <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
-                        @else
-                            <button type="button" class="layui-btn layui-btn-danger" data-rate="{{$k}}" style="margin-left: 7px; float: left" onclick="sliceup(this)">切片</button>
-                        @endif
-                        <div style="clear: left"></div>
+                        <div class="m3u8_item">
+                            <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="@if(!empty($v)) {{$cfgs['m3u8_url']}}{{ $v }} @else {{$k}}p[待切片] @endif" readonly>
+                            @if(!empty($v))
+                                <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
+                            @else
+                                <button type="button" class="layui-btn layui-btn-danger" data-rate="{{$k}}" style="margin-left: 7px; float: left" onclick="sliceup(this)">切片</button>
+                            @endif
+                            <div style="clear: left"></div>
+                        </div>
+                    @endforeach
+                @endif
+
+                @if(!empty($m3u8items))
+                    @foreach($m3u8items as $v)
+                        <div class="m3u8_item">
+                            <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="{{$v}}" placeholder="http://">
+                            <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="savem3u8url(this)">保存</button>
+                            <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="delm3u8url(this)">移除</button>
+                            <div style="clear: left"></div>
+                        </div>
                     @endforeach
                 @endif
             </div>
@@ -301,19 +314,44 @@
 
 @section('script')
 
-<script>
-    layui.use(['form'], function () {
-        var form = layui.form, $ = layui.$;
-        form.on('select(star)', function (data) {
-            console.log(data.elem); //得到select原始DOM对象
-            console.log(data.value); //得到被选中的值
-            console.log(data.othis); //得到美化后的DOM对象
-            console.log(data.current_value); //当前操作的值
-        });
-    });
-</script>
 
 <script>
+    function addm3u8addr(th) {
+        var htm = '                        <div class="m3u8_item">\n' +
+            '                               <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="" placeholder="http://">' +
+            '                               <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="savem3u8url(this)">保存</button>' +
+            '                               <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="delm3u8url(this)">移除</button>' +
+            '                               <div style="clear: left"></div>' +
+            '                              </div>';
+        $('.m3u8items').append(htm);
+    }
+
+    function delm3u8url(th) {
+        $(th).parent().remove();
+        $.post("{{url('admin/video/delm3u8url/'.$vid)}}",{url:$(th).prev().prev().val()},function (ret) {
+            if(ret.code === 1) {
+                layer.msg(ret.msg, {icon: 1, time: 1000});
+            } else {
+                layer.msg(ret.msg, {icon: 2, anim: 6, time: 1000});
+            }
+        },'json');
+    } 
+    
+    function savem3u8url(th) {
+        let data = {};
+        $('.m3u8css').each(function(i,n){
+            data[i] = $(n).val()
+        });
+
+        $.post("{{url('admin/video/cusm3u8url/'.$vid)}}",data,function (ret) {
+            if(ret.code === 1) {
+                layer.msg(ret.msg, {icon: 1, time: 1000});
+            } else {
+                layer.msg(ret.msg, {icon: 2, anim: 6, time: 1000});
+            }
+        },'json');
+    }
+
     //切片
     function sliceup(th) {
         $.post("{{url('admin/video/manualslice')}}",{src_path:"{{ $data['video'] }}",rate:$(th).data('rate'),ids:"{{$vid}}"},function (ret) {
