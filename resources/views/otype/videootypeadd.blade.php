@@ -4,7 +4,7 @@
         鉴于小伙伴的普遍反馈，先温馨提醒。
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>导航分类新增表单</legend>
+        <legend>新增表单</legend>
     </fieldset>
 
     <form class="layui-form" action="/admin/vidotype/addvideootype" method="post">
@@ -25,20 +25,23 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item">
-            <label class="layui-form-label">展示图</label>
-            <div class="layui-input-block">
-                <div class="col-lg-2">
-                    <span id="showimg">
-                    </span>
-                    <a href="javascript:;" id="img">
-                        <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
-                    </a>
+            <div class="layui-inline">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="sort" value="0"  autocomplete="off" placeholder="" class="layui-input">
                 </div>
-                <input type="hidden" name="imgval" id="imgval">
-                <p id="demoText"></p>
             </div>
         </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="标记如Hot" name="mark"  class="layui-textarea"></textarea>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>

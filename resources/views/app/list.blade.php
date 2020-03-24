@@ -4,7 +4,7 @@
         鉴于小伙伴的普遍反馈，先温馨提醒两个常见“问题”
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>内容列表</legend>
+        <legend>视频列表</legend>
     </fieldset>
     {{--<div class="demoTable">--}}
         {{--搜索ID：--}}
@@ -16,7 +16,7 @@
     <table class="layui-hide" lay-filter="demo" id="test"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
     </script>
 
     @section('script')
@@ -31,12 +31,23 @@
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'os',width:200, title: '手机'}
-                    ,{field:'bgpic',width:140, title: '背景图',templet: '<div><img src="@{{ d.bgpic  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'pic',width:140, title: '二维码',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'qrcode',width:140, title: '下载二维码',templet: '<div><img src="@{{ d.qrcode  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'url', width:250,title: 'URL地址'}
-                    ,{field:'text', width:350,title: '内容'}
+                    ,{field:'os',width:200, title: '标题'}
+                    ,{field:'pic',width:140, title: '封面图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
+                    ,{field:'text', width:140,title: '简介'}
+                    ,{field:'text', width:140,title: '标签'}
+                    ,{field:'url', width:140,title: '类型'}
+                    ,{field:'url', width:140,title: '从属分类'}
+                    ,{field:'url', width:140,title: '从属导演'}
+                    ,{field:'url', width:140,title: '从属演员'}
+                    ,{field:'url', width:140,title: '地区'}
+                    ,{field:'url', width:140,title: '年份'}
+                    ,{field:'url', width:140,title: 'IMDB'}
+                    ,{field:'url', width:140,title: '番号'}
+                    ,{field:'url', width:140,title: '评分'}
+                    ,{field:'url', width:140,title: '总集数'}
+                    ,{field:'url', width:140,title: '状态'}
+                    ,{field:'url', width:200,title: '创建时间'}
+                    ,{field:'url', width:200,title: '更新时间'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
                 ]]
             });

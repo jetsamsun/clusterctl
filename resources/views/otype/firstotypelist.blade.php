@@ -1,10 +1,10 @@
 @extends('layouts.layouts')
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
-        <a class="layui-btn layui-btn-sm layui-btn-primary" href="{{ url('/admin/firstotype/addfirstotype') }}" >新增</a>
+        <a class="layui-btn layui-btn-normal" href="{{ url('/admin/firstotype/addfirstotype') }}" >新增</a>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>导航分类列表</legend>
+        <legend>类型列表</legend>
     </fieldset>
     {{--<div class="demoTable">--}}
         {{--搜索ID：--}}
@@ -28,15 +28,16 @@
             table.render({
                 elem: '#test'
                 ,url:'/admin/firstotype/getFirstOtypeList'
+                ,width:430
                 ,page:false
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'otypename', width:150,title: '分类名称'}
+                    ,{field:'otypename', width:150,title: '类型名称'}
                     // ,{field:'otype', width:150,title: '分类'}
-                    ,{field:'title_data', title: '标题'}
-                    ,{field:'url_data', title: '安卓链接'}
-                    ,{field:'ios_url_data', title: 'ios链接'}
+                    // ,{field:'title_data', title: '标题'}
+                    // ,{field:'url_data', title: '安卓链接'}
+                    // ,{field:'ios_url_data', title: 'ios链接'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
                 ]]
             });

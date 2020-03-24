@@ -16,7 +16,7 @@
         <span>温馨提示，同一个文件不要同时转码多次。</span>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>视频列表</legend>
+        <legend>资源列表</legend>
     </fieldset>
     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
         搜索标题：

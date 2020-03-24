@@ -21,6 +21,7 @@
     use App\Http\Controllers\Admin;
     $menu = new Admin\MenuController();
     $menuList = $menu->getMenus(); // 获取菜单栏
+
         // 获取当前路由
         $path = \Illuminate\Support\Facades\Request::path();
         $mok = '/error';
@@ -30,7 +31,6 @@
                 $mok=$path['1'];
             }
         }
-
 ?>
 <body>
     <div class="layui-layout layui-layout-admin">

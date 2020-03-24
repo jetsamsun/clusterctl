@@ -146,7 +146,9 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">m3u8地址<span><a href="javascript:void(0);" class="" onclick="addm3u8addr(this)">(+)</a></span>：</label>
+            <label class="layui-form-label">m3u8地址<span>
+                    {{--<a href="javascript:void(0);" class="" onclick="addm3u8addr(this)">(+)</a></span>：--}}
+            </label>
             <div class="layui-input-block m3u8items">
                 @if(!empty($data['m3u8']))
                     @foreach($data['m3u8'] as $k=>$v)
@@ -175,7 +177,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="display: none;">
             <label class="layui-form-label"><font color="red">* </font>类型</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(1,$data['otype'])) checked @endif title="MV"  value="1" >
@@ -184,7 +186,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">导航分类</label>
+            <label class="layui-form-label">类型</label>
             <div class="layui-input-block">
                 @foreach($firstotype as $value)
                     <input type="checkbox" name="otype2[]" value="{{ $value['oid'] }}" @if( in_array( $value['oid'],$data['firstotype'] ) ) checked @endif  lay-skin="primary" title="{{ $value['otypename'] }}">
@@ -240,7 +242,7 @@
         </div>
 
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label">标签分类</label>
+            <label class="layui-form-label">筛选条件</label>
             <div class="layui-input-block">
                 <table class="layui-table">
                     <colgroup>

@@ -4,14 +4,14 @@
         <a class="layui-btn layui-btn-sm layui-btn-primary" href="javascript:history.back();" >返回</a>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>导航分类新增表单</legend>
+        <legend>新增表单</legend>
     </fieldset>
 
     <form class="layui-form" action="/admin/firstotype/addfirstotype" method="post">
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>分类名称</label>
+            <label class="layui-form-label"><font color="red">* </font>类型名称</label>
             <div class="layui-input-block">
-                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入类型名称" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" style="display: none">
@@ -24,7 +24,8 @@
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label">广告图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
@@ -40,7 +41,8 @@
                 </p>
             </div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" style="display: none">
             <table class="layui-table">
                 <thead>
                     <tr>
@@ -54,6 +56,7 @@
                 </tbody>
             </table>
         </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>

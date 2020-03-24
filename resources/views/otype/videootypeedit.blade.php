@@ -11,7 +11,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>分类名称</label>
             <div class="layui-input-block">
-                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input" value="{{ $data['otypename'] }}">
+                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input" value="{{ $data['Name'] }}">
             </div>
         </div>
         <div class="layui-form-item">
@@ -20,26 +20,24 @@
                 <select name="otype" lay-filter="myselect" >
                     <option value="0"></option>
                     @foreach($tree as $v)
-                        <option  value="{{$v['oid']}}" @if($data['otype']==$v['oid']) selected @endif>{{$v['html']}}{{$v['otypename']}}</option>
+                        <option  value="{{$v['oid']}}" @if($data['Pid']==$v['oid']) selected @endif>{{$v['html']}}{{$v['otypename']}}</option>
                     @endforeach
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">展示图</label>
-            <div class="layui-input-block">
-                <div class="col-lg-2">
-                    <span id="showimg">
-                        @if($data['pic'])
-                            <img style="width:55px;height:55px;" src="{{ $data['pic'] }}">
-                        @endif
-                    </span>
-                    <a href="javascript:;" id="img">
-                        <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
-                    </a>
+            <div class="layui-inline">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="sort" value="{{ $data['Sort'] }}"  autocomplete="off" placeholder="" class="layui-input">
                 </div>
-                <input type="hidden" name="imgval" id="imgval" value="{{ $data['pic'] }}">
-                <p id="demoText"></p>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="标记如Hot" name="mark"  class="layui-textarea">{{ $data['Mark'] }}</textarea>
             </div>
         </div>
         <div class="layui-form-item">

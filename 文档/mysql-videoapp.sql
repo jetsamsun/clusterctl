@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 16/03/2020 18:02:51
+ Date: 24/03/2020 22:07:52
 */
 
 SET NAMES utf8mb4;
@@ -192,19 +192,13 @@ CREATE TABLE `app_list_otype`  (
   `url_data` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `ios_url_data` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (`oid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10011 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic STORAGE DISK;
 
 -- ----------------------------
 -- Records of app_list_otype
 -- ----------------------------
-INSERT INTO `app_list_otype` VALUES (10001, 1, '最新', NULL, NULL, 1, NULL, NULL, 'drgsadf', '/assets/uploads/image/otype/2019/0307/1551907890541.jpg', '2', 'www.baidu.com', 'www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10002, 1, '排行', NULL, NULL, 1, NULL, NULL, '震惊，男子居然哭了', '/assets/uploads/image/otype/2019/0307/1551907967122.jpg', '2', 'www.baidu.com', 'www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10003, 1, '综艺', NULL, NULL, 1, NULL, NULL, '标题图片1,标题图片2', '/assets/uploads/image/otype/2018/1109/1541757207610.jpg,/assets/uploads/image/otype/2018/1109/1541757207610.jpg', '1,2', 'https://www.baidu.com,https://www.baidu.com', 'https://www.baidu.com,https://www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10004, 1, '独家', NULL, NULL, 1, NULL, NULL, '标题图片1,标题图片2', '/assets/uploads/image/otype/2018/1109/1541757207610.jpg,/assets/uploads/image/otype/2018/1109/1541757207610.jpg', '1,2', 'https://www.baidu.com,https://www.baidu.com', 'https://www.baidu.com,https://www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10005, 1, '热销', NULL, NULL, 1, NULL, NULL, '标题图片1,标题图片2', '/assets/uploads/image/otype/2018/1109/1541757207610.jpg,/assets/uploads/image/otype/2018/1109/1541757207610.jpg', '1,1', 'https://www.baidu.com,https://www.baidu.com', 'https://www.baidu.com,https://www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10006, 5, '最新', NULL, NULL, 1, NULL, NULL, '标题图片1,标题图片2', '/assets/uploads/image/otype/2018/1109/1541757207610.jpg,/assets/uploads/image/otype/2018/1109/1541757207610.jpg', '1,2', 'https://www.baidu.com,https://www.baidu.com', 'https://www.baidu.com,https://www.baidu.com');
-INSERT INTO `app_list_otype` VALUES (10009, 5, '推荐', NULL, NULL, 1, NULL, NULL, 'fdhxjtf', '', '', '7635687', '5473567');
-INSERT INTO `app_list_otype` VALUES (10010, 5, '力荐', NULL, NULL, 1, NULL, NULL, 'werf', '', '', 'http://clusterctl.xyz/admin/firstotype/editfirstotype/10010', 'http://clusterctl.xyz/admin/firstotype/editfirstotype/10010');
+INSERT INTO `app_list_otype` VALUES (1, 5, '电影', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `app_list_otype` VALUES (2, 5, '电视', NULL, NULL, 1, NULL, NULL, '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for app_login_logs
@@ -216,6 +210,185 @@ CREATE TABLE `app_login_logs`  (
   `logintime` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for app_m3u8_list
+-- ----------------------------
+DROP TABLE IF EXISTS `app_m3u8_list`;
+CREATE TABLE `app_m3u8_list`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `flag` tinyint(2) UNSIGNED DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `url`(`url`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10133 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_m3u8_list
+-- ----------------------------
+INSERT INTO `app_m3u8_list` VALUES (10132, '10085', 'http://clusterctl.xyz/video/product/20200316/u3XXhQ81/360/mmm.m3u8', 0);
+
+-- ----------------------------
+-- Table structure for app_media_actors
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_actors`;
+CREATE TABLE `app_media_actors`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '名字',
+  `English_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '英文名',
+  `Country` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '国际标准地区代码如CN,HK,TW',
+  `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '图片',
+  `Role` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_actors
+-- ----------------------------
+INSERT INTO `app_media_actors` VALUES (1, '成龙', '', 'CN', '/assets/uploads/image/star/2020/0228/1582874608391.png', '');
+INSERT INTO `app_media_actors` VALUES (2, '李连杰', NULL, 'CN', '/assets/uploads/image/star/2020/0228/1582874652317.png', '2');
+INSERT INTO `app_media_actors` VALUES (3, '周星驰', NULL, 'TW', '/assets/uploads/image/star/2020/0228/1582874690516.png', NULL);
+
+-- ----------------------------
+-- Table structure for app_media_cats
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_cats`;
+CREATE TABLE `app_media_cats`  (
+  `Id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Pid` int(10) NOT NULL DEFAULT 0 COMMENT '父分类',
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '名字',
+  `Sort` int(11) DEFAULT NULL COMMENT '排序',
+  `Mark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标记如Hot',
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_cats
+-- ----------------------------
+INSERT INTO `app_media_cats` VALUES (5, 0, '爱情片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (6, 5, '伦理片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (7, 0, '动作片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (8, 0, '科幻片', 1, 'hot');
+
+-- ----------------------------
+-- Table structure for app_media_country
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_country`;
+CREATE TABLE `app_media_country`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `code`(`Code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_country
+-- ----------------------------
+INSERT INTO `app_media_country` VALUES (1, 'CN', '中国大陆');
+INSERT INTO `app_media_country` VALUES (2, 'HK', '香港');
+INSERT INTO `app_media_country` VALUES (3, 'TW', '台湾');
+INSERT INTO `app_media_country` VALUES (4, 'JPN', '日本');
+INSERT INTO `app_media_country` VALUES (5, 'KOR', '韩国');
+
+-- ----------------------------
+-- Table structure for app_media_episodes
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_episodes`;
+CREATE TABLE `app_media_episodes`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `MId` int(11) NOT NULL DEFAULT 0 COMMENT '对应视频主体Id',
+  `Sid` int(11) DEFAULT 0 COMMENT '原始ID',
+  `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面图',
+  `Gif` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面动图',
+  `Episode` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '第几集',
+  `Season` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '第几季',
+  `Title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标题',
+  `Description` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '简介',
+  `Lang` char(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '语言',
+  `Code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '码率,360P,720P,1080P',
+  `Play_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '总播放时间',
+  `Play_node` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '关键结点,按秒数',
+  `Play_url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '播放地址',
+  `Source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '来源,如youtube',
+  `Create_time` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`Id`, `MId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_episodes
+-- ----------------------------
+INSERT INTO `app_media_episodes` VALUES (2, 1, 2, '0', '0', '2', '0', 'QQ视频12222', '123123123123', 'JA', '720P', '1:30:00', '', 'static.smartisanos.cn/common/video/t1-ui.mp4', '资源库1', 1581861015, 1581861015);
+INSERT INTO `app_media_episodes` VALUES (3, 1, 2, '0', '0', '1', '0', 'QQ视频12222', '123123123123', 'JA', '1080P', '1:30:00', '', 'static.smartisanos.cn/common/video/t1-ui.mp4', '资源库1', 1581861015, 1581861015);
+
+-- ----------------------------
+-- Table structure for app_media_movies
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_movies`;
+CREATE TABLE `app_media_movies`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Sid` int(11) NOT NULL DEFAULT 0 COMMENT '原始ID',
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标题',
+  `KeyWord` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '关键字',
+  `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面图',
+  `Image_big` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '封面大图',
+  `Episodes` int(4) NOT NULL DEFAULT 0 COMMENT '电视剧-总集数',
+  `Content` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '内容介绍',
+  `Mark` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `Year` char(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '年份',
+  `Country` char(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '地区代码',
+  `Status` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态（0完成，1连载中，2版权暂停，3人工暂停，4下架）',
+  `Cats` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '从属分类ID',
+  `Directors` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '从属导演ID',
+  `Actors` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '从属演员ID',
+  `Tags` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标签如制服,地铁',
+  `Type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '类型(未定0,电影1,电视2)',
+  `IMDB` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT 'IMDB',
+  `FH` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '日本番号',
+  `Score` float NOT NULL DEFAULT 0 COMMENT '评分',
+  `Preid` int(10) NOT NULL DEFAULT 0 COMMENT '上一部ID,如有多部',
+  `Create_time` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '最后更新时间',
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_movies
+-- ----------------------------
+INSERT INTO `app_media_movies` VALUES (1, 1, '测试名称', '测试关键字', 'asdasdasdasdasd', 'asdasdasdasdasda', 99, 'asdasdas', '测试备注13123czxczxczx123123123', '2020', 'TW', 0, '2', '1', '2', '1', 3, 'IMDB', 'FH111', 9.9, 0, 1581858565, 1581858707);
+
+-- ----------------------------
+-- Table structure for app_media_role
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_role`;
+CREATE TABLE `app_media_role`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_role
+-- ----------------------------
+INSERT INTO `app_media_role` VALUES (1, '导演');
+INSERT INTO `app_media_role` VALUES (2, '演员');
+
+-- ----------------------------
+-- Table structure for app_media_tags
+-- ----------------------------
+DROP TABLE IF EXISTS `app_media_tags`;
+CREATE TABLE `app_media_tags`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_media_tags
+-- ----------------------------
+INSERT INTO `app_media_tags` VALUES (2, '地铁');
 
 -- ----------------------------
 -- Table structure for app_menu_info
@@ -232,34 +405,34 @@ CREATE TABLE `app_menu_info`  (
   `is_show` int(2) DEFAULT 1,
   `is_visible` int(3) DEFAULT 1,
   PRIMARY KEY (`menuid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10024 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10025 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_menu_info
 -- ----------------------------
-INSERT INTO `app_menu_info` VALUES (10001, '视频管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10002, '视频列表', 'fa-circle-o', 10001, '/admin/video', NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10003, '视频新增', 'fa-circle-o', 10001, '/admin/addVideo', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10004, '明星管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10005, '明星列表', 'fa-circle-o', 10004, '/admin/star', NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10006, '新增明星', 'fa-circle-o', 10004, '/admin/addStar', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10001, '转码管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10002, '资源列表', 'fa-circle-o', 10001, '/admin/video', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10003, '转码队列', 'fa-circle-o', 10001, '/admin/transqueue', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10004, '明星管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10005, '视频列表', 'fa-circle-o', 10009, '/admin/media', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10006, '新增明星', 'fa-circle-o', 10009, '/admin/addStar', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10007, '用户管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10008, '用户列表', 'fa-circle-o', 10007, '/admin/user', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10009, '分类管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10010, '导航分类', 'fa-circle-o', 10009, '/admin/firstotype', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10009, '视频管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10010, '视频类型', 'fa-circle-o', 10009, '/admin/firstotype', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10011, '视频分类', 'fa-circle-o', 10009, '/admin/vidotype', NULL, 5, 1, 1);
-INSERT INTO `app_menu_info` VALUES (10012, '标签分类', 'fa-circle-o', 10009, '/admin/screenotype', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10012, '标签管理', 'fa-circle-o', 10009, '/admin/tags', NULL, 5, 1, 1);
 INSERT INTO `app_menu_info` VALUES (10013, '留言管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10014, '留言列表', 'fa-circle-o', 10013, '/admin/msg', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10015, '引导页内容管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10016, '内容列表', 'fa-circle-o', 10015, '/admin/app', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10017, '求片列表', 'fa-circle-o', 10013, '/admin/seek', NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10016, '明星列表', 'fa-circle-o', 10009, '/admin/star', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10017, '视频分类', 'fa-circle-o', 10009, '/admin/seek', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10018, '提现管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10019, '提现列表', 'fa-circle-o', 10018, '/admin/withdraw', NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10019, '视频类型', 'fa-circle-o', 10009, '/admin/withdraw', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10020, 'VIP金额', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10021, '更新VIP金额', 'fa-circle-o', 10020, '/admin/vip', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10022, '视频问题反馈', 'fa-circle-o', 10013, '/admin/trouble', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10023, '转码队列', 'fa-circle-o', 10001, '/admin/transqueue', NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10021, '标签管理', 'fa-circle-o', 10009, '/admin/vip', NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10022, '演员管理', 'fa-circle-o', 10009, '/admin/trouble', NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10024, '视频新增', 'fa-circle-o', 10001, '/admin/addVideo', NULL, 5, 0, 0);
 
 -- ----------------------------
 -- Table structure for app_msg_log
@@ -720,14 +893,12 @@ CREATE TABLE `app_screen_otype`  (
   `otypename` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '分类名称',
   `pid` int(6) DEFAULT 0,
   PRIMARY KEY (`oid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10043 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10049 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_screen_otype
 -- ----------------------------
-INSERT INTO `app_screen_otype` VALUES (10013, 5, '最新上架', 0);
-INSERT INTO `app_screen_otype` VALUES (10014, 5, '所有类别', 0);
-INSERT INTO `app_screen_otype` VALUES (10017, 10, '所有地区', 0);
+INSERT INTO `app_screen_otype` VALUES (10013, 5, '标签', 0);
 INSERT INTO `app_screen_otype` VALUES (10018, 1, '销量最多', 10011);
 INSERT INTO `app_screen_otype` VALUES (10019, 1, 'A', 10012);
 INSERT INTO `app_screen_otype` VALUES (10020, 1, 'C', 10012);
@@ -746,8 +917,13 @@ INSERT INTO `app_screen_otype` VALUES (10036, 5, '1MV', 10035);
 INSERT INTO `app_screen_otype` VALUES (10038, 10, '11', 10037);
 INSERT INTO `app_screen_otype` VALUES (10039, 10, '22', 10037);
 INSERT INTO `app_screen_otype` VALUES (10040, 5, '热门', 10013);
-INSERT INTO `app_screen_otype` VALUES (10041, 10, '测试x', 0);
 INSERT INTO `app_screen_otype` VALUES (10042, 10, '546457', 10041);
+INSERT INTO `app_screen_otype` VALUES (10043, 10, '地区', 0);
+INSERT INTO `app_screen_otype` VALUES (10044, 10, '日本', 10043);
+INSERT INTO `app_screen_otype` VALUES (10045, 10, '韩国', 10043);
+INSERT INTO `app_screen_otype` VALUES (10046, 10, '大陆', 10043);
+INSERT INTO `app_screen_otype` VALUES (10047, 10, '台湾', 10043);
+INSERT INTO `app_screen_otype` VALUES (10048, 10, '欧美', 10043);
 
 -- ----------------------------
 -- Table structure for app_seek_video
@@ -880,14 +1056,21 @@ CREATE TABLE `app_trans_log`  (
 -- ----------------------------
 -- Records of app_trans_log
 -- ----------------------------
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码准备', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584349998, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在转码', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\"}', 1584349998, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350022, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在切片', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '切片成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '拼接m3u8 json数据', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584350023, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '更新记录失败', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"update\":{\"m3u8\":\"{\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200316\\\\\\/u3XXhQ81\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"gif\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"video\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"status\":3,\"nickname\":\"u3XXhQ81.mp4\",\"size\":\"31391061\",\"width\":1280,\"height\":720,\"bit_rate\":\"1215059\",\"duration\":\"206.640000\",\"audio\":\"aac\",\"vcode\":\"h264\",\"acode\":\"aac\",\"ext\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"dis_ratio\":\"16:9\"}}', 1584350023, NULL, NULL, NULL);
-INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码完毕', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1584350023, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码准备', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\",\"6\":\"240p\\uff1a426x240\"}}', 1584952599, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在转码', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\"}', 1584952599, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584952623, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在切片', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584952623, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '切片成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584952624, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '拼接m3u8 json数据', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1584952624, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '更新记录失败或记录无变化', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"update\":{\"m3u8\":\"{\\\"360\\\":\\\"\\\\\\/video\\\\\\/product\\\\\\/20200316\\\\\\/u3XXhQ81\\\\\\/360\\\\\\/mmm.m3u8\\\"}\",\"pic\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.jpg\",\"gif\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.gif\",\"video\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/u3XXhQ81.mp4\",\"status\":3,\"nickname\":\"u3XXhQ81.mp4\",\"size\":\"31391061\",\"width\":1280,\"height\":720,\"bit_rate\":\"1215059\",\"duration\":\"206.640000\",\"audio\":\"aac\",\"vcode\":\"h264\",\"acode\":\"aac\",\"ext\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"dis_ratio\":\"16:9\"}}', 1584952624, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在转码', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/u3XXhQ81.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/u3XXhQ81.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/u3XXhQ81.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\"}', 1584952624, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952644, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '正在切片', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952644, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '切片成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952644, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '删除转码文件', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952644, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '拼接m3u8 json数据', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952645, '20200316', '10085', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '更新记录成功', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1584952645, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('u3XXhQ81', '转码完毕', '{\"ids\":\"10085\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\",\"6\":\"240p\\uff1a426x240\"}}', 1584952645, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_user_click
@@ -1721,10 +1904,10 @@ CREATE TABLE `app_video_list`  (
 -- ----------------------------
 -- Records of app_video_list
 -- ----------------------------
-INSERT INTO `app_video_list` VALUES (10084, '【天然素人】缺少streams字段问题', '', '', NULL, NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', NULL, '10026', '1', NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, NULL, '', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '949101584329219462.mp4', 0);
-INSERT INTO `app_video_list` VALUES (10085, '人类下达的命令，AI会吗？', '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.jpg', '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.mp4', 'u3XXhQ81.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '488021584329219921.mp4', 2);
-INSERT INTO `app_video_list` VALUES (10086, '你被AI盯上了吗？', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.jpg', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/6yMqQAVG\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/你被AI盯上了吗？.mp4', NULL, '0', '1', NULL, '10001,10002', 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.mp4', '6yMqQAVG.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '964971584329220123.mp4', 1);
-INSERT INTO `app_video_list` VALUES (10087, '转码变宽屏问题', NULL, NULL, NULL, NULL, '2', '/video/upload/转码变宽屏问题.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584329220', 1, NULL, NULL, NULL, '', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '883161584329220384.mp4', 0);
+INSERT INTO `app_video_list` VALUES (10084, '【天然素人】缺少streams字段问题', '/video/product/20200323/8CjSJNGD/360/8CjSJNGD.jpg', '/video/product/20200323/8CjSJNGD/360/8CjSJNGD.gif', '{\"360\":\"\\/video\\/product\\/20200323\\/8CjSJNGD\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', '10003', '10026', '1', NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200323/8CjSJNGD/360/8CjSJNGD.mp4', '8CjSJNGD.mp4', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '949101584329219462.mp4', 1);
+INSERT INTO `app_video_list` VALUES (10085, '人类下达的命令，AI会吗？', '/video/product/20200316/u3XXhQ81/240/u3XXhQ81.jpg', '/video/product/20200316/u3XXhQ81/240/u3XXhQ81.gif', '{\"240\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '10003', '10026', '1', NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.mp4', 'u3XXhQ81.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '488021584329219921.mp4', 1);
+INSERT INTO `app_video_list` VALUES (10086, '你被AI盯上了吗？', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.jpg', '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/6yMqQAVG\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/你被AI盯上了吗？.mp4', NULL, '10024', '1', NULL, '10001,10002', 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/6yMqQAVG/360/6yMqQAVG.mp4', '6yMqQAVG.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '964971584329220123.mp4', 1);
+INSERT INTO `app_video_list` VALUES (10087, '转码变宽屏问题', '/video/product/20200316/tSgffoSB/360/tSgffoSB.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/tSgffoSB\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/转码变宽屏问题.mp4', '0', '0', '1', '0', NULL, 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/tSgffoSB/360/tSgffoSB.mp4', 'tSgffoSB.mp4', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '883161584329220384.mp4', 1);
 
 -- ----------------------------
 -- Table structure for app_video_otype

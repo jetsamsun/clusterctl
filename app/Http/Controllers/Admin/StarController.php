@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use App\Models\MediaActors;
+use App\Models\MediaCountry;
+use App\Models\MediaRole;
 use App\Models\ScreenOtype;
 use App\Models\StarList;
 use Illuminate\Http\Request;
@@ -16,14 +19,15 @@ class StarController extends AdminController
     public function getStarList(Request $request){
         $limit = $request->input('limit');
         $uname = $request->input('uname');
-        $count = StarList::select('sid');
+        $count = MediaActors::select('Id');
         if($uname){
-            $count = $count->where('uname','like','%'.$uname.'%');
+            $count = $count->where('Name','like','%'.$uname.'%')->orWhere('English_name','like','%'.$uname.'%');
         }
         $count = $count->count();
-        $dataTmp = StarList::select('sid','uname','pic','screenotype');
+
+        $dataTmp = MediaActors::select('*');
         if($uname){
-            $dataTmp = $dataTmp->where('uname','like','%'.$uname.'%');
+            $dataTmp = $dataTmp->where('Name','like','%'.$uname.'%')->orWhere('English_name','like','%'.$uname.'%');
         }
         $dataTmp = $dataTmp->paginate($limit);
 
@@ -32,29 +36,38 @@ class StarController extends AdminController
             $dataTmp = $dataTmp['data'];
 
             foreach($dataTmp as $key=>$value){
-                if($value['screenotype']){
-                    $dataTmp[$key]['screenotype'] = $this->getscreenotype($value['screenotype']);
-                }else{
-                    $dataTmp[$key]['screenotype'] = "";
+                $dataTmp[$key]['Country'] = MediaCountry::where('Code', $value['Country'])->value('Name');
+
+                if($value['Role']) {
+                    $rolestr = '';
+                    $roles = explode(',', $value['Role']);
+                    foreach ($roles as  $v) {
+                        $name = MediaRole::where('Id',$v)->value('Name');
+                        if($rolestr) $rolestr = $rolestr.','.$name;
+                        else $rolestr = $name;
+                    }
+                    $dataTmp[$key]['Role'] = $rolestr;
                 }
             }
         }
+
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
     public function addStar(Request $request){
         if($request->isMethod('post')){
             $uname = $request->input('uname');
+            $uname_en = $request->input('uname_en');
             $pic = $request->input('imgval');
-            $screen = $request->input('screen');
+            $role = $request->input('role');
+            $country = $request->input('country');
 
-            if($screen) {
-                // 排序后  ,拼接 筛选条件+明星
-                sort($screen);
-                $screen = implode(',', $screen);
+            if(!empty($role) && is_array($role)) {
+                sort($role);
+                $role = implode(',', $role);
             }
 
-            $reg = DB::table('star_list')->insert(array(
-                'uname'=>$uname, 'screenotype'=>$screen,'pic'=>$pic
+            $reg = DB::table('media_actors')->insert(array(
+                'Name'=> $uname, 'English_name'=> $uname_en, 'Country'=> $country, 'Image'=> $pic, 'Role'=>$role
             ));
 
             if($reg){
@@ -63,29 +76,27 @@ class StarController extends AdminController
                 return response()->json(array('code'=>0,'msg'=>"新增失败"));
             }
         }
-        // 筛选条件
-        $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype',1)->get()->toArray();
-        foreach($screen as $key=>$value){
-            $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
-            $screen[$key]['son'] = $son;
-        }
 
-        return view('star.add',compact('screen'));
+        $country = MediaCountry::get()->toArray();
+        $role = MediaRole::get()->toArray();
+
+        return view('star.add',compact('country','role'));
     }
     public function editstar(Request $request,$sid){
         if($request->isMethod('post')){
             $uname = $request->input('uname');
+            $uname_en = $request->input('uname_en');
             $pic = $request->input('imgval');
-            $screen = $request->input('screen');
+            $role = $request->input('role');
+            $country = $request->input('country');
 
-            if($screen) {
-                // 排序后  ,拼接 筛选条件+明星
-                sort($screen);
-                $screen = implode(',', $screen);
+            if(!empty($role) && is_array($role)) {
+                sort($role);
+                $role = implode(',', $role);
             }
 
-            $reg = DB::table('star_list')->where('sid',$sid)->update(array(
-                'uname'=>$uname, 'screenotype'=>$screen,'pic'=>$pic
+            $reg = DB::table('media_actors')->where('Id',$sid)->update(array(
+                'Name'=> $uname, 'English_name'=> $uname_en, 'Country'=> $country, 'Image'=> $pic, 'Role'=>$role
             ));
 
             if($reg){
@@ -94,20 +105,16 @@ class StarController extends AdminController
                 return response()->json(array('code'=>0,'msg'=>"编辑失败"));
             }
         }
-        // 筛选条件
-        $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype',1)->get()->toArray();
-        foreach($screen as $key=>$value){
-            $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
-            $screen[$key]['son'] = $son;
-        }
-        $data = StarList::select('*')->where('sid',$sid)->first()->toArray();
-        $data['screenotype'] = explode(',',$data['screenotype']); // 筛选条件
 
-        return view('star.edit',compact('sid','data','screen'));
+        $country = MediaCountry::get()->toArray();
+        $role = MediaRole::get()->toArray();
+        $data = MediaActors::select('*')->where('Id',$sid)->first()->toArray();
+
+        return view('star.edit',compact('sid','country','role','data'));
     }
     public function delstar(Request $request){
         $sid = $request->input('sid');
-        $reg = DB::table('star_list')->where('sid',$sid)->delete();
+        $reg = DB::table('media_actors')->where('Id',$sid)->delete();
         if($reg){
             return response()->json(array('status'=>1));
         }else{

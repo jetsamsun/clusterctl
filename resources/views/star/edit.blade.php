@@ -11,51 +11,56 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>明星名称</label>
             <div class="layui-input-block">
-                <input type="text" name="uname" lay-verify="required" autocomplete="off" placeholder="请输入明星名称" class="layui-input" value="{{ $data['uname'] }}">
+                <input type="text" name="uname" autocomplete="off" placeholder="请输入明星名称" class="layui-input" value="{{ $data['Name'] }}">
             </div>
         </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">外文名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="uname_en" autocomplete="off" placeholder="请输入英文名称" class="layui-input" value="{{ $data['English_name'] }}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+                @foreach($role as $v)
+                    <input type="checkbox" name="role[]" value="{{ $v['Id'] }}"  @if(strpos($data['Role'],strval($v['Id'])) !== false) checked  @endif  lay-skin="primary" title="{{ $v['Name'] }}">
+                @endforeach
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>头像</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
                     <span id="showimg">
-                        @if($data['pic'])
-                            <img style="width:55px;height:55px;" src="{{ $data['pic'] }}">
+                        @if($data['Image'])
+                            <img style="width:55px;height:55px;" src="{{ $data['Image'] }}">
                         @endif
                     </span>
                     <a href="javascript:;" id="img">
                         <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
                     </a>
                 </div>
-                <input type="hidden" lay-verify="required" name="imgval" id="imgval" value="{{ $data['pic'] }}">
+                <input type="hidden" name="imgval" id="imgval" value="{{ $data['Image'] }}">
                 <p id="demoText"></p>
             </div>
         </div>
 
-        <div class="layui-form-item" pane="" style="display: none">
-            <label class="layui-form-label"><font color="red">* </font>筛选条件</label>
+        <div class="layui-form-item">
+            <label class="layui-form-label">国家/地区</label>
             <div class="layui-input-block">
-                <table class="layui-table">
-                    <colgroup>
-                        <col width="100">
-                        <col>
-                    </colgroup>
-                    <tbody>
-                    @foreach($screen as $value)
-                    <tr>
-                        <td>{{ $value['otypename'] }}</td>
-                        <td>
-                        @foreach($value['son'] as $v)
-                            <input type="checkbox" @if(in_array($v['oid'],$data['screenotype'])) checked @endif name="screen[]" value="{{ $v['oid'] }}" lay-verify="required"  lay-skin="primary" title="{{ $v['otypename'] }}">
-                        @endforeach
-                        </td>
-                    </tr>
+                <select name="country" lay-filter="myselect" >
+                    <option value=""></option>
+                    @foreach($country as $v)
+                        <option  value="{{$v['Code']}}" @if($data['Country']==$v['Code']) selected @endif>{{$v['Name']}}</option>
                     @endforeach
-                    </tbody>
-                </table>
-
+                </select>
             </div>
         </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>

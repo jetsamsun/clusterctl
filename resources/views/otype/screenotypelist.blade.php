@@ -4,7 +4,7 @@
         <a class="layui-btn layui-btn-normal" href="{{ url('/admin/screenotype/addscreenotype') }}" >新增</a>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>标签分类列表</legend>
+        <legend>筛选条件列表</legend>
     </fieldset>
     {{--<div class="demoTable">--}}
         {{--搜索ID：--}}

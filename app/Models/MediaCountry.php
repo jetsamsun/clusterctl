@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Config extends Model
+class MediaCountry extends Model
 {
     //
-    public $table='config';//这样寻找的就是没s的表
+    public $table='media_country';//这样寻找的就是没s的表
     public $timestamps = false;
     //protected $primaryKey = 'id';
 }

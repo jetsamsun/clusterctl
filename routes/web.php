@@ -71,6 +71,13 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('user/vip', 'UserController@vip');
     Route::any('user/tuiguang', 'UserController@tuiguang');
 
+    // 标签
+    Route::any('tags', 'OtypeController@tags');
+    Route::any('getTagsList', 'OtypeController@getTagsList');
+    Route::any('addtags', 'OtypeController@addtags');
+    Route::any('deltags', 'OtypeController@deltags');
+    Route::any('edittags/{id}', 'OtypeController@edittags');
+
     // 分类
     Route::any('firstotype', 'OtypeController@firstotype');
     Route::any('firstotype/getFirstOtypeList', 'OtypeController@getFirstOtypeList');
@@ -136,7 +143,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('advert/editAdvert/{id}', 'AdvertController@editAdvert');
     Route::any('advert/delAdvert', 'AdvertController@delAdvert');
 
-    // 临时测试
-    Route::any('video2', 'Video2Controller@video');
-    Route::any('video2/getVideoList', 'Video2Controller@getVideoList');
+    // 站点视频
+    Route::any('media', 'MediaController@media');
+    Route::any('media/getMediaList', 'MediaController@getMediaList');
 });

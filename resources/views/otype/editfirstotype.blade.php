@@ -4,27 +4,29 @@
         鉴于小伙伴的普遍反馈，先温馨提醒。
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>视频编辑表单</legend>
+        <legend>编辑表单</legend>
     </fieldset>
 
     <form class="layui-form" action="{{ url('/admin/firstotype/editfirstotype/'.$oid) }}" method="post">
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>分类名称</label>
+            <label class="layui-form-label"><font color="red">* </font>类型名称</label>
             <div class="layui-input-block">
-                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input" value="{{ $data['otypename'] }}">
+                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入类型名称" class="layui-input" value="{{ $data['otypename'] }}">
             </div>
         </div>
+
         <div class="layui-form-item" style="display: none">
             <label class="layui-form-label"><font color="red">* </font>视频分类</label>
             <div class="layui-input-block">
-                <select name="otype" lay-filter="myselect"  lay-verify="required">
+                <select name="otype" lay-filter="myselect" >
                     <option value=""></option>
                     <option @if($data['otype']==1) selected @endif value="1">MV</option>
                     <option @if($data['otype']==5) selected @endif value="5">视频</option>
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label">广告图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
@@ -49,7 +51,8 @@
                 </p>
             </div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" style="display: none">
             <table class="layui-table">
                 <thead>
                 <tr>
@@ -70,10 +73,10 @@
                                     <input type="number" name="urlotype[]" value="{{ $data['urlotype_data'][$key] }}" autocomplete="off" class="layui-input">
                                 </td>
                                 <td>
-                                    <input type="text" name="url[]" value="{{ $data['url_data'][$key] }}" lay-verify="required" autocomplete="off" placeholder="请输入安卓链接" class="layui-input">
+                                    <input type="text" name="url[]" value="{{ $data['url_data'][$key] }}"  autocomplete="off" placeholder="请输入安卓链接" class="layui-input">
                                 </td>
                                 <td>
-                                    <input type="text" name="ios_url[]" value="{{ $data['ios_url_data'][$key] }}" lay-verify="required" autocomplete="off" placeholder="请输入ios链接" class="layui-input">
+                                    <input type="text" name="ios_url[]" value="{{ $data['ios_url_data'][$key] }}"  autocomplete="off" placeholder="请输入ios链接" class="layui-input">
                                 </td>
                             </tr>
                         @endforeach
@@ -135,10 +138,10 @@
                                 '<input type="number" name="urlotype[]" autocomplete="off" class="layui-input">'+
                                 '</td>' +
                                 '<td>' +
-                                '<input type="text" name="url[]" lay-verify="required" autocomplete="off" placeholder="请输入安卓链接" class="layui-input">' +
+                                '<input type="text" name="url[]"  autocomplete="off" placeholder="请输入安卓链接" class="layui-input">' +
                                 '</td>' +
                                 '<td>' +
-                                '<input type="text" name="ios_url[]" lay-verify="required" autocomplete="off" placeholder="请输入ios链接" class="layui-input">' +
+                                '<input type="text" name="ios_url[]"  autocomplete="off" placeholder="请输入ios链接" class="layui-input">' +
                                 '</td></tr>');
                         i++;
                         count++;
