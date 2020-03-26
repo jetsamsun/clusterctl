@@ -25,8 +25,8 @@
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
         <button class="layui-btn" id="transcode">转码</button>
+        <button class="layui-btn" id="sync">同步</button>
         <button class="layui-btn layui-btn-danger" id="dels">删除</button>
-        {{--<button class="layui-btn" id="transfer">同步</button>--}}
     </div>
 
     <table class="layui-hide" lay-filter="demo" id="test"></table>
@@ -38,6 +38,7 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="transcode">转码</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="sync">同步</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 @endsection
@@ -93,29 +94,28 @@
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'vid', width:80, title: 'ID', sort: true, fixed: 'left'}
                     ,{field:'title',width:200, title: '标题'}
-                    ,{field:'status_txt',width:100, title: '是否转码'}
+                    ,{field:'status_txt',width:100, title: '状态'}
                     ,{field:'pic',width:100, title: '封面图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
                     ,{field:'gif',width:100, title: '动态图',templet: '<div><img src="@{{ d.gif  }}" width="30px" height="40px" ></div>'}
 
                     ,{field:'url', width:400,title: '源文件'}
                     ,{field:'src_bit', width:100,title: '源视频大小'}
-                    ,{field:'src_size', width:100,title: '源文件尺寸'}
-                    ,{field:'videotime', width:100,title: '视频时长'}
-                    ,{field:'ext', width:200,title: '格式'}
+                    ,{field:'src_size', width:130,title: '源文件尺寸'}
+                    ,{field:'videotime', width:130,title: '视频时长'}
+                    ,{field:'ext', width:250,title: '格式'}
                     ,{field:'src_rate', width:100,title: '源码率'}
                     ,{field:'vcode', width:100,title: '编码'}
                     ,{field:'acode', width:100,title: '音频'}
                     ,{field:'dis_ratio', width:100,title: '显示比例'}
-                    ,{field:'video', width:400,title: '目标文件'}
+                    ,{field:'video', width:450,title: '目标文件'}
 
-                    ,{field:'otype', width:150,title: '类型'}
-                    ,{field:'firstotype',width:150, title: '导航分类'}
+                    ,{field:'firstotype',width:150, title: '类型'}
                     ,{field:'secondotype',width:150,  title: '视频分类'}
-                    ,{field:'screenotype',width:200,  title: '筛选条件'}
-                    ,{field:'star',width:200, title: '参演明星'}
+                    ,{field:'tags',width:200,  title: '标签'}
+                    ,{field:'star',width:200, title: '从属演员'}
                     ,{field:'hotcount', title:'视频热度', width:100}
                     ,{field:'createtime', title:'加入时间', width:200}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:230}
                 ]]
             });
             //搜索
@@ -132,7 +132,7 @@
                     where: {title: title}
                 });
             });
-            //复选
+            //批量转码
             $('#transcode').on('click',function () {
                 let vid = '';
                 let obj = table.checkStatus('test').data;
@@ -142,6 +142,15 @@
                     } else {
                         vid = vid+'_'+obj[i].vid;
                     }
+
+                    if(obj[i].url == '(已删除)') {
+                        layer.msg('['+obj[i].vid+'] 源文件已删除', {icon: 2, anim: 6, time: 1000});
+                        return ;
+                    }
+                }
+                if(!vid) {
+                    layer.msg('请选择所要转码的项', {icon: 2, anim: 6, time: 1000});
+                    return ;
                 }
                 window.location.href = "/admin/video/transcode/"+vid;
             });
@@ -157,7 +166,12 @@
                     }
                 }
 
-                layer.confirm('操作也将删除文件，确认删除吗?', function(index){
+                if(!vid) {
+                    layer.msg('请选择所要删除的项', {icon: 2, anim: 6, time: 1000});
+                    return ;
+                }
+
+                layer.confirm('操作也将删除相应文件，确认删除吗?', function(index){
                     $.post("{{url('admin/video/delsvideo')}}",{ids:vid},function (ret) {
                         if(ret.code===1) {
                             layer.msg(ret.msg, {icon: 1, time: 1000},function () {
@@ -170,6 +184,24 @@
                     layer.close(index);
                 });
             });
+            //批量同步
+            $('#sync').on('click',function () {
+                let vid = '';
+                let obj = table.checkStatus('test').data;
+                for(let i=0; i<obj.length; i++) {
+                    if(i===0) {
+                        vid = obj[i].vid;
+                    } else {
+                        vid = vid+'_'+obj[i].vid;
+                    }
+                }
+                if(!vid) {
+                    layer.msg('请选择所要同步的项', {icon: 2, anim: 6, time: 1000});
+                    return ;
+                }
+                window.location.href = "/admin/video/sync/"+vid;
+            });
+
             //监听锁定操作
             form.on('checkbox(is_free)', function(obj){
                 //layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
@@ -196,7 +228,7 @@
                 if(obj.event === 'detail'){
                     layer.msg('ID：'+ data.id + ' 的查看操作');
                 } else if(obj.event === 'del'){
-                    layer.confirm('操作也将删除文件，确认删除吗?', function(index){
+                    layer.confirm('操作也将删除相应文件，确认删除吗?', function(index){
                         //obj.del();
                         $.ajax({
                             type: "POST", url: "/admin/video/delvideo",
@@ -221,9 +253,15 @@
                     vid = data.vid;
                     window.location.href = "/admin/video/editvideo/"+vid;
                 } else if(obj.event === 'transcode'){
-                    //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                    if(data.url == '(已删除)') {
+                        layer.msg('源文件已删除', {icon: 2, anim: 6, time: 1000});
+                        return ;
+                    }
                     vid = data.vid;
                     window.location.href = "/admin/video/transcode/"+vid;
+                } else if(obj.event === 'sync'){
+                    vid = data.vid;
+                    window.location.href = "/admin/video/sync/"+vid;
                 }
             });
         });

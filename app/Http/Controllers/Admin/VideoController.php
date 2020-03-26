@@ -7,6 +7,12 @@ use app\Libs\Xyz;
 use App\Models\Config;
 use App\Models\ListOtype;
 use App\Models\M3u8List;
+use App\Models\MediaActors;
+use App\Models\MediaCats;
+use App\Models\MediaCountry;
+use App\Models\MediaEpisodes;
+use App\Models\MediaMovies;
+use App\Models\MediaTags;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
 use App\Models\StarList;
@@ -143,10 +149,12 @@ class VideoController extends AdminController
                 $dataTmp[$key]['firstotype'] = $this->getfirstotype($value['firstotype']);
                 $dataTmp[$key]['secondotype'] = $this->getsecondotype($value['secondotype']);
                 $dataTmp[$key]['screenotype'] = $this->getscreenotype($value['screenotype']);
+                $dataTmp[$key]['tags'] = $this->getTags($value['tags']);
                 $dataTmp[$key]['star'] = $this->getStarName($value['star']);
                 $dataTmp[$key]['createtime'] = date('Y-m-d H:i:s',$value['createtime']);
             }
         }
+
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
 
@@ -201,14 +209,14 @@ class VideoController extends AdminController
 
             if($reg){
                 return response()->json(array('code'=>1,'msg'=>"新增成功"));
-            }else{
+            } else {
                 return response()->json(array('code'=>0,'msg'=>"新增失败"));
             }
         }
         // 导航分类
         $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
         // 视频分类
-        $secondotype = VideoOtype::select('*')->get()->toArray();
+        $secondotype = MediaCats::select('*')->get()->toArray();
         $tree = getTree($secondotype);
         // 筛选条件
         $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
@@ -252,13 +260,17 @@ class VideoController extends AdminController
             $filesval_old = $request->input('filesval_old');
             $firstotype = $request->input('otype2');
             $secondotype = $request->input('otype3');
+            $country = $request->input('country');
             $secondbestotype = $request->input('secondbestotype');
             $hotcount = $request->input('hotcount');
             $designation = $request->input('designation');
+            $year = $request->input('year');
             $imdb = $request->input('imdb');
             $score = $request->input('score');
             $screen = $request->input('screen');
+            $tags = $request->input('tags');
             $star = $request->input('star');
+            $director = $request->input('director');
             $content = $request->input('content');
             $play_urls = $request->input('play_urls');
             $download_urls = $request->input('download_urls');
@@ -267,6 +279,7 @@ class VideoController extends AdminController
             if(!empty($otype) && is_array($otype)) $otype = implode(',',$otype);
             if(!empty($firstotype) && is_array($firstotype))  $firstotype = implode(',',$firstotype);
             if(!empty($secondotype) && is_array($secondotype))  $secondotype = implode(',',$secondotype);
+            if(!empty($country) && is_array($country))  $country = implode(',',$country);
             if(!empty($secondbestotype) && is_array($secondbestotype))  $secondbestotype = implode(',',$secondbestotype);
 
 
@@ -284,9 +297,17 @@ class VideoController extends AdminController
                 sort($screen);
                 $screen = implode(',', $screen);
             }
+            if(!empty($director) && is_array($director)) {
+                sort($director);
+                $director = implode(',', $director);
+            }
             if(!empty($star) && is_array($star)) {
                 sort($star);
                 $star = implode(',', $star);
+            }
+            if(!empty($tags) && is_array($tags)) {
+                sort($tags);
+                $tags = implode(',', $tags);
             }
 
 
@@ -294,7 +315,7 @@ class VideoController extends AdminController
                 'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
                 'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,
                 'designation'=>$designation,'imdb'=>$imdb,'score'=>$score,
-                'screenotype'=>$screen,'star'=>$star,'content'=>$content,
+                'screenotype'=>$screen,'country'=>$country,'year'=>$year,'director'=>$director,'star'=>$star,'tags'=>$tags,'content'=>$content,
                 'pic'=>$pic,'gif'=>$gif,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
             ));
 //            if($pic != $imgval_old){
@@ -316,7 +337,7 @@ class VideoController extends AdminController
         // 导航分类
         $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
         // 视频分类
-        $secondotype = VideoOtype::select('*')->get()->toArray();
+        $secondotype = MediaCats::select('*')->get()->toArray();
         $tree = getTree($secondotype);
         // 筛选条件
         $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
@@ -324,16 +345,25 @@ class VideoController extends AdminController
             $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
             $screen[$key]['son'] = $son;
         }
+        //标签
+        $tags = MediaTags::get()->toArray();
         // 明星列表
-        $star =  StarList::select('sid','uname')->get()->toArray();
+        $star =  MediaActors::select('*')->where("Role",'like','%'.'2'.'%')->get()->toArray();
+        $director =  MediaActors::select('*')->where("Role",'like','%'.'1'.'%')->get()->toArray();
         $data = VideoList::select('*')->where('vid',$vid)->first()->toArray();
+        //国家/地区
+        $country = MediaCountry::get()->toArray();
+
 
         $data['otype'] = explode(',',$data['otype']);
         $data['firstotype'] = explode(',',$data['firstotype']);
         $data['secondotype'] = explode(',',$data['secondotype']);
+        $data['country'] = explode(',',$data['country']);
         $data['secondbestotype'] = explode(',',$data['secondbestotype']);
         $data['screenotype'] = explode(',',$data['screenotype']); // 筛选条件
         $data['star'] = explode(',',$data['star']);           // 明星
+        $data['tags'] = explode(',',$data['tags']);
+        $data['director'] = explode(',',$data['director']);
         $data['videotime'] = explode(':',$data['videotime']);
 
 
@@ -363,7 +393,174 @@ class VideoController extends AdminController
 
         $cfgs = $this->cfgs;
 
-        return view('video.edit',compact('vid','data','star','screen','firstotype','secondotype','tree','cfgs','m3u8items'));
+        return view('video.edit',compact('vid','data','director','country','star','tags','screen','firstotype','secondotype','tree','cfgs','m3u8items'));
+    }
+    public function sync(Request $request,$vid){
+        if($request->isMethod('post')) {
+            $idarr = explode('_', $vid);
+            $mediaid = $_POST['media'];
+
+            foreach ($idarr as $v) {
+                //检测是否转码切片
+                $video = VideoList::where('vid',$v)->first();
+                if($video->status != 1) {
+                    return response()->json(array('code'=>-1,'msg'=>"[".$v."] 转码未完成，不可执行同步操作"));
+                }
+
+                //有没有选择要加入的主体
+                if(empty($mediaid)) {
+                    $insert = [];
+
+                    //$insert['Id'] = $video->duration;     //
+                    $insert['Sid'] = $v;     //  '选第一个作为原始ID',
+                    $insert['Name'] = $video->title;     //  '标题',
+                    //$insert['KeyWord'] = $video->duration;     //  '关键字',
+                    $insert['Image'] = $video->pic;     //  '封面图',
+                    //$insert['Image_big'] = $video->duration;     //  '封面大图',
+                    //$insert['Episodes'] = $video->duration;     //  '电视剧-总集数',
+                    $insert['Content'] = $video->content;     //  '内容介绍',
+                    //$insert['Mark'] = $video->duration;     //  '备注',
+                    $insert['Year'] = empty($video->year)?'':$video->year;     //  '年份',
+                    $insert['Country'] = empty($video->country)?'':$video->country;     //  '地区代码',
+                    $insert['Status'] = 0;     //  '状态（0完成，1连载中，2版权暂停，3人工暂停，4下架）',
+                    $insert['Cats'] = $video->secondotype;     //  '从属分类ID',
+                    $insert['Directors'] = empty($video->director)?'':$video->director;     //  '从属导演ID',
+                    $insert['Actors'] = empty($video->star)?'':$video->star;     //  '从属演员ID',
+                    $insert['Tags'] = empty($video->tags)?'':$video->tags;     //  '标签如制服,地铁',
+                    $insert['Type'] = empty($video->firstotype)?0:$video->firstotype;     //  '类型(未定0,电影1,电视2)',
+                    $insert['IMDB'] = empty($video->imdb)?'':$video->imdb;     //  'IMDB',
+                    $insert['FH'] = empty($video->designation)?'':$video->designation;     //  '日本番号',
+                    $insert['Score'] = empty($video->score)?0:$video->score;     //  '评分',
+                    //$insert['Preid'] = $video->duration;     //  '上一部ID,如有多部',
+                    $insert['Create_time'] = time();     //  '创建时间',
+                    //$insert['Update_time'] = $video->duration;     //  '最后更新时间',
+
+                    $mediaid = MediaMovies::insertGetId($insert);
+                    if(!$mediaid) {
+                        return response()->json(array('code'=>-1,'msg'=>"插入新主体失败"));
+                    }
+                } else {
+                    $update = [];
+
+                    //$update['Id'] = $video->duration;     //
+                    $update['Sid'] = $v;     //  '选第一个作为原始ID',
+                    $update['Name'] = $video->title;     //  '标题',
+                    //$update['KeyWord'] = $video->duration;     //  '关键字',
+                    $update['Image'] = $video->pic;     //  '封面图',
+                    //$update['Image_big'] = $video->duration;     //  '封面大图',
+                    //$update['Episodes'] = $video->duration;     //  '电视剧-总集数',
+                    $update['Content'] = $video->content;     //  '内容介绍',
+                    //$update['Mark'] = $video->duration;     //  '备注',
+                    $update['Year'] = empty($video->year)?'':$video->year;     //  '年份',
+                    $update['Country'] = empty($video->country)?'':$video->country;     //  '地区代码',
+                    //$update['Status'] = 0;     //  '状态（0完成，1连载中，2版权暂停，3人工暂停，4下架）',
+                    $update['Cats'] = $video->secondotype;     //  '从属分类ID',
+                    $update['Directors'] = empty($video->director)?'':$video->director;     //  '从属导演ID',
+                    $update['Actors'] = empty($video->star)?'':$video->star;     //  '从属演员ID',
+                    $update['Tags'] = empty($video->tags)?'':$video->tags;     //  '标签如制服,地铁',
+                    //$update['Type'] = $video->firstotype;     //  '类型(未定0,电影1,电视2)',
+                    //$update['IMDB'] = empty($video->imdb)?'':$video->imdb;     //  'IMDB',
+                    //$update['FH'] = empty($video->designation)?'':$video->designation;     //  '日本番号',
+                    //$update['Score'] = empty($video->score)?0:$video->score;     //  '评分',
+                    //$update['Preid'] = $video->duration;     //  '上一部ID,如有多部',
+                    //$update['Create_time'] = time();     //  '创建时间',
+                    $update['Update_time'] = time();     //  '最后更新时间',
+
+                    $bool = MediaMovies::where('Id',$mediaid)->update($update);
+                }
+
+
+                //插入m3u8记录
+                $m3u8arr = json_decode($video->m3u8);
+                foreach ($m3u8arr as $rate=>$m3u8) {
+                    if(empty($m3u8)) {
+                        return response()->json(array('code'=>-1,'msg'=>"切片未完成，不可执行同步操作"));
+                    }
+
+                    //同步操作
+                    $obj = MediaEpisodes::where('Sid',$v)->where('Play_url','like','%'.$rate.'%')->first();
+                    if($obj) {  //已经有就更新
+                        $obj = $obj->toArray();
+                        if($obj['MId']!==$mediaid) {
+                            //return response()->json(array('code'=>0,'msg'=> '[记录'.$v.'] 将要加入的主体['.$mediaid.']和已存在主体['.$obj['MId'].']不一致'));
+                        }
+
+                        $update = [];
+
+                      //$update['Id'] = '';     //
+                      $update['MId'] = $mediaid;     //   '对应视频主体Id',
+                      //$update['Sid'] = $v;     //   '原始ID',
+                      $update['Image'] = $video->pic;     //   '封面图',
+                      $update['Gif'] = $video->gif;     //   '封面动图',
+                      //$update['Episode'] = '';     //   '第几集',
+                      //$update['Season'] = '';     //   '第几季',
+                      $update['Title'] = $video->title;     //   '标题',
+                      $update['Description'] = $video->content;     //   '简介',
+                      //$update['Lang'] = '';     //   '语言',
+                      $update['Code'] = $rate;     //   '码率,360P,720P,1080P',
+                      $update['Play_time'] = format_time($video->duration);     //   '总播放时间',     format_bytes($value['size'])
+                      //$update['Play_node'] = '';     //   '关键结点,按秒数',
+                      $update['Play_url'] = $m3u8;     //   '播放地址',
+                      //$update['Source'] = '';     //   '来源,如youtube',
+                      //$update['Create_time'] = '';     //   '创建时间',
+                      $update['Update_time'] = time();     //   '更新时间',
+
+
+                      $bool = MediaEpisodes::where('Id',$obj['Id'])->update($update);
+
+                    } else {  //没有就加入
+                        $insert = [];
+
+                        //insert['Id'] = '';     //
+                        $insert['MId'] = $mediaid;     //   '对应视频主体Id',
+                        $insert['Sid'] = $v;     //   '原始ID',
+                        $insert['Image'] = $video->pic;     //   '封面图',
+                        $insert['Gif'] = $video->gif;     //   '封面动图',
+                        //insert['Episode'] = '';     //   '第几集',
+                        //insert['Season'] = '';     //   '第几季',
+                        $insert['Title'] = $video->title;     //   '标题',
+                        $insert['Description'] = $video->content;     //   '简介',
+                        //insert['Lang'] = '';     //   '语言',
+                        $insert['Code'] = $rate;     //   '码率,360P,720P,1080P',
+                        $insert['Play_time'] = $video->duration;     //   '总播放时间',    format_time();  format_bytes($value['size'])
+                        //insert['Play_node'] = '';     //   '关键结点,按秒数',
+                        $insert['Play_url'] = $m3u8;     //   '播放地址',
+                        //insert['Source'] = '';     //   '来源,如youtube',
+                        $insert['Create_time'] = time();     //   '创建时间',
+                        //$insert['Update_time'] = time();     //   '更新时间',
+
+                        $bool = MediaEpisodes::insertGetId($insert);
+                    }
+
+                }
+
+                // 移除记录
+                $is_move = isset($_POST['is_move'])?$_POST['is_move']:0;
+                if($is_move) {
+                    $bool = VideoList::where('vid',$v)->delete();
+                    if (file_exists('.' . $video->url)) {  //删除源文件
+                        unlink('.' . $video->url);
+                    }
+                }
+            }
+
+            return response()->json(array('code'=>1,'msg'=>"同步完成"));
+        }
+
+        $ids = explode('_', $vid);
+        $filestr = '';
+        foreach ($ids as $id) {
+            $url = VideoList::where('vid',$id)->value('url');
+            $file = str_replace($this->cfgs['upload_dir'].'/', '', $url);
+            $file = str_replace('.mp4', '', $file);
+            if($filestr) $filestr = $filestr.' | '.$file;
+            else $filestr = $file;
+        }
+
+        $media =  MediaMovies::select('*')->get()->toArray();
+
+        $cfgs = $this->cfgs;
+        return view('video.sync',compact('vid','cfgs','filestr','media'));
     }
     public function transcode(Request $request,$vid){
         if($request->isMethod('post')){
@@ -910,9 +1107,6 @@ class VideoController extends AdminController
         } else { //切片失败
             return response()->json(array('code'=>1,'msg'=>"切片失败"));
         }
-    }
-    public function syncdata() {  //同步旧数据函数
-        return response()->json(array('code'=>1,'msg'=>"同步成功"));
     }
 
     /*上传图片文件*/

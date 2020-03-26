@@ -67,11 +67,18 @@ class VideoController extends  ApiController{
             $size = trim($sizetmp[1]);
             $default = SiteRate::where('default',1)->where('rate',$rate)->first(); //是否默认码率
 
+            try {
+                $deldir = $dirpath.$rate;
+                deldir($deldir);
+                @rmdir($deldir);
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
             $dirtmp = $dirpath.$rate.'/';  mk_dir($dirtmp);
             $tovideodir = $dirtmp.$randsring.'.mp4';
             $toimgedir = $dirtmp.$randsring.'.jpg';
             $togifdir = $dirtmp.$randsring.'.gif';
-
 
             TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'date'=>$datestr,'vid'=>$ids,'filename'=>$filename,'msg'=>'正在转码','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'rate'=>$rate,'togifdir'=>$togifdir,'toimgedir'=>$toimgedir,'tovideodir'=>$tovideodir,'videodir'=>$videodir))));
             VideoList::where('vid', $ids)->update(array('status'=>3));
@@ -146,15 +153,16 @@ class VideoController extends  ApiController{
             }
         }
 
-        if($is_delsrc) {
-            unlink($videodir);   //转码完成是否删除源文件
-            TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'删除源文件','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
-        }
 
         if($exp) {
             VideoList::where('vid', $ids)->update(array('status'=>2));
         } else {
             VideoList::where('vid', $ids)->update(array('status'=>1));
+
+            if($is_delsrc) {
+                unlink($videodir);   //转码完成是否删除源文件
+                TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'删除源文件','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));
+            }
         }
 
         TransLog::insertGetId(array('time'=>time(),'code'=>$randsring,'msg'=>'转码完毕','data'=>json_encode(array('ids'=>$ids,'file'=>$filename,'size_rate'=>$size_rate))));

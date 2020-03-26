@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ListOtype;
+use App\Models\MediaActors;
+use App\Models\MediaCats;
+use App\Models\MediaCountry;
+use App\Models\MediaTags;
 use App\Models\ScreenOtype;
 use App\Models\StarList;
 use App\Models\UserInfo;
@@ -42,9 +46,9 @@ class AdminController extends Controller
         $secondotype = explode(',',$secondotype);
         $otypename = array();
         foreach($secondotype as $value){
-            $data = VideoOtype::select('oid','otypename')->where('oid',$value)->first();
+            $data = MediaCats::select('*')->where('Id',$value)->first();
             if($data){
-                $otypename[] = $data['otypename'];
+                $otypename[] = $data['Name'];
             }
         }
         $otypename = implode(',',$otypename);
@@ -63,16 +67,42 @@ class AdminController extends Controller
         $otypename = implode(',',$otypename);
         return $otypename;
     }
+    // 获取标签
+    function getTags($star){
+        $tags = explode(',',$star);
+        $uname = array();
+        foreach($tags as $value){
+            $data = MediaTags::select('*')->where('Id',$value)->first();
+            if($data){
+                $uname[] = $data['Name'];
+            }
+
+        }
+        $unamestr = implode(',',$uname);
+        return $unamestr;
+    }
+    // 获取国家地区名称
+    function getCountryName($code) {
+        $star = explode(',',$code);
+        $uname = array();
+        foreach($star as $value){
+            $data = MediaCountry::select('*')->where('Code',$value)->first();
+            if($data){
+                $uname[] = $data['Name'];
+            }
+        }
+        $unamestr = implode(',',$uname);
+        return $unamestr;
+    }
     // 获取明星
     function getStarName($star){
         $star = explode(',',$star);
         $uname = array();
         foreach($star as $value){
-            $data = StarList::select('sid','uname')->where('sid',$value)->first();
+            $data = MediaActors::select('*')->where('Id',$value)->first();
             if($data){
-                $uname[] = $data['uname'];
+                $uname[] = $data['Name'];
             }
-
         }
         $unamestr = implode(',',$uname);
         return $unamestr;

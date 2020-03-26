@@ -178,7 +178,7 @@
         </div>
 
         <div class="layui-form-item" style="display: none;">
-            <label class="layui-form-label"><font color="red">* </font>类型</label>
+            <label class="layui-form-label"><font color="red">* </font>类型x</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(1,$data['otype'])) checked @endif title="MV"  value="1" >
                 <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(2,$data['otype'])) checked @endif title="视频" value="2">
@@ -189,15 +189,27 @@
             <label class="layui-form-label">类型</label>
             <div class="layui-input-block">
                 @foreach($firstotype as $value)
-                    <input type="checkbox" name="otype2[]" value="{{ $value['oid'] }}" @if( in_array( $value['oid'],$data['firstotype'] ) ) checked @endif  lay-skin="primary" title="{{ $value['otypename'] }}">
+                    <input type="radio" name="otype2[]" value="{{ $value['oid'] }}" @if( in_array( $value['oid'],$data['firstotype'] ) ) checked @endif  lay-skin="primary" title="{{ $value['otypename'] }}">
                 @endforeach
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>视频分类</label>
+            <label class="layui-form-label">国家/地区</label>
             <div class="layui-input-block">
-                <select name="otype3" lay-filter="myselect" >
+                <select name="country" lay-filter="myselect">
+                    <option value="" ></option>
+                    @foreach($country as $v)
+                        <option  value="{{$v['Code']}}" @if(in_array($v['Code'],$data['country'])) selected @endif>{{$v['Name']}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="red">* </font>从属分类</label>
+            <div class="layui-input-block">
+                <select name="otype3" lay-filter="myselect">
                     <option value="0"></option>
                     @foreach($tree as $v)
                         <option  value="{{$v['oid']}}" @if(in_array($v['oid'],$data['secondotype'])) selected @endif>{{$v['html']}}{{$v['otypename']}}</option>
@@ -211,6 +223,15 @@
             <div class="layui-input-block">
                 <input type="checkbox" name="secondbestotype[]" @if(in_array(1,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="最新"  value="1" >
                 <input type="checkbox" name="secondbestotype[]" @if(in_array(2,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="热门" value="2">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年份</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="year" value="{{ $data['year'] }}" autocomplete="off" placeholder="请输入年份" class="layui-input">
+                </div>
             </div>
         </div>
 
@@ -241,7 +262,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item" pane="">
+        <div class="layui-form-item" pane="" style="display: none">
             <label class="layui-form-label">筛选条件</label>
             <div class="layui-input-block">
                 <table class="layui-table">
@@ -266,28 +287,25 @@
             </div>
         </div>
 
-        {{--<div class="layui-form-item" pane="">--}}
-            {{--<label class="layui-form-label">参演明星</label>--}}
-            {{--<div class="layui-input-block">--}}
-                {{--<select name="star" multiple class="selectpicker form-control" id="number-multiple" data-container="body" data-live-search="true" title="Select a number" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">--}}
-                    {{--@foreach($star as $value)--}}
-                        {{--<option  value="{{ $value['sid'] }}" @if(in_array($value['sid'],$data['star'])) selected @endif>{{ $value['uname'] }}</option>--}}
-                    {{--@endforeach--}}
-                {{--</select>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签</label>
+            <div class="layui-input-block">
+                @foreach($tags as $value)
+                    <input type="checkbox" name="tags[]" value="{{ $value['Id'] }}" @if( in_array( $value['Id'],$data['tags'] ) ) checked @endif  lay-skin="primary" title="{{ $value['Name'] }}">
+                @endforeach
+            </div>
+        </div>
 
         <div class="layui-row">
             <div class="layui-col-lg12 layui-col-md12">
                 <fieldset class="layui-elem-field  ">
                     <div class="layui-block">
-                        <label class="layui-form-label">参演明星</label>
+                        <label class="layui-form-label">从属导演</label>
                         <div class="layui-input-inline">
-                            <select name="star" multiple lay-search lay-tools>
-                                <option value="">请选择参演明星</option>
-                                @foreach($star as $value)
-                                    <option  value="{{ $value['sid'] }}" @if(in_array($value['sid'],$data['star'])) selected @endif>{{ $value['uname'] }}</option>
+                            <select name="director" multiple lay-search lay-tools>
+                                <option value="">请选择导演</option>
+                                @foreach($director as $value)
+                                    <option  value="{{ $value['Id'] }}" @if(in_array($value['Id'],$data['director'])) selected @endif>{{ $value['Name'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -295,6 +313,26 @@
                 </fieldset>
             </div>
         </div>
+
+
+        <div class="layui-row">
+            <div class="layui-col-lg12 layui-col-md12">
+                <fieldset class="layui-elem-field  ">
+                    <div class="layui-block">
+                        <label class="layui-form-label">从属演员</label>
+                        <div class="layui-input-inline">
+                            <select name="star" multiple lay-search lay-tools>
+                                <option value="">请选择参演明星</option>
+                                @foreach($star as $value)
+                                    <option  value="{{ $value['Id'] }}" @if(in_array($value['Id'],$data['star'])) selected @endif>{{ $value['Name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
         <div class="unshow"><pre id="result"></pre></div>
 
 

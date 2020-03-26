@@ -1,26 +1,23 @@
 @extends('layouts.layouts')
 @section('content')
     <blockquote class="layui-elem-quote layui-text">
-        <span>鉴于小伙伴的普遍反馈，先温馨提醒。</span>
+        <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>视频主体列表</legend>
+        <legend>剧集列表</legend>
     </fieldset>
     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
         搜索标题：
         <div class="layui-inline">
             <input class="layui-input" id="title" name="title" id="test-table-demoReload" autocomplete="off">
+            <input style="display: none" class="layui-input" id="mid" name="mid" autocomplete="off" value="{{$mid}}">
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
     </div>
+
     <table class="layui-hide" lay-filter="demo" id="test"></table>
 
-    <script type="text/html" id="is_free">
-        <!-- 这里的 checked 的状态只是演示 -->
-        <input type="checkbox" name="is_free" value="@{{d.vid }}" title="限免" lay-filter="is_free" @{{ d.is_free == 1 ? 'checked' : '' }}>
-    </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="episode">查看</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -34,31 +31,32 @@
 
             var tableIn = table.render({
                 elem: '#test'
-                ,url:'/admin/media/getMediaList'
+                ,url:'/admin/media/getEpisodeList'
                 ,page: true
                 ,limit:10    // 每页显示的条数
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'Id', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'Name',width:200, title: '标题'}
-                    ,{field:'Image',width:140, title: '封面图',templet: '<div><img src="@{{ d.Image  }}" width="30px" height="40px" ></div>'}
-                    ,{field:'Content', width:140,title: '简介'}
-                    ,{field:'Tags', width:140,title: '标签'}
-                    ,{field:'Type', width:140,title: '类型'}
-                    ,{field:'Cats', width:140,title: '从属分类'}
-                    ,{field:'Directors', width:140,title: '从属导演'}
-                    ,{field:'Actors', width:140,title: '从属演员'}
-                    ,{field:'Country', width:140,title: '地区'}
-                    ,{field:'Year', width:140,title: '年份'}
-                    ,{field:'IMDB', width:140,title: 'IMDB'}
-                    ,{field:'FH', width:140,title: '番号'}
-                    ,{field:'Score', width:140,title: '评分'}
-                    ,{field:'Episodes', width:140,title: '总集数'}
-                    ,{field:'Status', width:140,title: '状态'}
+                    ,{field:'MId',width:100, title: '对应主体'}
+                    ,{field:'Sid',width:100, title: '原始ID'}
+                    ,{field:'Title',width:180, title: '标题'}
+                    ,{field:'Code', width:100,title: '码率'}
+                    ,{field:'Image',width:80, title: '封面图',templet: '<div><img src="@{{ d.Image  }}" width="30px" height="40px" ></div>'}
+                    ,{field:'Gif',width:80, title: 'Gif图',templet: '<div><img src="@{{ d.Gif  }}" width="30px" height="40px" ></div>'}
+                    ,{field:'Play_url', width:400,title: '播放地址'}
+                    ,{field:'Play_time', width:140,title: '总播放时间'}
+                    ,{field:'Description', width:140,title: '简介'}
+                    ,{field:'Episode', width:120,title: '第几集'}
+                    ,{field:'Season', width:120,title: '第几季'}
+                    ,{field:'Lang', width:120,title: '语言'}
+                    ,{field:'Source', width:140,title: '来源'}
                     ,{field:'Create_time', width:200,title: '创建时间'}
                     ,{field:'Update_time', width:200,title: '更新时间'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
                 ]]
+                ,where: {
+                    mid: $('#mid').val()
+                }
             });
             //搜索
             $('#search').on('click', function () {
@@ -97,11 +95,8 @@
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    mid = data.Id;
-                    window.location.href = "/admin/media/editmedia/"+mid;
-                } else if(obj.event === 'episode'){
-                    mid = data.Id;
-                    window.location.href = "/admin/media/episode/"+mid;
+                    vid = data.vid;
+                    window.location.href = "/admin/media/editmedia/"+vid;
                 }
             });
         });

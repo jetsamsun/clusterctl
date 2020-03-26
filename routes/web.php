@@ -48,6 +48,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('video/videofree', 'VideoController@videofree');
     Route::any('video/clickfree', 'VideoController@clickfree');
     Route::any('video/transcode/{id}', 'VideoController@transcode');
+    Route::any('video/sync/{id}', 'VideoController@sync');
     Route::any('transqueue', 'VideoController@transqueue');
     Route::any('video/getTransLog', 'VideoController@getTransLog');
     Route::any('video/translogs/{code}', 'VideoController@translogs');
@@ -146,4 +147,6 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     // 站点视频
     Route::any('media', 'MediaController@media');
     Route::any('media/getMediaList', 'MediaController@getMediaList');
+    Route::any('media/episode/{id}', 'MediaController@episode');
+    Route::any('media/getEpisodeList', 'MediaController@getEpisodeList');
 });
