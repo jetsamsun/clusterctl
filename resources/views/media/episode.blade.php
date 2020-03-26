@@ -72,13 +72,13 @@
             table.on('tool(demo)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                    layer.msg('ID：'+ data.Id + ' 的查看操作');
                 } else if(obj.event === 'del'){
                     layer.confirm('确认删除吗?', function(index){
                         //obj.del();
                         $.ajax({
-                            type: "POST", url: "/admin/media/delmedia",
-                            data: { vid: data.vid }, dataType: "json",
+                            type: "POST", url: "/admin/media/delepisode",
+                            data: { mid: data.Id }, dataType: "json",
                             success: function (e) {
                                 if (e.status == 1) {
                                     layer.msg('删除成功！', { time: 1500 }, function () {
@@ -95,8 +95,8 @@
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    vid = data.vid;
-                    window.location.href = "/admin/media/editmedia/"+vid;
+                    mid = data.Id;
+                    window.location.href = "/admin/media/editepisode/"+mid;
                 }
             });
         });

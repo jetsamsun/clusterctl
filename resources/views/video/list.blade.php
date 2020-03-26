@@ -109,11 +109,12 @@
                     ,{field:'dis_ratio', width:100,title: '显示比例'}
                     ,{field:'video', width:450,title: '目标文件'}
 
-                    ,{field:'firstotype',width:150, title: '类型'}
-                    ,{field:'secondotype',width:150,  title: '视频分类'}
-                    ,{field:'tags',width:200,  title: '标签'}
-                    ,{field:'star',width:200, title: '从属演员'}
-                    ,{field:'hotcount', title:'视频热度', width:100}
+                    // ,{field:'firstotype',width:150, title: '类型'}
+                    // ,{field:'secondotype',width:150,  title: '视频分类'}
+                    // ,{field:'tags',width:200,  title: '标签'}
+                    // ,{field:'star',width:200, title: '从属演员'}
+                    // ,{field:'hotcount', title:'视频热度', width:100}
+
                     ,{field:'createtime', title:'加入时间', width:200}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:230}
                 ]]

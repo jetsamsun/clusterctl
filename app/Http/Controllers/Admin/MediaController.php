@@ -57,6 +57,14 @@ class MediaController extends AdminController
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
 
+    public function editmedia(Request $request,$mid) {
+        return view('media.mediaedit',compact('mid'));
+    }
+
+    public function delmedia(Request $request,$mid) {
+
+    }
+
     public function episode(Request $request,$mid){
         if($request->isMethod('post')) {
             return response()->json(array('code'=>0,'msg'=>"失败"));
@@ -86,11 +94,26 @@ class MediaController extends AdminController
             $dataTmp = $dataTmp['data'];
 
             foreach($dataTmp as $key=>$value) {
+                $dataTmp[$key]['Episode'] = empty($value['Episode'])?'--':$value['Episode'];
+                $dataTmp[$key]['Season'] = empty($value['Season'])?'--':$value['Season'];
+                $dataTmp[$key]['Lang'] = empty($value['Lang'])?'--':$value['Lang'];
+                $dataTmp[$key]['Source'] = empty($value['Source'])?'--':$value['Source'];
+
+                $dataTmp[$key]['Code'] = $value['Code'].'p';
+
                 $dataTmp[$key]['Create_time'] = date('Y-m-d H:i:s',$value['Create_time']);
                 $dataTmp[$key]['Update_time'] = empty($value['Update_time'])?'--':date('Y-m-d H:i:s',$value['Update_time']);
             }
         }
 
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
+    }
+
+    public function editepisode(Request $request,$mid) {
+        return view('media.episodeedit',compact('mid'));
+    }
+
+    public function delepisode(Request $request,$mid) {
+
     }
 }
