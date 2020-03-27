@@ -82,7 +82,7 @@
                             type: "POST", url: "/admin/media/delmedia",
                             data: { mid: data.Id }, dataType: "json",
                             success: function (e) {
-                                if (e.status == 1) {
+                                if (e.status === 1) {
                                     layer.msg('删除成功！', { time: 1500 }, function () {
                                         obj.del();
                                     });

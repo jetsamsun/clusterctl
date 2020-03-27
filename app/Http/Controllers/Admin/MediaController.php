@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use App\Models\Config;
 use App\Models\ListOtype;
+use App\Models\M3u8List;
+use App\Models\MediaActors;
+use App\Models\MediaCats;
+use App\Models\MediaCountry;
 use App\Models\MediaEpisodes;
 use App\Models\MediaMovies;
+use App\Models\MediaTags;
 use App\Models\ScreenOtype;
 use App\Models\StarList;
 use App\Models\VideoAdminLog;
@@ -18,6 +24,17 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaController extends AdminController
 {
+    function __construct() {
+        $cfgs = Config::get();
+        foreach ($cfgs as $v) {
+            $this->cfgs[$v['name']] = $v['value'];
+        }
+
+        $this->uploaddir = PUBLIC_PATH.$this->cfgs['upload_dir'].'/';
+        $this->productdir = PUBLIC_PATH.$this->cfgs['video_dir'].'/';
+        $this->tmpdir = PUBLIC_PATH.'/video/tmp/';
+    }
+
     public function media(){
         $data = VideoAdminLog::select('log_id')->get()->toArray();
         return view('media.list',compact('data'));
@@ -57,8 +74,41 @@ class MediaController extends AdminController
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
 
-    public function editmedia(Request $request,$mid) {
-        return view('media.mediaedit',compact('mid'));
+    public function editmedia(Request $request,$vid) {
+        if($request->isMethod('post')) {
+
+        }
+
+        // 导航分类
+        $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
+        // 视频分类
+        $secondotype = MediaCats::select('*')->get()->toArray();   $tree = getTree($secondotype);
+        //标签
+        $tags = MediaTags::get()->toArray();
+        // 明星列表
+        $star =  MediaActors::select('*')->where("Role",'like','%'.'2'.'%')->get()->toArray();
+        // 导演列表
+        $director =  MediaActors::select('*')->where("Role",'like','%'.'1'.'%')->get()->toArray();
+        // 主体列表
+        $data = MediaMovies::select('*')->where('Id',$vid)->first();    if($data) $data = $data->toArray(); else dd("data null");
+        //国家/地区
+        $country = MediaCountry::get()->toArray();
+
+
+        $data['firstotype'] = explode(',',$data['Type']);
+        $data['secondotype'] = explode(',',$data['Cats']);
+        $data['country'] = explode(',',$data['Country']);
+        $data['star'] = explode(',',$data['Actors']);           // 明星
+        $data['tags'] = explode(',',$data['Tags']);
+        $data['director'] = explode(',',$data['Directors']);
+        $data['m3u8'] = [];
+        $data['video'] = '';
+
+
+        $cfgs = $this->cfgs;
+        $mid = $vid;
+
+        return view('media.mediaedit',compact('mid','data','director','country','star','tags','firstotype','tree','cfgs'));
     }
 
     public function delmedia(Request $request,$mid) {
