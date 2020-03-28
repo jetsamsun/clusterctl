@@ -4,7 +4,7 @@
         <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>【{{$media['Name']}}】剧集列表</legend>
+        <legend>【{{$media['Name']}}】地址列表</legend>
     </fieldset>
     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
         搜索标题：

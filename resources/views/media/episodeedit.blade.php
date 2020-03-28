@@ -41,7 +41,7 @@
         <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>剧集编辑表单</legend>
+        <legend>编辑表单</legend>
     </fieldset>
 
     <form class="layui-form" action="{{ url('/admin/media/editmedia/'.$id) }}" method="post">
@@ -92,15 +92,17 @@
             <label class="layui-form-label"><font color="red">* </font>视频</label>
             <div class="layui-input-block">
                 <span id="video">
-                    <video id="video-active" width="360" height="202" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}' >
+                    <video id="video-active" width="360" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}' >
                         <source id="source" src="{{ $data['Play_url'] }}" type="application/x-mpegURL">
                     </video>
-                    {{--<video id="video-active" width="360" height="202" controls autoplay>--}}
+                    {{--<video id="video-active" width="360" controls autoplay>--}}
                         {{--<source src="{{ $data['Play_url'] }}" type="application/x-mpegUR">--}}
                     {{--</video>--}}
                 </span>
-                <button type="button" class="layui-btn" onclick="zt()">截图</button>
-                <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
+                <div style="margin-top: 10px; display: none">
+                    <button type="button" class="layui-btn" onclick="zt()">截图</button>
+                    <button type="button" class="layui-btn" onclick="gif_sz()">gif图</button>
+                </div>
             </div>
         </div>
 
@@ -108,8 +110,26 @@
             <label class="layui-form-label">m3u8地址</label>
             <div class="layui-input-block">
                 <div class="m3u8_item">
-                    <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="{{$data['Play_url']}}">
+                    <input type="text" name="Play_url" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="@if(strpos($data['Play_url'],'http://')!==false || strpos($data['Play_url'],'https://')!==false){{$data['Play_url']}}@else{{$cfgs['m3u8_url']}}{{$data['Play_url']}}@endif">
                     <button type="button" class="layui-btn" style="margin-left: 7px; float: left" onclick="copyUrl(this)">复制</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">码率</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Code" value="{{ $data['Code'] }}" autocomplete="off" placeholder="请输入码率" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">时长</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Play_time" value="{{ $data['Play_time'] }}" autocomplete="off" placeholder="请输入总播放时间" class="layui-input">
                 </div>
             </div>
         </div>
@@ -135,6 +155,24 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">关键节点</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Play_node" value="{{ $data['Play_node'] }}" autocomplete="off" placeholder="关键结点,按秒数" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">来源</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Source" value="{{ $data['Source'] }}" autocomplete="off" placeholder="来源,如youtube" class="layui-input">
+                </div>
+            </div>
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">简介</label>
             <div class="layui-input-block">
@@ -154,6 +192,21 @@
 @section('script')
 
 <script>
+    function copyUrl(th) {
+        var Url2 = $(th).prev();
+        Url2.select(); // 选择对象
+        try {
+            if (document.execCommand('copy', false, null)) {
+                document.execCommand("Copy");
+                layer.msg('复制成功', {icon: 1, time: 1000});
+            } else {
+                layer.msg("复制失败，请手动复制", {icon: 2, anim: 6, time: 1000});
+            }
+        } catch (err) {
+            layer.msg("复制失败，请手动复制", {icon: 2, anim: 6, time: 1000});
+        }
+    }
+
     layui.use('form', function(){
         var form = layui.form,$ = layui.jquery;
 

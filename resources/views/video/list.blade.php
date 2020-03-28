@@ -72,7 +72,7 @@
                     type: "POST", url: "/admin/video/clickfree",
                     data: { sta: sta }, dataType: "json",
                     success: function (e) {
-                        if (e.status == 1) {
+                        if (e.status === 1) {
                             layer.msg(e.msg, { time: 1500 } , function(){
                                 history.go(0);
                             });
@@ -84,7 +84,7 @@
                         console.log(data);
                     }
                 });
-            }
+            };
             var tableIn = table.render({
                 elem: '#test'
                 ,url:'/admin/video/getVideoList'
