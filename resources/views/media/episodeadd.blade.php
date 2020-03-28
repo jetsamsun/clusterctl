@@ -38,14 +38,14 @@
         <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>视频主体编辑表单</legend>
+        <legend>新增剧集表单</legend>
     </fieldset>
 
-    <form class="layui-form" action="{{ url('/admin/media/editmedia/'.$mid) }}" method="post">
+    <form class="layui-form" action="{{ url('/admin/media/addmedia') }}" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>标题</label>
             <div class="layui-input-block">
-                <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" value="{{ $data['Name'] }}" >
+                <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" value="" >
             </div>
         </div>
 
@@ -53,17 +53,13 @@
             <label class="layui-form-label">封面图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
-                    <span id="showimg">
-                        @if($data['Image'])
-                            <img style="width:auto;max-height:55px;" src="{{ $data['Image'] }}">
-                        @endif
-                    </span>
+                    <span id="showimg"></span>
                     <a href="javascript:;" id="img">
                         <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:55px;" class="listpic" alt="列表图">
                     </a>
                 </div>
-                <input type="hidden"  name="imgval" id="imgval" value="{{ $data['Image'] }}">
-                <input type="hidden"  name="imgval_old" value="{{ $data['Image'] }}">
+                <input type="hidden"  name="imgval" id="imgval" value="">
+                <input type="hidden"  name="imgval_old" value="">
             </div>
         </div>
 
@@ -71,17 +67,13 @@
             <label class="layui-form-label">封面大图</label>
             <div class="layui-input-block">
                 <div class="col-lg-2">
-                    <span id="showbigimg">
-                        @if($data['Image_big'])
-                            <img style="width:auto;max-height:80px;" src="{{ $data['Image_big'] }}">
-                        @endif
-                    </span>
+                    <span id="showbigimg"></span>
                     <a href="javascript:;" id="bigimg">
                         <img onerror="this.src='{{asset("assets/images/placeholder.jpg")}}'" src="{{asset('assets/images/placeholder.jpg')}}" data-url="" style="width:auto;max-height:80px;" class="listpic" alt="列表图">
                     </a>
                 </div>
-                <input type="hidden"  name="bigimgval" id="bigimgval" value="{{ $data['Image_big'] }}">
-                <input type="hidden"  name="bigimgval_old" value="{{ $data['Image_big'] }}">
+                <input type="hidden"  name="bigimgval" id="bigimgval" value="">
+                <input type="hidden"  name="bigimgval_old" value="">
             </div>
         </div>
 
@@ -89,7 +81,7 @@
             <label class="layui-form-label">类型</label>
             <div class="layui-input-block">
                 @foreach($types as $v)
-                    <input type="radio" name="Type" value="{{ $v['Id'] }}" @if( in_array( $v['Id'],$data['Type'] ) ) checked @endif  lay-skin="primary" title="{{ $v['Name'] }}">
+                    <input type="radio" name="Type" value="{{ $v['Id'] }}"  lay-skin="primary" title="{{ $v['Name'] }}">
                 @endforeach
             </div>
         </div>
@@ -100,7 +92,7 @@
                 <select name="Country" lay-filter="myselect">
                     <option value="" ></option>
                     @foreach($countrys as $v)
-                        <option  value="{{$v['Code']}}" @if(in_array($v['Code'],$data['Country'])) selected @endif>{{$v['Name']}}</option>
+                        <option  value="{{$v['Code']}}">{{$v['Name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -112,7 +104,7 @@
                 <select name="Cats" lay-filter="myselect">
                     <option value="0"></option>
                     @foreach($cats as $v)
-                        <option  value="{{$v['Id']}}" @if(in_array($v['Id'],$data['Cats'])) selected @endif>{{$v['html']}}{{$v['Name']}}</option>
+                        <option  value="{{$v['Id']}}">{{$v['html']}}{{$v['Name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -123,19 +115,19 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年份</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Year" value="{{ $data['Year'] }}" autocomplete="off" placeholder="请输入年份" class="layui-input">
+                    <input type="text" name="Year" value="" autocomplete="off" placeholder="请输入年份" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">总集数</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Episodes" value="{{ $data['Episodes'] }}" autocomplete="off" placeholder="请输入集数" class="layui-input">
+                    <input type="text" name="Episodes" value="" autocomplete="off" placeholder="请输入集数" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">上一部ID</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Preid"  value="{{ $data['Preid'] }}" autocomplete="off" placeholder="请输入上一部ID" class="layui-input">
+                    <input type="text" name="Preid"  value="" autocomplete="off" placeholder="请输入上一部ID" class="layui-input">
                 </div>
             </div>
         </div>
@@ -144,19 +136,19 @@
             <div class="layui-inline">
                 <label class="layui-form-label">番号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="FH" value="{{ $data['FH'] }}" autocomplete="off" placeholder="请输入番号" class="layui-input">
+                    <input type="text" name="FH" value="" autocomplete="off" placeholder="请输入番号" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">IMDB</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="IMDB"  value="{{ $data['IMDB'] }}" autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
+                    <input type="text" name="IMDB"  value="" autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">评分</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="Score"   value="{{ $data['Score'] }}" autocomplete="off" placeholder="请输入视频评分" class="layui-input">
+                    <input type="number" name="Score"   value="" autocomplete="off" placeholder="请输入视频评分" class="layui-input">
                 </div>
             </div>
         </div>
@@ -165,7 +157,7 @@
             <label class="layui-form-label">标签</label>
             <div class="layui-input-block">
                 @foreach($tags as $v)
-                    <input type="checkbox" name="Tags[]" value="{{ $v['Id'] }}" @if( in_array( $v['Id'],$data['Tags'] ) ) checked @endif  lay-skin="primary" title="{{ $v['Name'] }}">
+                    <input type="checkbox" name="Tags[]" value="{{ $v['Id'] }}" lay-skin="primary" title="{{ $v['Name'] }}">
                 @endforeach
             </div>
         </div>
@@ -179,7 +171,7 @@
                             <select name="Directors" multiple lay-search lay-tools>
                                 <option value="">请选择导演</option>
                                 @foreach($directors as $v)
-                                    <option  value="{{ $v['Id'] }}" @if(in_array($v['Id'],$data['Directors'])) selected @endif>{{ $v['Name'] }}</option>
+                                    <option  value="{{ $v['Id'] }}">{{ $v['Name'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -198,7 +190,7 @@
                             <select name="Actors" multiple lay-search lay-tools>
                                 <option value="">请选择参演明星</option>
                                 @foreach($actors as $v)
-                                    <option  value="{{ $v['Id'] }}" @if(in_array($v['Id'],$data['Actors'])) selected @endif>{{ $v['Name'] }}</option>
+                                    <option  value="{{ $v['Id'] }}">{{ $v['Name'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -211,7 +203,7 @@
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
                 @foreach($status as $v)
-                    <input type="radio" name="Status" value="{{ $v['Id'] }}" @if($v['Id'] == $data['Status']) checked @endif  lay-skin="primary" title="{{ $v['Name'] }}">
+                    <input type="radio" name="Status" value="{{ $v['Id'] }}" lay-skin="primary" title="{{ $v['Name'] }}">
                 @endforeach
             </div>
         </div>
@@ -219,21 +211,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label">关键字</label>
             <div class="layui-input-block">
-                <input type="text" name="KeyWord" autocomplete="off" placeholder="请输入关键字" class="layui-input" value="{{ $data['KeyWord'] }}" >
+                <input type="text" name="KeyWord" autocomplete="off" placeholder="请输入关键字" class="layui-input" value="" >
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容介绍</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" name="Content"  class="layui-textarea">{{ $data['Content'] }}</textarea>
+                <textarea placeholder="请输入内容" name="Content"  class="layui-textarea"></textarea>
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入备注" name="Mark"  class="layui-textarea">{{ $data['Mark'] }}</textarea>
+                <textarea placeholder="请输入备注" name="Mark"  class="layui-textarea"></textarea>
             </div>
         </div>
 
@@ -259,7 +251,7 @@
                 type: data.form.method,
                 data: data.field,
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg, {icon: 1, time: 1000});
                         window.location.href = "/admin/media";
                     }else{
@@ -321,7 +313,7 @@
                     return layer.msg('上传失败');
                 }
                 //上传成功
-                if(res.code ==0){
+                if(res.code === 0){
                     $('#bigimgval').val(res.data.src);
                     return layer.msg('上传成功');
                 }

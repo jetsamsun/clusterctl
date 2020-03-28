@@ -25,7 +25,7 @@
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
         <button class="layui-btn" id="transcode">转码</button>
-        <button class="layui-btn" id="sync">同步</button>
+        <button class="layui-btn" id="sync">导入</button>
         <button class="layui-btn layui-btn-danger" id="dels">删除</button>
     </div>
 
@@ -38,7 +38,7 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="transcode">转码</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-xs" lay-event="sync">同步</a>
+        <a class="layui-btn layui-btn-xs" lay-event="sync">导入</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 @endsection

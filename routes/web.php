@@ -147,10 +147,12 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     // 站点视频
     Route::any('media', 'MediaController@media');
     Route::any('media/getMediaList', 'MediaController@getMediaList');
+    Route::any('media/addmedia', 'MediaController@addmedia');
     Route::any('media/editmedia/{id}', 'MediaController@editmedia');
-    Route::any('media/delmedia/{id}', 'MediaController@delmedia');
+    Route::any('media/delmedia', 'MediaController@delmedia');
     Route::any('media/episode/{id}', 'MediaController@episode');
     Route::any('media/getEpisodeList', 'MediaController@getEpisodeList');
+    Route::any('media/addepisode', 'MediaController@addepisode');
     Route::any('media/editepisode/{id}', 'MediaController@editepisode');
-    Route::any('media/delepisode/{id}', 'MediaController@delepisode');
+    Route::any('media/delepisode', 'MediaController@delepisode');
 });

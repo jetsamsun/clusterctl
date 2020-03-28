@@ -7,7 +7,9 @@ use App\Models\ListOtype;
 use App\Models\MediaActors;
 use App\Models\MediaCats;
 use App\Models\MediaCountry;
+use App\Models\MediaStatus;
 use App\Models\MediaTags;
+use App\Models\MediaType;
 use App\Models\ScreenOtype;
 use App\Models\StarList;
 use App\Models\UserInfo;
@@ -30,19 +32,19 @@ class AdminController extends Controller
         return $otypename;
     }
     // 获取视频分类
-    function getfirstotype($firstotype){
+    function getMediaType($firstotype){
         $firstotype = explode(',',$firstotype);
         $otypename = array();
         foreach($firstotype as $value){
-            $data = ListOtype::select('oid','otypename')->where('oid',$value)->first();
+            $data = MediaType::where('Id',$value)->first();
             if($data){
-                $otypename[] = $data['otypename'];
+                $otypename[] = $data['Name'];
             }
         }
         $otypename = implode(',',$otypename);
         return $otypename;
     }
-    function getsecondotype($secondotype){
+    function getMediaCats($secondotype){
         $secondotype = explode(',',$secondotype);
         $otypename = array();
         foreach($secondotype as $value){
@@ -68,15 +70,28 @@ class AdminController extends Controller
         return $otypename;
     }
     // 获取标签
-    function getTags($star){
+    function getMediaTags($star){
         $tags = explode(',',$star);
         $uname = array();
         foreach($tags as $value){
-            $data = MediaTags::select('*')->where('Id',$value)->first();
+            $data = MediaTags::where('Id',$value)->first();
             if($data){
                 $uname[] = $data['Name'];
             }
 
+        }
+        $unamestr = implode(',',$uname);
+        return $unamestr;
+    }
+    // 获取国家地区名称
+    function getStatusName($code) {
+        $star = explode(',',$code);
+        $uname = array();
+        foreach($star as $value){
+            $data = MediaStatus::where('Id',$value)->first();
+            if($data){
+                $uname[] = $data['Name'];
+            }
         }
         $unamestr = implode(',',$uname);
         return $unamestr;
@@ -95,7 +110,7 @@ class AdminController extends Controller
         return $unamestr;
     }
     // 获取明星
-    function getStarName($star){
+    function getMediaActors($star){
         $star = explode(',',$star);
         $uname = array();
         foreach($star as $value){

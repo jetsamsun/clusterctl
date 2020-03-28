@@ -26,26 +26,10 @@
         .icon-qingkong:before { content: "\e63e"; }
 
         /* 下面是页面内样式，无需引用 */
-        /*.layui-block {*/
-            /*margin-bottom: 10px;*/
-        /*}*/
-
-        /*.layui-form-label {*/
-            /*width: 180px;*/
-        /*}*/
-        .code {
-            color: gray;
-            margin-left: 10px;
-        }
         .unshow>#result {
             display: none;
         }
         pre { padding: 5px; margin: 5px; }
-        .string { color: green; }
-        .number { color: darkorange; }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: red; }
     </style>
 @endsection
 
@@ -146,10 +130,8 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">m3u8地址<span>
-                    {{--<a href="javascript:void(0);" class="" onclick="addm3u8addr(this)">(+)</a></span>：--}}
-            </label>
-            <div class="layui-input-block m3u8items">
+            <label class="layui-form-label">m3u8地址</label>
+            <div class="layui-input-block">
                 @if(!empty($data['m3u8']))
                     @foreach($data['m3u8'] as $k=>$v)
                         <div class="m3u8_item">
@@ -163,185 +145,9 @@
                         </div>
                     @endforeach
                 @endif
-
-                @if(!empty($m3u8items))
-                    @foreach($m3u8items as $v)
-                        <div class="m3u8_item">
-                            <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="{{$v}}" placeholder="http://">
-                            <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="savem3u8url(this)">保存</button>
-                            <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="delm3u8url(this)">移除</button>
-                            <div style="clear: left"></div>
-                        </div>
-                    @endforeach
-                @endif
             </div>
         </div>
 
-        <div class="layui-form-item" style="display: none;">
-            <label class="layui-form-label"><font color="red">* </font>类型x</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(1,$data['otype'])) checked @endif title="MV"  value="1" >
-                <input type="checkbox" name="otype[]" lay-skin="primary" @if(in_array(2,$data['otype'])) checked @endif title="视频" value="2">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">类型</label>
-            <div class="layui-input-block">
-                @foreach($firstotype as $value)
-                    <input type="radio" name="otype2[]" value="{{ $value['oid'] }}" @if( in_array( $value['oid'],$data['firstotype'] ) ) checked @endif  lay-skin="primary" title="{{ $value['otypename'] }}">
-                @endforeach
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">国家/地区</label>
-            <div class="layui-input-block">
-                <select name="country" lay-filter="myselect">
-                    <option value="" ></option>
-                    @foreach($country as $v)
-                        <option  value="{{$v['Code']}}" @if(in_array($v['Code'],$data['country'])) selected @endif>{{$v['Name']}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label"><font color="red">* </font>从属分类</label>
-            <div class="layui-input-block">
-                <select name="otype3" lay-filter="myselect">
-                    <option value="0"></option>
-                    @foreach($tree as $v)
-                        <option  value="{{$v['oid']}}" @if(in_array($v['oid'],$data['secondotype'])) selected @endif>{{$v['html']}}{{$v['otypename']}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="display: none">
-            <label class="layui-form-label">最新/热门</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="secondbestotype[]" @if(in_array(1,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="最新"  value="1" >
-                <input type="checkbox" name="secondbestotype[]" @if(in_array(2,$data['secondbestotype'])) checked @endif  lay-skin="primary" title="热门" value="2">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">年份</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="year" value="{{ $data['year'] }}" autocomplete="off" placeholder="请输入年份" class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">番号</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="designation" value="{{ $data['designation'] }}" autocomplete="off" placeholder="请输入番号" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">IMDB</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="imdb"  value="{{ $data['imdb'] }}" autocomplete="off" placeholder="请输入视频IMDB" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">评分</label>
-                <div class="layui-input-inline">
-                    <input type="number" name="score"   value="{{ $data['score'] }}" autocomplete="off" placeholder="请输入视频评分" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">热度</label>
-                <div class="layui-input-inline">
-                    <input type="number" name="hotcount" value="{{ $data['hotcount'] }}"  autocomplete="off" placeholder="请输入视频热度" class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item" pane="" style="display: none">
-            <label class="layui-form-label">筛选条件</label>
-            <div class="layui-input-block">
-                <table class="layui-table">
-                    <colgroup>
-                        <col width="100">
-                        <col>
-                    </colgroup>
-                    <tbody>
-                    @foreach($screen as $value)
-                        <tr>
-                            <td>{{ $value['otypename'] }}</td>
-                            <td>
-                                @foreach($value['son'] as $v)
-                                    <input type="checkbox" @if(in_array($v['oid'],$data['screenotype'])) checked @endif name="screen[]" value="{{ $v['oid'] }}"  lay-skin="primary" title="{{ $v['otypename'] }}">
-                                @endforeach
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">标签</label>
-            <div class="layui-input-block">
-                @foreach($tags as $value)
-                    <input type="checkbox" name="tags[]" value="{{ $value['Id'] }}" @if( in_array( $value['Id'],$data['tags'] ) ) checked @endif  lay-skin="primary" title="{{ $value['Name'] }}">
-                @endforeach
-            </div>
-        </div>
-
-        <div class="layui-row">
-            <div class="layui-col-lg12 layui-col-md12">
-                <fieldset class="layui-elem-field  ">
-                    <div class="layui-block">
-                        <label class="layui-form-label">从属导演</label>
-                        <div class="layui-input-inline">
-                            <select name="director" multiple lay-search lay-tools>
-                                <option value="">请选择导演</option>
-                                @foreach($director as $value)
-                                    <option  value="{{ $value['Id'] }}" @if(in_array($value['Id'],$data['director'])) selected @endif>{{ $value['Name'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-
-
-        <div class="layui-row">
-            <div class="layui-col-lg12 layui-col-md12">
-                <fieldset class="layui-elem-field  ">
-                    <div class="layui-block">
-                        <label class="layui-form-label">从属演员</label>
-                        <div class="layui-input-inline">
-                            <select name="star" multiple lay-search lay-tools>
-                                <option value="">请选择参演明星</option>
-                                @foreach($star as $value)
-                                    <option  value="{{ $value['Id'] }}" @if(in_array($value['Id'],$data['star'])) selected @endif>{{ $value['Name'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-
-        <div class="unshow"><pre id="result"></pre></div>
-
-
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">视频简介</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" name="content"  class="layui-textarea">{{ $data['content'] }}</textarea>
-            </div>
-        </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -356,42 +162,6 @@
 
 
 <script>
-    function addm3u8addr(th) {
-        var htm = '                        <div class="m3u8_item">\n' +
-            '                               <input type="text" style="margin-bottom: 7px; width: 600px; float: left" class="layui-input fuz m3u8css" value="" placeholder="http://">' +
-            '                               <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="savem3u8url(this)">保存</button>' +
-            '                               <button type="button" class="layui-btn layui-btn-danger" style="margin-left: 7px; float: left" onclick="delm3u8url(this)">移除</button>' +
-            '                               <div style="clear: left"></div>' +
-            '                              </div>';
-        $('.m3u8items').append(htm);
-    }
-
-    function delm3u8url(th) {
-        $(th).parent().remove();
-        $.post("{{url('admin/video/delm3u8url/'.$vid)}}",{url:$(th).prev().prev().val()},function (ret) {
-            if(ret.code === 1) {
-                layer.msg(ret.msg, {icon: 1, time: 1000});
-            } else {
-                layer.msg(ret.msg, {icon: 2, anim: 6, time: 1000});
-            }
-        },'json');
-    } 
-    
-    function savem3u8url(th) {
-        let data = {};
-        $('.m3u8css').each(function(i,n){
-            data[i] = $(n).val()
-        });
-
-        $.post("{{url('admin/video/cusm3u8url/'.$vid)}}",data,function (ret) {
-            if(ret.code === 1) {
-                layer.msg(ret.msg, {icon: 1, time: 1000});
-            } else {
-                layer.msg(ret.msg, {icon: 2, anim: 6, time: 1000});
-            }
-        },'json');
-    }
-
     //切片
     function sliceup(th) {
         $.post("{{url('admin/video/manualslice')}}",{src_path:"{{ $data['video'] }}",rate:$(th).data('rate'),ids:"{{$vid}}"},function (ret) {

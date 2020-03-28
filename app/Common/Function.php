@@ -352,12 +352,12 @@ function getTree(&$list,$pid=0,$level=0,$html='├ ') {
         $arr = array();
         if($v['Pid'] == $pid) {
             $arr['level'] = $level;
-            $arr['otypename'] = $v['Name'];
+            $arr['Name'] = $v['Name'];
             $arr['html'] = str_repeat($html,$level);
-            $arr['oid'] = $v['Id'];
-            $arr['otype'] = $v['Pid'];
-            $arr['sort'] = $v['Sort'];
-            $arr['mark'] = $v['Mark'];
+            $arr['Id'] = $v['Id'];
+            $arr['Pid'] = $v['Pid'];
+            $arr['Sort'] = $v['Sort'];
+            $arr['Mark'] = $v['Mark'];
             $tree[] = $arr;
             getTree($list, $v['Id'],$level+1,$html);
         }

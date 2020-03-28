@@ -11,16 +11,17 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>分类名称</label>
             <div class="layui-input-block">
-                <input type="text" name="otypename" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">分类</label>
             <div class="layui-input-block">
-                <select name="otype" lay-filter="myselect" >
+                <select name="Cats" lay-filter="myselect" >
                     <option value="0"></option>
                     @foreach($tree as $v)
-                    <option  value="{{$v['oid']}}">{{$v['html']}}{{$v['otypename']}}</option>
+                    <option  value="{{$v['Id']}}">{{$v['html']}}{{$v['Name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -30,7 +31,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">排序</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="sort" value="0"  autocomplete="off" placeholder="" class="layui-input">
+                    <input type="number" name="Sort" value="0"  autocomplete="off" placeholder="" class="layui-input">
                 </div>
             </div>
         </div>
@@ -38,7 +39,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea placeholder="标记如Hot" name="mark"  class="layui-textarea"></textarea>
+                <textarea placeholder="标记如Hot" name="Mark"  class="layui-textarea"></textarea>
             </div>
         </div>
 

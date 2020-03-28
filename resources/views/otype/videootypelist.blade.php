@@ -9,7 +9,7 @@
     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
         分类名称：
         <div class="layui-inline">
-            <input class="layui-input" id="otypename" name="otypename" id="test-table-demoReload" autocomplete="off">
+            <input class="layui-input" id="catname" name="catname" autocomplete="off">
         </div>
         <button class="layui-btn" id="search" data-type="reload">搜索</button>
     </div>
@@ -32,10 +32,9 @@
                 ,page:false
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
-                    ,{field:'oid', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'otype', width:140,title: '从属'}
-                    ,{field:'otypename', width:300,title: '分类名称'}
-                    // ,{field:'pic', width:150,title: '展示图',templet: '<div><img src="@{{ d.pic  }}" width="30px" height="40px" ></div>'}
+                    ,{field:'Id', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    ,{field:'parent', width:140,title: '从属'}
+                    ,{field:'Name', width:300,title: '分类名称'}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
                 ]]
             });
@@ -59,7 +58,7 @@
                         //obj.del();
                         $.ajax({
                             type: "POST", url: "/admin/vidotype/delvideootype",
-                            data: { oid: data.oid }, dataType: "json",
+                            data: { oid: data.Id }, dataType: "json",
                             success: function (e) {
                                 if (e.status == 1) {
                                     layer.msg('删除成功！', { time: 1500 }, function () {
@@ -77,7 +76,7 @@
                     });
                 } else if(obj.event === 'edit'){
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
-                    oid = data.oid;
+                    oid = data.Id;
                     window.location.href = "/admin/vidotype/editvideootype/"+oid;
                 }
             });

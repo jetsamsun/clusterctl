@@ -189,10 +189,10 @@ class OtypeController extends  AdminController{
         return view('otype.videootypelist');
     }
     public function getVideoOtypeList(Request $request){
-        $otypename = $request->input('otypename');
+        $catname = $request->input('catname');
         $dataTmp = MediaCats::select('*');
-        if($otypename){
-            $dataTmp = $dataTmp->where('Name','like','%'.$otypename.'%');
+        if($catname){
+            $dataTmp = $dataTmp->where('Name','like','%'.$catname.'%');
         }
         $dataTmp = $dataTmp->get();
 
@@ -201,22 +201,22 @@ class OtypeController extends  AdminController{
             //$dataTmp = $dataTmp['data'];
             $dataTmp = getTree($dataTmp);
             foreach($dataTmp as $k=>$v){
-                $otype = MediaCats::where('Id',$v['otype'])->value('Name');
-                $dataTmp[$k]['otype'] = !empty($otype)?$otype:'--';
-                $dataTmp[$k]['otypename'] = $dataTmp[$k]['html'].$dataTmp[$k]['otypename'];
+                $parent = MediaCats::where('Id',$v['Pid'])->value('Name');
+                $dataTmp[$k]['parent'] = !empty($parent)?$parent:'--';
+                $dataTmp[$k]['Name'] = $dataTmp[$k]['html'].$dataTmp[$k]['Name'];
             }
         }
         return response()->json(array('code'=>0,'msg'=>'','data'=>$dataTmp));
     }
     public function addvideootype(Request $request){
         if($request->isMethod('post')){
-            $otypename = $request->input('otypename');
-            $otype = $request->input('otype');
-            $sort = $request->input('sort');
-            $mark = $request->input('mark');
+            $Name = $request->input('Name');
+            $Cats = $request->input('Cats');
+            $Sort = $request->input('Sort');
+            $Mark = $request->input('Mark');
 
             $reg = DB::table('media_cats')->insert(array(
-                'Name'=>$otypename,'Pid'=>$otype,'Sort'=>$sort,'Mark'=>$mark
+                'Name'=>$Name,'Pid'=>$Cats,'Sort'=>$Sort,'Mark'=>$Mark
             ));
 
             if($reg){
@@ -225,23 +225,23 @@ class OtypeController extends  AdminController{
                 return response()->json(array('code'=>0,'msg'=>"新增失败"));
             }
         }
-        $videootype = MediaCats::get()->toArray();
-        $tree = getTree($videootype);
+        $tree = MediaCats::get()->toArray();
+        $tree = getTree($tree);
         return view('otype.videootypeadd',compact('tree'));
     }
     public function editvideootype(Request $request,$oid){
         if($request->isMethod('post')){
-            $otypename = $request->input('otypename');
-            $otype = $request->input('otype');
-            $sort = $request->input('sort');
-            $mark = $request->input('mark');
+            $Name = $request->input('Name');
+            $Cats = $request->input('Cats');
+            $Sort = $request->input('Sort');
+            $Mark = $request->input('Mark');
 
-            if($oid == $otype) {
+            if($oid == $Cats) {
                 return response()->json(array('code'=>0,'msg'=>"不可选自己"));
             }
 
             $reg = DB::table('media_cats')->where('Id',$oid)->update(array(
-                'Name'=>$otypename,'Pid'=>$otype,'Sort'=>$sort,'Mark'=>$mark
+                'Name'=>$Name,'Pid'=>$Cats,'Sort'=>$Sort,'Mark'=>$Mark
             ));
 
             if($reg){
@@ -253,12 +253,11 @@ class OtypeController extends  AdminController{
 
 
         // 分类
-        $data = MediaCats::select('*')
-            ->where('Id',$oid)
-            ->first()->toArray();
+        $data = MediaCats::where('Id',$oid)->first();
+        if($data) $data = $data->toArray();
 
-        $videootype = MediaCats::get()->toArray();
-        $tree = getTree($videootype);
+        $tree = MediaCats::get()->toArray();
+        $tree = getTree($tree);
 
         return view('otype.videootypeedit',compact('oid','data','tree'));
     }

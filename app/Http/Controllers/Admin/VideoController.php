@@ -13,6 +13,7 @@ use App\Models\MediaCountry;
 use App\Models\MediaEpisodes;
 use App\Models\MediaMovies;
 use App\Models\MediaTags;
+use App\Models\MediaType;
 use App\Models\ScreenOtype;
 use App\Models\SiteRate;
 use App\Models\StarList;
@@ -145,12 +146,11 @@ class VideoController extends AdminController
 //                    $dataTmp[$key]['dis_ratio'] = $videomsg['dis_ratio'];
                 }
 
-                $dataTmp[$key]['otype'] = $this->getotype($value['otype']);
-                $dataTmp[$key]['firstotype'] = $this->getfirstotype($value['firstotype']);
-                $dataTmp[$key]['secondotype'] = $this->getsecondotype($value['secondotype']);
+                $dataTmp[$key]['firstotype'] = $this->getMediaType($value['firstotype']);
+                $dataTmp[$key]['secondotype'] = $this->getMediaCats($value['secondotype']);
                 $dataTmp[$key]['screenotype'] = $this->getscreenotype($value['screenotype']);
-                $dataTmp[$key]['tags'] = $this->getTags($value['tags']);
-                $dataTmp[$key]['star'] = $this->getStarName($value['star']);
+                $dataTmp[$key]['tags'] = $this->getMediaTags($value['tags']);
+                $dataTmp[$key]['star'] = $this->getMediaActors($value['star']);
                 $dataTmp[$key]['createtime'] = date('Y-m-d H:i:s',$value['createtime']);
             }
         }
@@ -158,77 +158,6 @@ class VideoController extends AdminController
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
 
-    public function addVideo(Request $request){
-        if($request->isMethod('post')){
-            $title = $request->input('title');
-            $pic = $request->input('imgval');
-            $url = $request->input('filesval');
-            $otype = $request->input('otype');
-            $firstotype = $request->input('otype2');
-            $secondotype = $request->input('otype3');
-            $secondbestotype = $request->input('secondbestotype');
-            $hotcount = $request->input('hotcount');
-            $designation = $request->input('designation');
-            $imdb = $request->input('imdb');
-            $score = $request->input('score');
-            $screen = $request->input('screen');
-            $star = $request->input('star');
-            $content = $request->input('content');
-            $play_urls = $request->input('play_urls');
-            $download_urls = $request->input('download_urls');
-
-            if(!empty($otype)) $otype = implode(',',$otype);
-            if(!empty($firstotype)) $firstotype = implode(',',$firstotype);
-            if(!empty($secondotype)) $secondotype = implode(',',$secondotype);
-            if(!empty($secondbestotype)) $secondbestotype = implode(',',$secondbestotype);
-
-            // 排序后  ,拼接 筛选条件+明星
-            if(!empty($screen)) {
-                sort($screen);
-                $screen = implode(',', $screen);
-            }
-            if(!empty($star)) {
-                sort($star);
-                $star = implode(',', $star);
-            }
-
-            if($pic){
-                if(substr($pic,0,7)!="http://"){
-                    $pic = $this->urlPic().$pic;
-                }
-            }
-
-            $reg = DB::table('video_list')->insert(array(
-                'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
-                'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,
-                'designation'=>$designation,'imdb'=>$imdb,'score'=>$score,
-                'screenotype'=>$screen,'star'=>$star,'content'=>$content,
-                'pic'=>$pic,'url'=>$url,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
-                'createtime'=>strtotime(date('Y-m-d H:i:s')),'is_visible'=>1
-            ));
-
-            if($reg){
-                return response()->json(array('code'=>1,'msg'=>"新增成功"));
-            } else {
-                return response()->json(array('code'=>0,'msg'=>"新增失败"));
-            }
-        }
-        // 导航分类
-        $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
-        // 视频分类
-        $secondotype = MediaCats::select('*')->get()->toArray();
-        $tree = getTree($secondotype);
-        // 筛选条件
-        $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
-        foreach($screen as $key=>$value){
-            $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
-            $screen[$key]['son'] = $son;
-        }
-        // 明星列表
-        $star =  StarList::select('sid','uname')->get()->toArray();
-
-        return view('video.add',compact('firstotype','secondotype','star','screen','tree'));
-    }
     public function cusm3u8url(Request $request,$vid) {
         $data = $_POST;
         M3u8List::where('vid',$vid)->delete();
@@ -250,123 +179,28 @@ class VideoController extends AdminController
         return response()->json(array('code'=>1,'msg'=>"移除成功"));
     }
     public function editvideo(Request $request,$vid){
+        $cfgs = $this->cfgs;
+
         if($request->isMethod('post')) {
-            $title = $request->input('title');
-            $otype = $request->input('otype');
             $pic = $request->input('imgdemo');
             $gif = $request->input('gifdemo');
-            $imgval_old = $request->input('imgval_old');
-            // $url = $request->input('filesval');
-            $filesval_old = $request->input('filesval_old');
-            $firstotype = $request->input('otype2');
-            $secondotype = $request->input('otype3');
-            $country = $request->input('country');
-            $secondbestotype = $request->input('secondbestotype');
-            $hotcount = $request->input('hotcount');
-            $designation = $request->input('designation');
-            $year = $request->input('year');
-            $imdb = $request->input('imdb');
-            $score = $request->input('score');
-            $screen = $request->input('screen');
-            $tags = $request->input('tags');
-            $star = $request->input('star');
-            $director = $request->input('director');
-            $content = $request->input('content');
-            $play_urls = $request->input('play_urls');
-            $download_urls = $request->input('download_urls');
-
-
-            if(!empty($otype) && is_array($otype)) $otype = implode(',',$otype);
-            if(!empty($firstotype) && is_array($firstotype))  $firstotype = implode(',',$firstotype);
-            if(!empty($secondotype) && is_array($secondotype))  $secondotype = implode(',',$secondotype);
-            if(!empty($country) && is_array($country))  $country = implode(',',$country);
-            if(!empty($secondbestotype) && is_array($secondbestotype))  $secondbestotype = implode(',',$secondbestotype);
-
-
-            if($pic){
-                if(substr($pic,0,7)!="http://"){
-                    $pic = $this->urlPic().$pic;
-                }
-            }
             $pic = str_replace($this->cfgs['site_url'], '', $pic);
             $gif = str_replace($this->cfgs['site_url'], '', $gif);
 
-
-            // 排序后  ,拼接 筛选条件+明星
-            if(!empty($screen) && is_array($screen)) {
-                sort($screen);
-                $screen = implode(',', $screen);
-            }
-            if(!empty($director) && is_array($director)) {
-                sort($director);
-                $director = implode(',', $director);
-            }
-            if(!empty($star) && is_array($star)) {
-                sort($star);
-                $star = implode(',', $star);
-            }
-            if(!empty($tags) && is_array($tags)) {
-                sort($tags);
-                $tags = implode(',', $tags);
-            }
-
-
             $reg = DB::table('video_list')->where('vid',$vid)->update(array(
-                'title'=>$title,'otype'=>$otype,'firstotype'=>$firstotype,'secondotype'=>$secondotype,
-                'secondbestotype'=>$secondbestotype,'hotcount'=>$hotcount,
-                'designation'=>$designation,'imdb'=>$imdb,'score'=>$score,
-                'screenotype'=>$screen,'country'=>$country,'year'=>$year,'director'=>$director,'star'=>$star,'tags'=>$tags,'content'=>$content,
-                'pic'=>$pic,'gif'=>$gif,'play_urls'=>$play_urls,'download_urls'=>$download_urls,
+                'pic'=>$pic,
+                'gif'=>$gif,
             ));
-//            if($pic != $imgval_old){
-//                if( file_exists('.'.$imgval_old) ){
-//                    unlink('.'.$imgval_old);
-//                }
-//            }
-//            if($url != $filesval_old){
-//                if( file_exists('.'.$imgval_old) ){
-//                    unlink('.'.$filesval_old);
-//                }
-//            }
+
             if($reg){
                 return response()->json(array('code'=>1,'msg'=>"编辑成功"));
             }else{
                 return response()->json(array('code'=>0,'msg'=>"编辑失败"));
             }
         }
-        // 导航分类
-        $firstotype = ListOtype::select('oid','otypename')->get()->toArray();
-        // 视频分类
-        $secondotype = MediaCats::select('*')->get()->toArray();
-        $tree = getTree($secondotype);
-        // 筛选条件
-        $screen = ScreenOtype::select('oid','otypename')->where('pid',0)->where('otype','!=',1)->get()->toArray();
-        foreach($screen as $key=>$value){
-            $son = ScreenOtype::select('oid','otypename')->where('pid',$value['oid'])->get()->toArray();
-            $screen[$key]['son'] = $son;
-        }
-        //标签
-        $tags = MediaTags::get()->toArray();
-        // 明星列表
-        $star =  MediaActors::select('*')->where("Role",'like','%'.'2'.'%')->get()->toArray();
-        $director =  MediaActors::select('*')->where("Role",'like','%'.'1'.'%')->get()->toArray();
+
+
         $data = VideoList::select('*')->where('vid',$vid)->first()->toArray();
-        //国家/地区
-        $country = MediaCountry::get()->toArray();
-
-
-        $data['otype'] = explode(',',$data['otype']);
-        $data['firstotype'] = explode(',',$data['firstotype']);
-        $data['secondotype'] = explode(',',$data['secondotype']);
-        $data['country'] = explode(',',$data['country']);
-        $data['secondbestotype'] = explode(',',$data['secondbestotype']);
-        $data['screenotype'] = explode(',',$data['screenotype']); // 筛选条件
-        $data['star'] = explode(',',$data['star']);           // 明星
-        $data['tags'] = explode(',',$data['tags']);
-        $data['director'] = explode(',',$data['director']);
-        $data['videotime'] = explode(':',$data['videotime']);
-
-
         $str_ = array();
         if($data['m3u8']) {
             $str = array();
@@ -379,21 +213,7 @@ class VideoController extends AdminController
             $data['m3u8'] = $str;
         }
 
-        $m3u8 = M3u8List::where('vid',$vid)->get()->toArray();
-        $m3u8items = [];
-        if($m3u8) {
-            foreach ($m3u8 as $v) {
-                if (in_array($v['url'], $str_)) {
-                    continue;
-                } else {
-                    $m3u8items[] = $v['url'];
-                }
-            }
-        }
-
-        $cfgs = $this->cfgs;
-
-        return view('video.edit',compact('vid','data','director','country','star','tags','screen','firstotype','secondotype','tree','cfgs','m3u8items'));
+        return view('video.edit',compact('vid','data','cfgs'));
     }
     public function sync(Request $request,$vid){
         if($request->isMethod('post')) {
@@ -404,7 +224,7 @@ class VideoController extends AdminController
                 //检测是否转码切片
                 $video = VideoList::where('vid',$v)->first();
                 if($video->status != 1) {
-                    return response()->json(array('code'=>-1,'msg'=>"[".$v."] 转码未完成，不可执行同步操作"));
+                    return response()->json(array('code'=>-1,'msg'=>"[".$v."] 转码未完成，不可执行导入操作"));
                 }
 
                 //有没有选择要加入的主体
@@ -474,10 +294,10 @@ class VideoController extends AdminController
                 $m3u8arr = json_decode($video->m3u8);
                 foreach ($m3u8arr as $rate=>$m3u8) {
                     if(empty($m3u8)) {
-                        return response()->json(array('code'=>-1,'msg'=>"切片未完成，不可执行同步操作"));
+                        return response()->json(array('code'=>-1,'msg'=>"切片未完成，不可执行导入操作"));
                     }
 
-                    //同步操作
+                    //导入操作
                     $obj = MediaEpisodes::where('Sid',$v)->where('Play_url','like','%'.$rate.'%')->first();
                     if($obj) {  //已经有就更新
                         $obj = $obj->toArray();
@@ -544,7 +364,7 @@ class VideoController extends AdminController
                 }
             }
 
-            return response()->json(array('code'=>1,'msg'=>"同步完成"));
+            return response()->json(array('code'=>1,'msg'=>"导入成功"));
         }
 
         $ids = explode('_', $vid);
@@ -736,16 +556,7 @@ class VideoController extends AdminController
             }
         }
     }
-    public function getVideoOtype(Request $request){
-        $otype = $request->input('otype');
-        $data = ListOtype::select('oid','otypename')->where('otype',$otype)->get()->toArray();
-        return $data;
-    }
-    public function getVideoOtype3(Request $request){
-        $otype = $request->input('otype');
-        $data = VideoOtype::select('oid','otypename')->where('otype',$otype)->get()->toArray();
-        return $data;
-    }
+
 
     public function transqueue(Request $request) {
         return view('video.transqueue');
