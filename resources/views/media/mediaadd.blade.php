@@ -209,6 +209,13 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">发布状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="Issue" value="1" title="发布" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">关键字</label>
             <div class="layui-input-block">
                 <input type="text" name="KeyWord" autocomplete="off" placeholder="请输入关键字" class="layui-input" value="" >

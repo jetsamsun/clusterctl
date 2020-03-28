@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 28/03/2020 20:27:07
+ Date: 28/03/2020 22:07:53
 */
 
 SET NAMES utf8mb4;
@@ -288,25 +288,28 @@ CREATE TABLE `app_media_episodes`  (
   `Source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '来源,如youtube',
   `Create_time` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `Issue` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态（0 未发布，1 发布）',
   PRIMARY KEY (`Id`, `MId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_episodes
 -- ----------------------------
-INSERT INTO `app_media_episodes` VALUES (30, 29, 10084, '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', '0', '0', '【天然素人】缺少streams字段问题', NULL, '0', '360', '1时19分15秒', '0', '/video/product/20200323/8CjSJNGD/360/mmm.m3u8', '0', 1585397084, 0);
-INSERT INTO `app_media_episodes` VALUES (31, 30, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '240', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/240/mmm.m3u8', '0', 1585397097, 0);
-INSERT INTO `app_media_episodes` VALUES (32, 30, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '360', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/360/mmm.m3u8', '0', 1585397097, 0);
-INSERT INTO `app_media_episodes` VALUES (33, 31, 10087, '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '0', '0', '转码变宽屏问题', NULL, '0', '360', '21分13秒', '0', '/video/product/20200316/tSgffoSB/360/mmm.m3u8', '0', 1585397109, 0);
-INSERT INTO `app_media_episodes` VALUES (34, 29, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '240', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/240/mmm.m3u8', '0', 1585397116, 1585397154);
-INSERT INTO `app_media_episodes` VALUES (35, 29, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '360', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/360/mmm.m3u8', '0', 1585397116, 1585397154);
+INSERT INTO `app_media_episodes` VALUES (36, 33, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '240', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/240/mmm.m3u8', '0', 1585401700, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (37, 33, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '360', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/360/mmm.m3u8', '0', 1585401700, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (38, 33, 0, '', '', '0', '', 'hwety', '', '', '', '', '0', '', '', 0, 1585401723, 0);
+INSERT INTO `app_media_episodes` VALUES (39, 34, 0, '', '', '0', '', 'dbshn', '', '', '', '', '0', '', '', 0, 1585401745, 0);
+INSERT INTO `app_media_episodes` VALUES (40, 34, 10087, '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '0', '0', '转码变宽屏问题', NULL, '0', '360', '21分13秒', '0', '/video/product/20200316/tSgffoSB/360/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (41, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '240', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/240/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (42, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '360', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/360/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (43, 35, 10084, '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', '0', '', '【天然素人】缺少streams字段问题', '', '', '360', '1时19分15秒', '0', '/video/product/20200323/8CjSJNGD/360/mmm.m3u8', '', 1585401805, 1585403311, 1);
 
 -- ----------------------------
 -- Table structure for app_media_movies
 -- ----------------------------
 DROP TABLE IF EXISTS `app_media_movies`;
 CREATE TABLE `app_media_movies`  (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Id` int(11) NOT NULL,
   `Sid` int(11) NOT NULL DEFAULT 0 COMMENT '原始ID',
   `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标题',
   `KeyWord` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '关键字',
@@ -329,16 +332,16 @@ CREATE TABLE `app_media_movies`  (
   `Preid` int(10) NOT NULL DEFAULT 0 COMMENT '上一部ID,如有多部',
   `Create_time` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '最后更新时间',
+  `Issue` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态（0 未发布，1 发布）',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_movies
 -- ----------------------------
-INSERT INTO `app_media_movies` VALUES (29, 10089, '你被AI盯上了吗？', NULL, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '0', 0, 'gasfdgdh', NULL, '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 0, 0, 1585397084, 1585397154);
-INSERT INTO `app_media_movies` VALUES (30, 10085, '人类下达的命令，AI会吗？', NULL, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '0', 0, 'hdsafhsat', NULL, '2016', 'JPN', 0, '7', '1,3', '2,3', '2,3,6,9,10,11', 2, 'gdf', 'gdfg', 4, 0, 1585397097, 0);
-INSERT INTO `app_media_movies` VALUES (31, 10087, '转码变宽屏问题', NULL, '/video/product/20200316/tSgffoSB/360/cover.jpg', '0', 0, NULL, NULL, '2020', 'HK', 0, '6', '', '', '', 1, '', '', 0, 0, 1585397109, 0);
-INSERT INTO `app_media_movies` VALUES (32, 10089, '你被AI盯上了吗？', NULL, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '0', 0, 'gasfdgdh', NULL, '2019', 'HK', 0, '5', '3', '2', '2,3', 1, '', '', 0, 0, 1585397116, 0);
+INSERT INTO `app_media_movies` VALUES (33, 10085, '人类下达的命令，AI会吗？', '', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '', 0, 'hdsafhsat', '', '2016', 'JPN', 0, '7', '1,3', '2,3', '2,3,6,9,10,11', 2, 'gdf', 'gdfg', 4, 0, 1585401700, 1585403301, 1);
+INSERT INTO `app_media_movies` VALUES (34, 10089, '你被AI盯上了吗？', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 0, 0, 1585401736, 1585401762, 0);
+INSERT INTO `app_media_movies` VALUES (35, 10084, '【天然素人】缺少streams字段问题', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 0);
 
 -- ----------------------------
 -- Table structure for app_media_role
@@ -1932,7 +1935,7 @@ CREATE TABLE `app_video_list`  (
 INSERT INTO `app_video_list` VALUES (10084, '【天然素人】缺少streams字段问题', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', '{\"360\":\"\\/video\\/product\\/20200323\\/8CjSJNGD\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', NULL, '6', '1', NULL, NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200323/8CjSJNGD/360/8CjSJNGD.mp4', '8CjSJNGD.mp4', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '949101584329219462.mp4', 1, NULL, NULL, NULL);
 INSERT INTO `app_video_list` VALUES (10085, '人类下达的命令，AI会吗？', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '{\"240\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/mmm.m3u8\"}', 'hdsafhsat', '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '2', '7', '1', NULL, '1,3', '2,3', 0, '5', '0', '1584329219', 1, NULL, NULL, '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.mp4', 'u3XXhQ81.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '4', 'gdf', 'gdfg', '488021584329219921.mp4', 1, '2,3,6,9,10,11', 'JPN', '2016');
 INSERT INTO `app_video_list` VALUES (10087, '转码变宽屏问题', '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/tSgffoSB\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/转码变宽屏问题.mp4', '1', '6', '1', NULL, NULL, NULL, 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/tSgffoSB/360/tSgffoSB.mp4', 'tSgffoSB.mp4', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '883161584329220384.mp4', 1, NULL, 'HK', '2020');
-INSERT INTO `app_video_list` VALUES (10089, '你被AI盯上了吗？', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '{\"240\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/mmm.m3u8\"}', 'gasfdgdh', '2', '/video/upload/你被AI盯上了吗？.mp4', '1', '5', '1', NULL, '3', '2', 0, NULL, '0', '1585127028', 1, NULL, NULL, '/video/product/20200325/PVcKQFHP/360/PVcKQFHP.mp4', 'PVcKQFHP.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '970181585127028201.mp4', 1, '2,3', 'HK', '2019');
+INSERT INTO `app_video_list` VALUES (10089, '你被AI盯上了吗？', '/video/product/20200325/PVcKQFHP/360/cover.jpg', '/video/product/20200325/PVcKQFHP/360/cover.gif', '{\"240\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/mmm.m3u8\"}', 'gasfdgdh', '2', '/video/upload/你被AI盯上了吗？.mp4', '1', '5', '1', NULL, '3', '2', 0, NULL, '0', '1585127028', 1, NULL, NULL, '/video/product/20200325/PVcKQFHP/360/PVcKQFHP.mp4', 'PVcKQFHP.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '970181585127028201.mp4', 1, '2,3', 'HK', '2019');
 
 -- ----------------------------
 -- Table structure for app_video_otype

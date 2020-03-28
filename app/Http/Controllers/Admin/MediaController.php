@@ -66,6 +66,7 @@ class MediaController extends AdminController
                 $type = $this->getMediaType($value['Type']);
                 $dataTmp[$key]['Type'] = empty($type)?'未定义':$type;
 
+                $dataTmp[$key]['Issue'] = empty($value['Issue'])?'未发布':'已发布';
                 $dataTmp[$key]['Tags'] = $this->getMediaTags($value['Tags']);
                 $dataTmp[$key]['Actors'] = $this->getMediaActors($value['Actors']);
                 $dataTmp[$key]['Directors'] = $this->getMediaActors($value['Directors']);
@@ -104,6 +105,7 @@ class MediaController extends AdminController
             $KeyWord = $request->input('KeyWord');
             $Content = $request->input('Content');
             $Mark = $request->input('Mark');
+            $Issue = $request->input('Issue');
 
 
             if(!empty($Tags) && is_array($Tags)) {
@@ -136,6 +138,7 @@ class MediaController extends AdminController
                 'Directors'=>empty($Directors)?'':$Directors,
                 'Actors'=>empty($Actors)?'':$Actors,
                 'Status'=>empty($Status)?0:$Status,
+                'Issue'=>empty($Issue)?0:$Issue,
                 'KeyWord'=>empty($KeyWord)?'':$KeyWord,
                 'Content'=>empty($Content)?'':$Content,
                 'Mark'=>empty($Mark)?'':$Mark,
@@ -204,6 +207,7 @@ class MediaController extends AdminController
             $KeyWord = $request->input('KeyWord');
             $Content = $request->input('Content');
             $Mark = $request->input('Mark');
+            $Issue = $request->input('Issue');
 
 
             if(!empty($Tags) && is_array($Tags)) {
@@ -236,6 +240,7 @@ class MediaController extends AdminController
                 'Directors'=>empty($Directors)?'':$Directors,
                 'Actors'=>empty($Actors)?'':$Actors,
                 'Status'=>empty($Status)?0:$Status,
+                'Issue'=>empty($Issue)?0:$Issue,
                 'KeyWord'=>empty($KeyWord)?'':$KeyWord,
                 'Content'=>empty($Content)?'':$Content,
                 'Mark'=>empty($Mark)?'':$Mark,
@@ -342,6 +347,7 @@ class MediaController extends AdminController
                 $dataTmp[$key]['Source'] = empty($value['Source'])?'--':$value['Source'];
 
                 $dataTmp[$key]['Code'] = $value['Code'].'p';
+                $dataTmp[$key]['Issue'] = empty($value['Issue'])?'未发布':'已发布';
 
                 $dataTmp[$key]['Create_time'] = date('Y-m-d H:i:s',$value['Create_time']);
                 $dataTmp[$key]['Update_time'] = empty($value['Update_time'])?'--':date('Y-m-d H:i:s',$value['Update_time']);
@@ -369,6 +375,7 @@ class MediaController extends AdminController
             $Play_node = $request->input('Play_node');
             $Source = $request->input('Source');
             $Description = $request->input('Description');
+            $Issue = $request->input('Issue');
 
             if(strpos($Image, $cfgs['m3u8_url'])!==false) $Image = str_replace($cfgs['m3u8_url'], '', $Image);
             if(strpos($Gif, $cfgs['m3u8_url'])!==false) $Gif = str_replace($cfgs['m3u8_url'], '', $Gif);
@@ -388,6 +395,7 @@ class MediaController extends AdminController
                 'Episode'=>empty($Episode)?0:$Episode,
                 'Play_node'=>empty($Play_node)?0:$Play_node,
                 'Source'=>empty($Source)?'':$Source,
+                'Issue'=>empty($Issue)?0:$Issue,
                 'Description'=>empty($Description)?'':$Description,
                 'Update_time'=>time(),
             ));
@@ -449,6 +457,7 @@ class MediaController extends AdminController
             $Play_node = $request->input('Play_node');
             $Source = $request->input('Source');
             $Description = $request->input('Description');
+            $Issue = $request->input('Issue');
 
             if(strpos($Image, $cfgs['m3u8_url'])!==false) $Image = str_replace($cfgs['m3u8_url'], '', $Image);
             if(strpos($Gif, $cfgs['m3u8_url'])!==false) $Gif = str_replace($cfgs['m3u8_url'], '', $Gif);
@@ -467,6 +476,7 @@ class MediaController extends AdminController
                 'Episode'=>empty($Episode)?0:$Episode,
                 'Play_node'=>empty($Play_node)?0:$Play_node,
                 'Source'=>empty($Source)?'':$Source,
+                'Issue'=>empty($Issue)?0:$Issue,
                 'Description'=>empty($Description)?'':$Description,
                 'Update_time'=>time(),
             ));
@@ -505,7 +515,7 @@ class MediaController extends AdminController
         $countrys = MediaCountry::get()->toArray();
 
         // 剧集
-        $data = MediaEpisodes::select('*')->where('Id',$id)->first();    if($data) $data = $data->toArray(); else dd("data null");
+        $data = MediaEpisodes::select('*')->where('Id',$id)->first();  if($data) $data = $data->toArray(); else dd("data null");
 
 
         return view('media.episodeedit',compact('id','data','directors','countrys','actors','tags','types','cats','cfgs','status'));

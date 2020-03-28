@@ -59,31 +59,6 @@
                 <textarea placeholder="多个地址用|分割（例如：http://www.480p.mp4|http://www.720p.mp4|http://www.1080p.mp4）" name="download_urls" lay-verify="required" class="layui-textarea">{{ $data['download_urls'] }}</textarea>
             </div>
         </div>
-        {{--<div class="layui-form-item">--}}
-            {{--<label class="layui-form-label"><font color="red">* </font>上传视频</label>--}}
-            {{--<div class="layui-input-block">--}}
-                {{--<div class="layui-upload">--}}
-                    {{--<button type="button" class="layui-btn layui-btn-normal" id="testList">选择视频</button>--}}
-                    {{--<div class="layui-upload-list">--}}
-                        {{--<table class="layui-table">--}}
-                            {{--<thead>--}}
-                            {{--<tr><th>文件名</th>--}}
-                                {{--<th>大小</th>--}}
-                                {{--<th>状态</th>--}}
-                                {{--<th>操作</th>--}}
-                            {{--</tr></thead>--}}
-                            {{--<tbody id="demoList"></tbody>--}}
-                        {{--</table>--}}
-                    {{--</div>--}}
-                    {{--<button type="button" class="layui-btn" id="testListAction">开始上传</button>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-            {{--<div id="upload_img_list">--}}
-                {{--@if($data['url'])--}}
-                    {{--<input type="hidden" name="file_info" value="{{ $data['url'] }}" />--}}
-                {{--@endif--}}
-            {{--</div>--}}
-        {{--</div>--}}
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>视频分类</label>
             <div class="layui-input-block">

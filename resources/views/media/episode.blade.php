@@ -43,6 +43,7 @@
                     ,{field:'Title',width:180, title: '标题'}
                     ,{field:'Episode', width:120,title: '第几集'}
                     ,{field:'Season', width:120,title: '第几季'}
+                    ,{field:'Issue', width:140,title: '发布状态'}
                     ,{field:'Code', width:100,title: '码率'}
                     ,{field:'Image',width:80, title: '封面图',templet: '<div><img src="@{{ d.Image  }}" width="30px" height="40px" ></div>'}
                     ,{field:'Gif',width:80, title: 'Gif图',templet: '<div><img src="@{{ d.Gif  }}" width="30px" height="40px" ></div>'}

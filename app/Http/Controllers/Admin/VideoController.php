@@ -264,7 +264,7 @@ class VideoController extends AdminController
 
                     //$update['Id'] = $video->duration;     //
                     $update['Sid'] = $v;     //  '选第一个作为原始ID',
-                    $update['Name'] = $video->title;     //  '标题',
+                    //$update['Name'] = $video->title;     //  '标题',
                     //$update['KeyWord'] = $video->duration;     //  '关键字',
                     $update['Image'] = $video->pic;     //  '封面图',
                     //$update['Image_big'] = $video->duration;     //  '封面大图',
@@ -332,7 +332,7 @@ class VideoController extends AdminController
                         $insert = [];
 
                         //insert['Id'] = '';     //
-                        $insert['MId'] = $mediaid;     //   '对应视频主体Id', 
+                        $insert['MId'] = $mediaid;     //   '对应视频主体Id',
                         $insert['Sid'] = $v;     //   '原始ID',
                         $insert['Image'] = $video->pic;     //   '封面图',
                         $insert['Gif'] = $video->gif;     //   '封面动图',
@@ -556,7 +556,6 @@ class VideoController extends AdminController
             }
         }
     }
-
 
     public function transqueue(Request $request) {
         return view('video.transqueue');

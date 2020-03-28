@@ -48,7 +48,7 @@
                     ,{field:'Score', width:140,title: '评分'}
                     ,{field:'Year', width:140,title: '年份'}
                     ,{field:'Episodes', width:140,title: '总集数'}
-                    ,{field:'Status', width:140,title: '状态'}
+                    ,{field:'Issue', width:140,title: '发布状态'}
                     ,{field:'IMDB', width:140,title: 'IMDB'}
                     ,{field:'FH', width:140,title: '番号'}
                     ,{field:'Content', width:140,title: '简介'}
