@@ -71,7 +71,7 @@
             });
             //批量
             $('#add').on('click',function () {
-                window.location.href = "/admin/media/addepisode";
+                window.location.href = "/admin/media/addepisode/{{$mid}}";
             });
             //批量删除
             $('#dels').on('click',function () {
@@ -115,7 +115,7 @@
                             type: "POST", url: "/admin/media/delepisode",
                             data: { mid: data.Id }, dataType: "json",
                             success: function (e) {
-                                if (e.status === 1) {
+                                if (e.code === 1) {
                                     layer.msg('删除成功！', { time: 1500 }, function () {
                                         obj.del();
                                     });

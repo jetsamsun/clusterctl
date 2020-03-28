@@ -41,14 +41,14 @@
         <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>编辑表单</legend>
+        <legend>编辑视频地址表单</legend>
     </fieldset>
 
-    <form class="layui-form" action="{{ url('/admin/media/editmedia/'.$id) }}" method="post">
+    <form class="layui-form" action="{{ url('/admin/media/editepisode/'.$id) }}" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label"><font color="red">* </font>标题</label>
             <div class="layui-input-block">
-                <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" value="{{ $data['Title'] }}" >
+                <input type="text" name="Title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" value="{{ $data['Title'] }}" >
             </div>
         </div>
 
@@ -92,12 +92,15 @@
             <label class="layui-form-label"><font color="red">* </font>视频</label>
             <div class="layui-input-block">
                 <span id="video">
-                    <video id="video-active" width="360" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}' >
-                        <source id="source" src="{{ $data['Play_url'] }}" type="application/x-mpegURL">
-                    </video>
-                    {{--<video id="video-active" width="360" controls autoplay>--}}
-                        {{--<source src="{{ $data['Play_url'] }}" type="application/x-mpegUR">--}}
-                    {{--</video>--}}
+                    @if(strpos($data['Play_url'],'.mp4')!==false)
+                        <video id="video-active" width="360" controls autoplay>
+                            <source src="{{ $data['url'] }}" type="video/mp4">
+                        </video>
+                    @else
+                        <video id="myvideo" width="360" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{}' >
+                            <source id="source" src="{{ $data['Play_url'] }}" type="application/x-mpegURL">
+                        </video>
+                    @endif
                 </span>
                 <div style="margin-top: 10px; display: none">
                     <button type="button" class="layui-btn" onclick="zt()">截图</button>
@@ -217,9 +220,9 @@
                 type: data.form.method,
                 data: data.field,
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg, {icon: 1, time: 1000});
-                        window.location.href = "/admin/media";
+                        window.location.href = "/admin/media/episode/{{ $data['MId'] }}";
                     }else{
                         layer.msg(res.msg, {icon: 2, anim: 6, time: 1000});
                     }
@@ -237,7 +240,7 @@
         upload.render({
             elem: '#img'
             ,url: '/admin/uploadVideoImg'
-            ,size: 500
+            ,size: 1000
             ,exts: 'jpg|png|jpeg'
             ,multiple: false
             ,before: function(obj){
@@ -264,7 +267,7 @@
         upload.render({
             elem: '#gif'
             ,url: '/admin/uploadVideoImg'
-            ,size: 500
+            ,size: 1000
             ,exts: 'gif'
             ,multiple: false
             ,before: function(obj){
@@ -438,7 +441,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.min.js" type="text/javascript"></script>
 <script>
     // videojs 简单使用
-    var myVideo = videojs('video-active', {
+    var myVideo = videojs('myvideo', {
         bigPlayButton: true,
         textTrackDisplay: false,
         posterImage: false,

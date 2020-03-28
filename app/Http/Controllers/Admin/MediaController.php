@@ -351,67 +351,45 @@ class MediaController extends AdminController
         return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
     }
 
-    public function addepisode(Request $request) {
+    public function addepisode(Request $request,$mid) {
         $cfgs = $this->cfgs;
 
         if($request->isMethod('post')) {
-            $Name = $request->input('Name');
+            $Title = $request->input('Title');
             $Image = $request->input('imgval');
             $imgval_old = $request->input('imgval_old');
-            $Image_big = $request->input('bigimgval');
-            $bigimgval_old = $request->input('bigimgval_old');
-            $Type = $request->input('Type');
-            $Country = $request->input('Country');
-            $Cats = $request->input('Cats');
-            $Year = $request->input('Year');
-            $Episodes = $request->input('Episodes');
-            $Preid = $request->input('Preid');
-            $FH = $request->input('FH');
-            $IMDB = $request->input('IMDB');
-            $Score = $request->input('Score');
-            $Tags = $request->input('Tags');   //可多个
-            $Directors = $request->input('Directors');   //可多个
-            $Actors = $request->input('Actors');  //可多个
-            $Status = $request->input('Status');
-            $KeyWord = $request->input('KeyWord');
-            $Content = $request->input('Content');
-            $Mark = $request->input('Mark');
+            $Gif = $request->input('gifval');
+            $gifval_old = $request->input('gifval_old');
+            $Play_url = $request->input('Play_url');
+            $Code = $request->input('Code');
+            $Play_time = $request->input('Play_time');
+            $Lang = $request->input('Lang');
+            $Season = $request->input('Season');
+            $Episode = $request->input('Episode');
+            $Play_node = $request->input('Play_node');
+            $Source = $request->input('Source');
+            $Description = $request->input('Description');
+
+            if(strpos($Image, $cfgs['m3u8_url'])!==false) $Image = str_replace($cfgs['m3u8_url'], '', $Image);
+            if(strpos($Gif, $cfgs['m3u8_url'])!==false) $Gif = str_replace($cfgs['m3u8_url'], '', $Gif);
+            if(strpos($Play_url, $cfgs['m3u8_url'])!==false) $Play_url = str_replace($cfgs['m3u8_url'], '', $Play_url);
 
 
-            if(!empty($Tags) && is_array($Tags)) {
-                sort($Tags);
-                $Tags = implode(',', $Tags);
-            }
-            if(!empty($Directors) && is_array($Directors)) {
-                sort($Directors);
-                $Directors = implode(',', $Directors);
-            }
-            if(!empty($Actors) && is_array($Actors)) {
-                sort($Actors);
-                $Actors = implode(',', $Actors);
-            }
-
-            $reg = DB::table('media_movies')->insert(array(
-                'Name'=>$Name,
+            $reg = DB::table('media_episodes')->insert(array(
+                'MId'=>$mid,
+                'Title'=>$Title,
                 'Image'=>empty($Image)?'':$Image,
-                'Image_big'=>empty($Image_big)?'':$Image_big,
-                'Type'=>empty($Type)?0:$Type,
-                'Country'=>empty($Country)?'':$Country,
-                'Cats'=>empty($Cats)?'':$Cats,
-                'Year'=>empty($Year)?'':$Year,
-                'Episodes'=>empty($Episodes)?0:$Episodes,
-                'Preid'=>empty($Preid)?0:$Preid,
-                'FH'=>empty($FH)?'':$FH,
-                'IMDB'=>empty($IMDB)?'':$IMDB,
-                'Score'=>empty($Score)?0:$Score,
-                'Tags'=>empty($Tags)?'':$Tags,
-                'Directors'=>empty($Directors)?'':$Directors,
-                'Actors'=>empty($Actors)?'':$Actors,
-                'Status'=>empty($Status)?0:$Status,
-                'KeyWord'=>empty($KeyWord)?'':$KeyWord,
-                'Content'=>empty($Content)?'':$Content,
-                'Mark'=>empty($Mark)?'':$Mark,
-                'Create_time'=>time(),
+                'Gif'=>empty($Gif)?'':$Gif,
+                'Play_url'=>empty($Play_url)?'':$Play_url,
+                'Code'=>empty($Code)?'':$Code,
+                'Play_time'=>empty($Play_time)?'':$Play_time,
+                'Lang'=>empty($Lang)?'':$Lang,
+                'Season'=>empty($Season)?'':$Season,
+                'Episode'=>empty($Episode)?0:$Episode,
+                'Play_node'=>empty($Play_node)?0:$Play_node,
+                'Source'=>empty($Source)?'':$Source,
+                'Description'=>empty($Description)?'':$Description,
+                'Update_time'=>time(),
             ));
 
             if($Image != $imgval_old){
@@ -419,15 +397,15 @@ class MediaController extends AdminController
                     unlink('.'.$imgval_old);
                 }
             }
-            if($Image_big != $bigimgval_old){
-                if( !empty($bigimgval_old) && file_exists('.'.$bigimgval_old) ){
-                    unlink('.'.$bigimgval_old);
+            if($Gif != $gifval_old){
+                if( !empty($gifval_old) && file_exists('.'.$gifval_old) ){
+                    unlink('.'.$gifval_old);
                 }
             }
 
             if($reg){
                 return response()->json(array('code'=>1,'msg'=>"新增成功"));
-            } else {
+            }else{
                 return response()->json(array('code'=>0,'msg'=>"新增失败"));
             }
         }
@@ -447,15 +425,68 @@ class MediaController extends AdminController
         //国家/地区
         $countrys = MediaCountry::get()->toArray();
 
+        // 主体
+        $data = MediaMovies::select('*')->where('Id',$mid)->first();    if($data) $data = $data->toArray(); else dd("data null");
 
-        return view('media.episodeadd',compact('directors','countrys','actors','tags','types','cats','cfgs','status'));
+        return view('media.episodeadd',compact('mid','data','directors','countrys','actors','tags','types','cats','cfgs','status'));
     }
 
     public function editepisode(Request $request,$id) {
         $cfgs = $this->cfgs;
 
         if($request->isMethod('post')) {
+            $Title = $request->input('Title');
+            $Image = $request->input('imgval');
+            $imgval_old = $request->input('imgval_old');
+            $Gif = $request->input('gifval');
+            $gifval_old = $request->input('gifval_old');
+            $Play_url = $request->input('Play_url');
+            $Code = $request->input('Code');
+            $Play_time = $request->input('Play_time');
+            $Lang = $request->input('Lang');
+            $Season = $request->input('Season');
+            $Episode = $request->input('Episode');
+            $Play_node = $request->input('Play_node');
+            $Source = $request->input('Source');
+            $Description = $request->input('Description');
 
+            if(strpos($Image, $cfgs['m3u8_url'])!==false) $Image = str_replace($cfgs['m3u8_url'], '', $Image);
+            if(strpos($Gif, $cfgs['m3u8_url'])!==false) $Gif = str_replace($cfgs['m3u8_url'], '', $Gif);
+            if(strpos($Play_url, $cfgs['m3u8_url'])!==false) $Play_url = str_replace($cfgs['m3u8_url'], '', $Play_url);
+
+
+            $reg = DB::table('media_episodes')->where('Id',$id)->update(array(
+                'Title'=>$Title,
+                'Image'=>empty($Image)?'':$Image,
+                'Gif'=>empty($Gif)?'':$Gif,
+                'Play_url'=>empty($Play_url)?'':$Play_url,
+                'Code'=>empty($Code)?'':$Code,
+                'Play_time'=>empty($Play_time)?'':$Play_time,
+                'Lang'=>empty($Lang)?'':$Lang,
+                'Season'=>empty($Season)?'':$Season,
+                'Episode'=>empty($Episode)?0:$Episode,
+                'Play_node'=>empty($Play_node)?0:$Play_node,
+                'Source'=>empty($Source)?'':$Source,
+                'Description'=>empty($Description)?'':$Description,
+                'Update_time'=>time(),
+            ));
+
+            if($Image != $imgval_old){
+                if(  !empty($imgval_old) &&  file_exists('.'.$imgval_old) ){
+                    unlink('.'.$imgval_old);
+                }
+            }
+            if($Gif != $gifval_old){
+                if( !empty($gifval_old) && file_exists('.'.$gifval_old) ){
+                    unlink('.'.$gifval_old);
+                }
+            }
+
+            if($reg){
+                return response()->json(array('code'=>1,'msg'=>"编辑成功"));
+            }else{
+                return response()->json(array('code'=>0,'msg'=>"编辑失败"));
+            }
         }
 
         // 类型

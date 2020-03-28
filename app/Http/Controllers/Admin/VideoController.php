@@ -332,7 +332,7 @@ class VideoController extends AdminController
                         $insert = [];
 
                         //insert['Id'] = '';     //
-                        $insert['MId'] = $mediaid;     //   '对应视频主体Id',
+                        $insert['MId'] = $mediaid;     //   '对应视频主体Id', 
                         $insert['Sid'] = $v;     //   '原始ID',
                         $insert['Image'] = $video->pic;     //   '封面图',
                         $insert['Gif'] = $video->gif;     //   '封面动图',
@@ -342,7 +342,7 @@ class VideoController extends AdminController
                         $insert['Description'] = $video->content;     //   '简介',
                         //insert['Lang'] = '';     //   '语言',
                         $insert['Code'] = $rate;     //   '码率,360P,720P,1080P',
-                        $insert['Play_time'] = $video->duration;     //   '总播放时间',    format_time();  format_bytes($value['size'])
+                        $insert['Play_time'] = format_time($video->duration);     //   '总播放时间',    format_time();  format_bytes($value['size'])
                         //insert['Play_node'] = '';     //   '关键结点,按秒数',
                         $insert['Play_url'] = $m3u8;     //   '播放地址',
                         //insert['Source'] = '';     //   '来源,如youtube',
