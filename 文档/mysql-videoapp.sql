@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 28/03/2020 22:07:53
+ Date: 02/04/2020 18:08:55
 */
 
 SET NAMES utf8mb4;
@@ -339,7 +339,7 @@ CREATE TABLE `app_media_movies`  (
 -- ----------------------------
 -- Records of app_media_movies
 -- ----------------------------
-INSERT INTO `app_media_movies` VALUES (33, 10085, '人类下达的命令，AI会吗？', '', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '', 0, 'hdsafhsat', '', '2016', 'JPN', 0, '7', '1,3', '2,3', '2,3,6,9,10,11', 2, 'gdf', 'gdfg', 4, 0, 1585401700, 1585403301, 1);
+INSERT INTO `app_media_movies` VALUES (33, 10085, '人类下达的命令，AI会吗？', '', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '', 0, '678257689745962', '', '2016', 'JPN', 0, '7', '', '', '2,3,6,9,10,11', 2, 'gdf', 'gdfg', 4, 0, 1585401700, 1585755303, 1);
 INSERT INTO `app_media_movies` VALUES (34, 10089, '你被AI盯上了吗？', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 0, 0, 1585401736, 1585401762, 0);
 INSERT INTO `app_media_movies` VALUES (35, 10084, '【天然素人】缺少streams字段问题', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 0);
 
