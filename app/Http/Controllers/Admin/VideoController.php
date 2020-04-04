@@ -254,7 +254,7 @@ class VideoController extends AdminController
                     $insert['Score'] = empty($video->score)?0:$video->score;     //  '评分',
                     //$insert['Preid'] = $video->duration;     //  '上一部ID,如有多部',
                     $insert['Create_time'] = time();     //  '创建时间',
-                    //$insert['Update_time'] = $video->duration;     //  '最后更新时间',
+                    $insert['Update_time'] = $insert['Create_time'];     //  '最后更新时间',
 
                     $mediaid = MediaMovies::insertGetId($insert);
                     if(!$mediaid) {
@@ -348,7 +348,7 @@ class VideoController extends AdminController
                         $insert['Play_url'] = $m3u8;     //   '播放地址',
                         //insert['Source'] = '';     //   '来源,如youtube',
                         $insert['Create_time'] = time();     //   '创建时间',
-                        //$insert['Update_time'] = time();     //   '更新时间',
+                        $insert['Update_time'] = $insert['Create_time'];     //   '更新时间',
 
                         $bool = MediaEpisodes::insertGetId($insert);
                     }

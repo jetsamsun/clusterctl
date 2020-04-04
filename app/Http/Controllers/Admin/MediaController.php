@@ -15,6 +15,7 @@ use App\Models\MediaStatus;
 use App\Models\MediaTags;
 use App\Models\MediaType;
 use App\Models\ScreenOtype;
+use App\Models\SiteCfg;
 use App\Models\StarList;
 use App\Models\VideoAdminLog;
 use App\Models\VideoList;
@@ -143,6 +144,7 @@ class MediaController extends AdminController
                 'Content'=>empty($Content)?'':$Content,
                 'Mark'=>empty($Mark)?'':$Mark,
                 'Create_time'=>time(),
+                'Update_time'=>time(),
             ));
 
             if($Image != $imgval_old){
@@ -397,6 +399,7 @@ class MediaController extends AdminController
                 'Source'=>empty($Source)?'':$Source,
                 'Issue'=>empty($Issue)?0:$Issue,
                 'Description'=>empty($Description)?'':$Description,
+                'Create_time'=>time(),
                 'Update_time'=>time(),
             ));
 
@@ -533,5 +536,72 @@ class MediaController extends AdminController
             }
         }
         return json_encode(array('code' => 1, 'msg'=>'删除成功'));
+    }
+
+    /**
+     *  标签
+     */
+    public function sites(){
+        return view('sites.list');
+    }
+    public function getSitesList(Request $request){
+        $dataTmp = SiteCfg::select('*')->get();
+        if($dataTmp){
+            $dataTmp = $dataTmp->toArray();
+        }
+        return response()->json(array('code'=>0,'msg'=>'','data'=>$dataTmp));
+    }
+    public function addsites(Request $request){
+        if($request->isMethod('post')){
+            $User = $request->input('User');
+            $Key = $request->input('Key');
+            $Ip = $request->input('Ip');
+
+            $reg = DB::table('site_cfg')->insert(array(
+                'User'=>$User,'Key'=>$Key,'Ip'=>$Ip,
+            ));
+
+            if($reg){
+                return response()->json(array('code'=>1,'msg'=>"新增成功"));
+            }else{
+                return response()->json(array('code'=>0,'msg'=>"新增失败"));
+            }
+        }
+
+        return view('sites.add');
+    }
+    public function delsites(Request $request){
+        $oid = $request->input('oid');
+        $reg = DB::table('site_cfg')->where('Id',$oid)->delete();
+        if($reg){
+            return response()->json(array('status'=>1));
+        }else{
+            return response()->json(array('status'=>0));
+        }
+    }
+    public function editsites(Request $request,$oid){
+        if($request->isMethod('post')){
+            $User = $request->input('User');
+            $Key = $request->input('Key');
+            $Ip = $request->input('Ip');
+
+
+            $reg = DB::table('site_cfg')->where('Id',$oid)->update(array(
+                'User'=>$User,'Key'=>$Key,'Ip'=>$Ip,
+            ));
+
+            if($reg) {
+                return response()->json(array('code'=>1,'msg'=>"编辑成功"));
+            } else {
+                return response()->json(array('code'=>0,'msg'=>"编辑失败"));
+            }
+        }
+
+        // 分类
+        $data = SiteCfg::select('*')
+            ->where('Id',$oid)
+            ->first()->toArray();
+
+        return view('sites.edit',compact('oid','data'));
     }
 }

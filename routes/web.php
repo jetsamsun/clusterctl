@@ -79,6 +79,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('deltags', 'OtypeController@deltags');
     Route::any('edittags/{id}', 'OtypeController@edittags');
 
+
     // 分类
     Route::any('firstotype', 'OtypeController@firstotype');
     Route::any('firstotype/getFirstOtypeList', 'OtypeController@getFirstOtypeList');
@@ -155,4 +156,11 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('media/addepisode/{mid}', 'MediaController@addepisode');
     Route::any('media/editepisode/{id}', 'MediaController@editepisode');
     Route::any('media/delepisode', 'MediaController@delepisode');
+
+    // 站群
+    Route::any('sites', 'MediaController@sites');
+    Route::any('getSitesList', 'MediaController@getSitesList');
+    Route::any('addsites', 'MediaController@addsites');
+    Route::any('delsites', 'MediaController@delsites');
+    Route::any('editsites/{id}', 'MediaController@editsites');
 });
