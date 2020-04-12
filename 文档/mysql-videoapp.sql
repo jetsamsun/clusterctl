@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 02/04/2020 18:08:55
+ Date: 12/04/2020 17:31:19
 */
 
 SET NAMES utf8mb4;
@@ -148,7 +148,7 @@ INSERT INTO `app_config` VALUES (26, 'trans_ts_mask', 'trans', 'Ts伪装', 'Ts�
 INSERT INTO `app_config` VALUES (27, 'trans_ts_space', 'trans', 'Ts时长', '', 'number', '180', '', '', '');
 INSERT INTO `app_config` VALUES (28, 'trans_m3u8', 'trans', 'M3U8后缀', '', 'string', 'mmm.m3u8', '', '', '');
 INSERT INTO `app_config` VALUES (30, 'mark_space', 'watermark', '水印间距', '', 'string', '50:10', '', '', '');
-INSERT INTO `app_config` VALUES (31, 'mark_zs', 'watermark', '左上水印', '', 'switch', '1', '', '', '');
+INSERT INTO `app_config` VALUES (31, 'mark_zs', 'watermark', '左上水印', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (32, 'mark_ys', 'watermark', '右上水印', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (33, 'mark_zx', 'watermark', '左下水印', '', 'switch', '0', '', '', '');
 INSERT INTO `app_config` VALUES (34, 'mark_yx', 'watermark', '右下水印', '', 'switch', '0', '', '', '');
@@ -173,6 +173,30 @@ INSERT INTO `app_config` VALUES (57, 'upload_dir', 'basic', '上传文件路径'
 INSERT INTO `app_config` VALUES (58, 'img_url', 'basic', '图片域名', '图片地址', 'string', 'http://clusterctl.xyz', '', '', '');
 INSERT INTO `app_config` VALUES (59, 'm3u8_url', 'basic', 'm3u8域名', 'm3u8地址', 'string', 'http://clusterctl.xyz', '', '', '');
 INSERT INTO `app_config` VALUES (60, 'syncdo', 'trans', '同步完成删除源文件及转码记录', '', 'switch', '0', '', '', '');
+
+-- ----------------------------
+-- Table structure for app_configs
+-- ----------------------------
+DROP TABLE IF EXISTS `app_configs`;
+CREATE TABLE `app_configs`  (
+  `key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `ret` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_configs
+-- ----------------------------
+INSERT INTO `app_configs` VALUES ('site_name', '青瓜TV', NULL);
+INSERT INTO `app_configs` VALUES ('site_title', '最好的视频网站', NULL);
+INSERT INTO `app_configs` VALUES ('site_logo', '/assets/img/logo/logo.png', NULL);
+INSERT INTO `app_configs` VALUES ('site_url', 'http://civideo.xyz', NULL);
+INSERT INTO `app_configs` VALUES ('smtp', '{\"\"}', NULL);
+INSERT INTO `app_configs` VALUES ('phone', '40088866', NULL);
+INSERT INTO `app_configs` VALUES ('telegram_token', '1034971964:AAGEFpTgSpStZOZGpH2_T_6_1wzJ8AVeDZg', NULL);
+INSERT INTO `app_configs` VALUES ('site_domain', 'civideo.xyz', NULL);
+INSERT INTO `app_configs` VALUES ('img_url', 'http://clusterctl.xyz', NULL);
+INSERT INTO `app_configs` VALUES ('m3u8_url', 'http://clusterctl.xyz', NULL);
 
 -- ----------------------------
 -- Table structure for app_login_logs
@@ -215,7 +239,7 @@ CREATE TABLE `app_media_actors`  (
   `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '图片',
   `Role` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_actors
@@ -223,6 +247,10 @@ CREATE TABLE `app_media_actors`  (
 INSERT INTO `app_media_actors` VALUES (1, '成龙', NULL, 'CN', '/assets/uploads/image/star/2020/0228/1582874608391.png', '1');
 INSERT INTO `app_media_actors` VALUES (2, '李连杰', NULL, 'CN', '/assets/uploads/image/star/2020/0228/1582874652317.png', '2');
 INSERT INTO `app_media_actors` VALUES (3, '周星驰xx', NULL, 'TW', '/assets/uploads/image/star/2020/0228/1582874690516.png', '1,2');
+INSERT INTO `app_media_actors` VALUES (4, '朴叙俊', NULL, 'KOR', NULL, '2');
+INSERT INTO `app_media_actors` VALUES (5, '刘在明', NULL, 'KOR', NULL, '2');
+INSERT INTO `app_media_actors` VALUES (6, '权娜拉', NULL, 'KOR', NULL, '2');
+INSERT INTO `app_media_actors` VALUES (7, '金善允', NULL, 'KOR', NULL, '1');
 
 -- ----------------------------
 -- Table structure for app_media_cats
@@ -235,15 +263,35 @@ CREATE TABLE `app_media_cats`  (
   `Sort` int(11) DEFAULT NULL COMMENT '排序',
   `Mark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标记如Hot',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_cats
 -- ----------------------------
-INSERT INTO `app_media_cats` VALUES (5, 0, '爱情片', 0, NULL);
-INSERT INTO `app_media_cats` VALUES (6, 5, '伦理片', 0, NULL);
-INSERT INTO `app_media_cats` VALUES (7, 0, '动作片', 0, NULL);
-INSERT INTO `app_media_cats` VALUES (8, 0, '科幻片', 1, 'hot');
+INSERT INTO `app_media_cats` VALUES (5, 0, '电影', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (6, 5, '动作片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (7, 0, '电视剧', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (8, 0, '动漫', 1, 'hot');
+INSERT INTO `app_media_cats` VALUES (9, 5, '喜剧片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (10, 5, '爱情片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (11, 5, '科幻片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (12, 5, '恐怖片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (13, 5, '剧情片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (14, 5, '战争片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (15, 5, '悬疑片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (16, 5, '惊悚片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (17, 5, '记录片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (18, 5, '伦理片', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (19, 0, '综艺', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (20, 19, '内地', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (21, 19, '日韩', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (22, 19, '港台', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (23, 19, '欧美', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (24, 7, '国产剧', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (25, 7, '韩剧', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (26, 7, '日剧', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (27, 7, '泰剧', 0, NULL);
+INSERT INTO `app_media_cats` VALUES (28, 7, '港台剧', 0, NULL);
 
 -- ----------------------------
 -- Table structure for app_media_country
@@ -276,46 +324,71 @@ CREATE TABLE `app_media_episodes`  (
   `Sid` int(11) DEFAULT 0 COMMENT '原始ID',
   `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面图',
   `Gif` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面动图',
-  `Episode` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '第几集',
-  `Season` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '第几季',
+  `Episode` int(10) NOT NULL DEFAULT 1 COMMENT '第几集',
+  `Season` int(10) DEFAULT 1 COMMENT '第几季',
   `Title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标题',
   `Description` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '简介',
   `Lang` char(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '语言',
   `Code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '码率,360P,720P,1080P',
-  `Play_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '总播放时间',
-  `Play_node` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '关键结点,按秒数',
+  `Play_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '总播放时间',
+  `Play_node` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '关键结点,按秒数',
   `Play_url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '播放地址',
-  `Source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '来源,如youtube',
+  `Source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '来源,如youtube',
   `Create_time` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `Issue` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态（0 未发布，1 发布）',
   PRIMARY KEY (`Id`, `MId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_episodes
 -- ----------------------------
-INSERT INTO `app_media_episodes` VALUES (36, 33, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '240', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/240/mmm.m3u8', '0', 1585401700, 0, 0);
-INSERT INTO `app_media_episodes` VALUES (37, 33, 10085, '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '0', '0', '人类下达的命令，AI会吗？', 'hdsafhsat', '0', '360', '3分26秒', '0', '/video/product/20200316/u3XXhQ81/360/mmm.m3u8', '0', 1585401700, 0, 0);
-INSERT INTO `app_media_episodes` VALUES (38, 33, 0, '', '', '0', '', 'hwety', '', '', '', '', '0', '', '', 0, 1585401723, 0);
-INSERT INTO `app_media_episodes` VALUES (39, 34, 0, '', '', '0', '', 'dbshn', '', '', '', '', '0', '', '', 0, 1585401745, 0);
-INSERT INTO `app_media_episodes` VALUES (40, 34, 10087, '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '0', '0', '转码变宽屏问题', NULL, '0', '360', '21分13秒', '0', '/video/product/20200316/tSgffoSB/360/mmm.m3u8', '0', 1585401762, 0, 0);
-INSERT INTO `app_media_episodes` VALUES (41, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '240', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/240/mmm.m3u8', '0', 1585401762, 0, 0);
-INSERT INTO `app_media_episodes` VALUES (42, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', '0', '0', '你被AI盯上了吗？', 'gasfdgdh', '0', '360', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/360/mmm.m3u8', '0', 1585401762, 0, 0);
-INSERT INTO `app_media_episodes` VALUES (43, 35, 10084, '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', '0', '', '【天然素人】缺少streams字段问题', '', '', '360', '1时19分15秒', '0', '/video/product/20200323/8CjSJNGD/360/mmm.m3u8', '', 1585401805, 1585403311, 1);
+INSERT INTO `app_media_episodes` VALUES (39, 34, 0, '', '', 1, 1, 'dbshn', '', '', '240', '', '0', '', '', 0, 1585401745, 0);
+INSERT INTO `app_media_episodes` VALUES (40, 34, 10087, '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', 1, 1, '转码变宽屏问题', NULL, '0', '360', '21分13秒', '0', '/video/product/20200316/tSgffoSB/360/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (41, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', 1, 1, '你被AI盯上了吗？', 'gasfdgdh', '0', '240', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/240/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (42, 34, 10089, '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.gif', 1, 1, '你被AI盯上了吗？', 'gasfdgdh', '0', '360', '3分16秒', '0', '/video/product/20200325/PVcKQFHP/360/mmm.m3u8', '0', 1585401762, 0, 0);
+INSERT INTO `app_media_episodes` VALUES (43, 35, 10084, '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', 1, 1, '【天然素人】缺少streams字段问题', '', '', '360', '1时19分15秒', '0', '/video/product/20200323/8CjSJNGD/360/mmm.m3u8', '', 1585401805, 1585403311, 1);
+INSERT INTO `app_media_episodes` VALUES (71, 33, 11035, '/video/product/20200409/43vTAoc7/360/43vTAoc7.jpg', '/video/product/20200409/43vTAoc7/360/43vTAoc7.gif', 1, 1, '梨泰院第01集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时12分56秒', '0', '/video/product/20200409/43vTAoc7/360/mmm.m3u8', '', 1586423777, 1586424090, 1);
+INSERT INTO `app_media_episodes` VALUES (72, 33, 11035, '/video/product/20200409/43vTAoc7/360/43vTAoc7.jpg', '/video/product/20200409/43vTAoc7/360/43vTAoc7.gif', 1, 1, '梨泰院第01集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '720', '1时12分56秒', '0', '/video/product/20200409/43vTAoc7/720/mmm.m3u8', '', 1586423777, 1586424716, 1);
+INSERT INTO `app_media_episodes` VALUES (73, 33, 11036, '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.jpg', '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.gif', 2, 1, '梨泰院第02集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时6分27秒', '0', '/video/product/20200409/a0mqg9Qz/240/mmm.m3u8', '', 1586423777, 1586424723, 1);
+INSERT INTO `app_media_episodes` VALUES (74, 33, 11036, '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.jpg', '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.gif', 2, 1, '梨泰院第02集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时6分27秒', '0', '/video/product/20200409/a0mqg9Qz/360/mmm.m3u8', '', 1586423777, 1586424735, 1);
+INSERT INTO `app_media_episodes` VALUES (75, 33, 11037, '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.jpg', '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.gif', 3, 1, '梨泰院第03集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时5分18秒', '0', '/video/product/20200409/UYc9WrWu/240/mmm.m3u8', '', 1586423777, 1586424746, 1);
+INSERT INTO `app_media_episodes` VALUES (76, 33, 11037, '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.jpg', '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.gif', 3, 1, '梨泰院第03集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时5分18秒', '0', '/video/product/20200409/UYc9WrWu/360/mmm.m3u8', '', 1586423777, 1586424758, 1);
+INSERT INTO `app_media_episodes` VALUES (77, 33, 11038, '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.jpg', '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.gif', 4, 1, '梨泰院第04集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时2分48秒', '0', '/video/product/20200409/KvoB3HGX/240/mmm.m3u8', '', 1586423778, 1586424764, 1);
+INSERT INTO `app_media_episodes` VALUES (78, 33, 11038, '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.jpg', '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.gif', 4, 1, '梨泰院第04集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时2分48秒', '0', '/video/product/20200409/KvoB3HGX/360/mmm.m3u8', '', 1586423778, 1586424769, 1);
+INSERT INTO `app_media_episodes` VALUES (79, 33, 11039, '/video/product/20200409/XFT33rQK/240/XFT33rQK.jpg', '/video/product/20200409/XFT33rQK/240/XFT33rQK.gif', 5, 1, '梨泰院第05集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时7分2秒', '0', '/video/product/20200409/XFT33rQK/240/mmm.m3u8', '', 1586423778, 1586424773, 1);
+INSERT INTO `app_media_episodes` VALUES (80, 33, 11039, '/video/product/20200409/XFT33rQK/240/XFT33rQK.jpg', '/video/product/20200409/XFT33rQK/240/XFT33rQK.gif', 5, 1, '梨泰院第05集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时7分2秒', '0', '/video/product/20200409/XFT33rQK/360/mmm.m3u8', '', 1586423778, 1586424777, 1);
+INSERT INTO `app_media_episodes` VALUES (81, 33, 11040, '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.jpg', '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.gif', 6, 1, '梨泰院第06集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时7分9秒', '0', '/video/product/20200409/bvEyUu3T/240/mmm.m3u8', '', 1586423778, 1586424790, 1);
+INSERT INTO `app_media_episodes` VALUES (82, 33, 11040, '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.jpg', '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.gif', 6, 1, '梨泰院第06集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时7分9秒', '0', '/video/product/20200409/bvEyUu3T/360/mmm.m3u8', '', 1586423778, 1586424797, 1);
+INSERT INTO `app_media_episodes` VALUES (83, 33, 11041, '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.jpg', '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.gif', 7, 1, '梨泰院第07集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时8分57秒', '0', '/video/product/20200409/N4sYZm1L/240/mmm.m3u8', '', 1586423778, 1586424805, 1);
+INSERT INTO `app_media_episodes` VALUES (84, 33, 11041, '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.jpg', '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.gif', 7, 1, '梨泰院第07集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时8分57秒', '0', '/video/product/20200409/N4sYZm1L/360/mmm.m3u8', '', 1586423778, 1586424813, 1);
+INSERT INTO `app_media_episodes` VALUES (85, 33, 11042, '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.jpg', '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.gif', 8, 1, '梨泰院第08集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时4分43秒', '0', '/video/product/20200409/KQbDS0pn/240/mmm.m3u8', '', 1586423778, 1586424832, 1);
+INSERT INTO `app_media_episodes` VALUES (86, 33, 11042, '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.jpg', '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.gif', 8, 1, '梨泰院第08集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时4分43秒', '0', '/video/product/20200409/KQbDS0pn/360/mmm.m3u8', '', 1586423778, 1586424841, 1);
+INSERT INTO `app_media_episodes` VALUES (87, 33, 11043, '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.jpg', '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.gif', 9, 1, '梨泰院第09集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时6分5秒', '0', '/video/product/20200409/uMnJMIWF/240/mmm.m3u8', '', 1586423961, 1586424852, 1);
+INSERT INTO `app_media_episodes` VALUES (88, 33, 11043, '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.jpg', '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.gif', 9, 1, '梨泰院第09集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时6分5秒', '0', '/video/product/20200409/uMnJMIWF/360/mmm.m3u8', '', 1586423961, 1586424887, 1);
+INSERT INTO `app_media_episodes` VALUES (89, 33, 11044, '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.jpg', '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.gif', 10, 1, '梨泰院第10集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时10分8秒', '0', '/video/product/20200409/ZiLfCwqC/240/mmm.m3u8', '', 1586423961, 1586424881, 1);
+INSERT INTO `app_media_episodes` VALUES (90, 33, 11044, '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.jpg', '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.gif', 10, 1, '梨泰院第10集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时10分8秒', '0', '/video/product/20200409/ZiLfCwqC/360/mmm.m3u8', '', 1586423961, 1586424871, 1);
+INSERT INTO `app_media_episodes` VALUES (91, 33, 11045, '/video/product/20200409/flosGHJa/240/flosGHJa.jpg', '/video/product/20200409/flosGHJa/240/flosGHJa.gif', 11, 1, '梨泰院第11集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '240', '1时10分0秒', '0', '/video/product/20200409/flosGHJa/240/mmm.m3u8', '', 1586423961, 1586424904, 1);
+INSERT INTO `app_media_episodes` VALUES (92, 33, 11045, '/video/product/20200409/flosGHJa/240/flosGHJa.jpg', '/video/product/20200409/flosGHJa/240/flosGHJa.gif', 11, 1, '梨泰院第11集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时10分0秒', '0', '/video/product/20200409/flosGHJa/360/mmm.m3u8', '', 1586423961, 1586424910, 1);
+INSERT INTO `app_media_episodes` VALUES (93, 33, 11046, '/video/product/20200409/7uhTUNNC/360/7uhTUNNC.jpg', '/video/product/20200409/7uhTUNNC/360/7uhTUNNC.gif', 12, 1, '梨泰院第12集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时9分21秒', '0', '/video/product/20200409/7uhTUNNC/360/mmm.m3u8', '', 1586423961, 1586424916, 1);
+INSERT INTO `app_media_episodes` VALUES (94, 33, 11047, '/video/product/20200409/JZjU6FOt/360/JZjU6FOt.jpg', '/video/product/20200409/JZjU6FOt/360/JZjU6FOt.gif', 13, 1, '梨泰院第13集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时8分42秒', '0', '/video/product/20200409/JZjU6FOt/360/mmm.m3u8', '', 1586423961, 1586424937, 1);
+INSERT INTO `app_media_episodes` VALUES (95, 33, 11048, '/video/product/20200409/QtlZXBOR/360/QtlZXBOR.jpg', '/video/product/20200409/QtlZXBOR/360/QtlZXBOR.gif', 14, 1, '梨泰院第14集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时5分18秒', '0', '/video/product/20200409/QtlZXBOR/360/mmm.m3u8', '', 1586423961, 1586424943, 1);
+INSERT INTO `app_media_episodes` VALUES (96, 33, 11049, '/video/product/20200409/szPOgAve/360/szPOgAve.jpg', '/video/product/20200409/szPOgAve/360/szPOgAve.gif', 15, 1, '梨泰院第15集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时5分12秒', '0', '/video/product/20200409/szPOgAve/360/mmm.m3u8', '', 1586423961, 1586424949, 1);
+INSERT INTO `app_media_episodes` VALUES (97, 33, 11050, '/video/product/20200409/aETtYk2d/360/aETtYk2d.jpg', '/video/product/20200409/aETtYk2d/360/aETtYk2d.gif', 16, 1, '梨泰院第16集', 'Show Box将向电视剧领域进军，制作网络漫画改编的电视剧。Show Box与Daum签订了《梨泰院classes》(이태원 클라쓰，暂译)和《大势女的彩妆故事》(대새녀의 메이크업 이야기，暂译)韩国国内和海外电视剧的版权合约，电视剧作品将经过正式的企划开发，最早将于明年下半年公开。', '韩语', '360', '1时27分20秒', '0', '/video/product/20200409/aETtYk2d/360/mmm.m3u8', '', 1586423961, 1586424955, 1);
+INSERT INTO `app_media_episodes` VALUES (99, 65, 11034, '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.jpg', '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.gif', 1, 1, '人类下达的命令，AI会吗？', '', '国语', '360', '3分26秒', '0', '/video/product/20200412/HeqvQbrL/360/mmm.m3u8', '', 1586682958, 1586683163, 1);
 
 -- ----------------------------
 -- Table structure for app_media_movies
 -- ----------------------------
 DROP TABLE IF EXISTS `app_media_movies`;
 CREATE TABLE `app_media_movies`  (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Sid` int(11) NOT NULL DEFAULT 0 COMMENT '原始ID',
   `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '标题',
   `KeyWord` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '关键字',
   `Image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '封面图',
   `Image_big` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '封面大图',
-  `Episodes` int(4) NOT NULL DEFAULT 0 COMMENT '电视剧-总集数',
+  `Episodes` int(4) NOT NULL DEFAULT 1 COMMENT '电视剧-总集数',
   `Content` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '内容介绍',
   `Mark` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
   `Year` char(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '年份',
@@ -334,14 +407,40 @@ CREATE TABLE `app_media_movies`  (
   `Update_time` int(10) NOT NULL DEFAULT 0 COMMENT '最后更新时间',
   `Issue` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态（0 未发布，1 发布）',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_movies
 -- ----------------------------
-INSERT INTO `app_media_movies` VALUES (33, 10085, '人类下达的命令，AI会吗？', '', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '', 0, '678257689745962', '', '2016', 'JPN', 0, '7', '', '', '2,3,6,9,10,11', 2, 'gdf', 'gdfg', 4, 0, 1585401700, 1585755303, 1);
-INSERT INTO `app_media_movies` VALUES (34, 10089, '你被AI盯上了吗？', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 0, 0, 1585401736, 1585401762, 0);
-INSERT INTO `app_media_movies` VALUES (35, 10084, '【天然素人】缺少streams字段问题', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 0);
+INSERT INTO `app_media_movies` VALUES (33, 11050, '梨泰院Class', '', '/assets/uploads/image/video/2020/0409/1586409980924.jpg', '/assets/uploads/image/video/2020/0409/1586409988134.jpg', 16, '梨泰院Class線上看,Show Box將向電視劇領域進軍，制作網絡漫畫改編的電視劇。Show Box與Daum簽訂瞭《梨泰院classes》(이태원 클라쓰', '', '2020', 'KOR', 0, '5', '7', '4,5,6', '2,3,4', 2, '10201', '韩国', 91, 0, 1585401700, 1586423961, 1);
+INSERT INTO `app_media_movies` VALUES (34, 10089, '想見你', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-11-18/5dd1ff24a6653.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 0, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (35, 10084, '法證先鋒4粵語', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-18/5e4b56e012068.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (36, 10084, '安傢', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-22/5e5094e7dd249.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (37, 10084, '謗法', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-09/5e3f6ebe13bc5.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (38, 10084, '戀無止境', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-01-16/5e1fcb17528d2.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (39, 10084, '如實陳述', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-02/5e36343b654f8.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (40, 10084, '良醫第三季', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (41, 10084, '愛回傢之開心速遞', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2019-08-11/5d4f2f7fb81c3.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (42, 10084, '愛回傢之開心速遞粵語', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (43, 10084, '冰糖燉雪梨', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-03-20/5e7429bcb04ac.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (44, 10084, '兩世歡', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-22/5e5092570c4a5.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (45, 10084, '美麗愛情完美人生', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2019-09-29/5d9015a012935.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (46, 10084, '大唐女法醫', '', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/Uploads/vod/2020-02-14/5e4684afd805f.jpg', 0, NULL, '', '', '', 0, '6', '', '', '', 0, '', '', 0, 0, 1585401793, 1585401805, 1);
+INSERT INTO `app_media_movies` VALUES (47, 10089, '完美關系', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-02-19/5e4c9dd6c5da4.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 21, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (48, 10089, '王國第二季/李屍朝鮮', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-03-14/5e6c41734a1ae.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 19, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (49, 10089, '時光與你都很甜', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-02-15/5e475805bb751.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 56, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (50, 10089, '奈何boss要娶我2', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-02-13/5e45339a363f6.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 23, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (51, 10089, '1917', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-01-01/5e0c825c9ae20.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 81, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (52, 10089, '終結者6：黑暗命運', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-10-30/5db8f2c4ce8e0.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 59, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (53, 10089, '星球大戰9：天行者崛', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-12-21/5dfd87c01fb27.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 68, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (54, 10089, '勇敢者遊戲2：再戰巔', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-12-09/5dee2ddf0ab3a.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 71, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (55, 10089, '殺戮都市：O GANTZ', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-08-10/5d4db48f4fdc3.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 79, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (56, 10089, '喪屍樂園2', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-10-30/5db97143e60a5.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 76, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (57, 10089, '多力特的奇幻冒險', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-01-12/5e1b031be5d15.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 45, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (58, 10089, '哈莉·奎因：猛禽小隊', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-02-19/5e4d1c3cb3e41.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 34, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (59, 10089, '北京女子圖鑒之整容大', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2020-03-19/5e735bf8aa6a2.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 89, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (60, 10089, '誤殺', '', '/video/product/20200325/PVcKQFHP/240/PVcKQFHP.jpg', '/Uploads/vod/2019-12-19/5dfb636ca465c.jpg', 0, 'gasfdgdh', '', '2019', 'HK', 0, '5', '3', '2', '2,3', 0, '', '', 87, 0, 1585401736, 1585401762, 1);
+INSERT INTO `app_media_movies` VALUES (65, 11034, '人类下达的命令，AI会吗？', '', '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.jpg', '', 1, '', '', '2019', 'CN', 0, '20', '1', '3', '34', 3, '10323', '大陆', 89, 0, 1586682958, 1586683075, 1);
 
 -- ----------------------------
 -- Table structure for app_media_role
@@ -386,21 +485,54 @@ CREATE TABLE `app_media_tags`  (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_media_tags
 -- ----------------------------
-INSERT INTO `app_media_tags` VALUES (2, '地铁');
-INSERT INTO `app_media_tags` VALUES (3, 'cdsjk');
-INSERT INTO `app_media_tags` VALUES (4, 'test');
-INSERT INTO `app_media_tags` VALUES (5, 'dsa');
-INSERT INTO `app_media_tags` VALUES (6, 'gsdfgb');
-INSERT INTO `app_media_tags` VALUES (7, 'bhsdfbh');
-INSERT INTO `app_media_tags` VALUES (8, 'nfgn');
-INSERT INTO `app_media_tags` VALUES (9, 'nsfz');
-INSERT INTO `app_media_tags` VALUES (10, 'shd');
-INSERT INTO `app_media_tags` VALUES (11, 'areshg');
+INSERT INTO `app_media_tags` VALUES (2, '剧情');
+INSERT INTO `app_media_tags` VALUES (3, '喜剧');
+INSERT INTO `app_media_tags` VALUES (4, '青春');
+INSERT INTO `app_media_tags` VALUES (5, '悬疑');
+INSERT INTO `app_media_tags` VALUES (6, '烧脑');
+INSERT INTO `app_media_tags` VALUES (7, '科幻');
+INSERT INTO `app_media_tags` VALUES (8, '动作');
+INSERT INTO `app_media_tags` VALUES (9, '战争');
+INSERT INTO `app_media_tags` VALUES (10, '精英');
+INSERT INTO `app_media_tags` VALUES (11, '文艺');
+INSERT INTO `app_media_tags` VALUES (12, '动漫');
+INSERT INTO `app_media_tags` VALUES (13, '卡通');
+INSERT INTO `app_media_tags` VALUES (14, '综艺');
+INSERT INTO `app_media_tags` VALUES (15, '选秀');
+INSERT INTO `app_media_tags` VALUES (16, '爱情');
+INSERT INTO `app_media_tags` VALUES (17, '犯罪');
+INSERT INTO `app_media_tags` VALUES (18, '冒险');
+INSERT INTO `app_media_tags` VALUES (19, '恐怖');
+INSERT INTO `app_media_tags` VALUES (20, '惊悚');
+INSERT INTO `app_media_tags` VALUES (21, '战争');
+INSERT INTO `app_media_tags` VALUES (22, '经典');
+INSERT INTO `app_media_tags` VALUES (23, '伦理');
+INSERT INTO `app_media_tags` VALUES (24, '宫廷');
+INSERT INTO `app_media_tags` VALUES (25, '古装');
+INSERT INTO `app_media_tags` VALUES (26, '情感');
+INSERT INTO `app_media_tags` VALUES (27, '热血');
+INSERT INTO `app_media_tags` VALUES (28, '推理');
+INSERT INTO `app_media_tags` VALUES (29, '搞笑');
+INSERT INTO `app_media_tags` VALUES (30, '萝莉');
+INSERT INTO `app_media_tags` VALUES (31, '校园');
+INSERT INTO `app_media_tags` VALUES (32, '机战');
+INSERT INTO `app_media_tags` VALUES (33, '运动');
+INSERT INTO `app_media_tags` VALUES (34, '访谈');
+INSERT INTO `app_media_tags` VALUES (35, '播报');
+INSERT INTO `app_media_tags` VALUES (36, '旅游');
+INSERT INTO `app_media_tags` VALUES (37, '音乐');
+INSERT INTO `app_media_tags` VALUES (38, '美食');
+INSERT INTO `app_media_tags` VALUES (39, '纪实');
+INSERT INTO `app_media_tags` VALUES (40, '曲艺');
+INSERT INTO `app_media_tags` VALUES (41, '生活');
+INSERT INTO `app_media_tags` VALUES (42, '游戏互动');
+INSERT INTO `app_media_tags` VALUES (43, '财经');
+INSERT INTO `app_media_tags` VALUES (44, '求职');
 
 -- ----------------------------
 -- Table structure for app_media_type
@@ -410,13 +542,15 @@ CREATE TABLE `app_media_type`  (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic STORAGE DISK;
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic STORAGE DISK;
 
 -- ----------------------------
 -- Records of app_media_type
 -- ----------------------------
 INSERT INTO `app_media_type` VALUES (1, '电影');
-INSERT INTO `app_media_type` VALUES (2, '电视');
+INSERT INTO `app_media_type` VALUES (2, '电视剧');
+INSERT INTO `app_media_type` VALUES (3, '综艺');
+INSERT INTO `app_media_type` VALUES (4, '动漫');
 
 -- ----------------------------
 -- Table structure for app_menu_info
@@ -457,8 +591,8 @@ INSERT INTO `app_menu_info` VALUES (10016, '明星列表', 'fa-circle-o', 10009,
 INSERT INTO `app_menu_info` VALUES (10017, '视频分类', 'fa-circle-o', 10009, '/admin/seek', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10018, '提现管理', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10019, '视频类型', 'fa-circle-o', 10009, '/admin/withdraw', NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10020, 'VIP金额', 'fa-circle-o', 0, NULL, NULL, 5, 0, 0);
-INSERT INTO `app_menu_info` VALUES (10021, '标签管理', 'fa-circle-o', 10009, '/admin/vip', NULL, 5, 0, 0);
+INSERT INTO `app_menu_info` VALUES (10020, '站群管理', 'fa-circle-o', 0, NULL, NULL, 5, 1, 1);
+INSERT INTO `app_menu_info` VALUES (10021, '站群配置', 'fa-circle-o', 10020, '/admin/sites', NULL, 5, 1, 1);
 INSERT INTO `app_menu_info` VALUES (10022, '演员管理', 'fa-circle-o', 10009, '/admin/trouble', NULL, 5, 0, 0);
 INSERT INTO `app_menu_info` VALUES (10024, '视频新增', 'fa-circle-o', 10001, '/admin/addVideo', NULL, 5, 0, 0);
 
@@ -912,6 +1046,79 @@ INSERT INTO `app_order_logs` VALUES (272, 10231, 10210, 1, '2019-03-29 08:33:24'
 INSERT INTO `app_order_logs` VALUES (273, 10232, 10205, 1, '2019-03-29 08:41:03');
 
 -- ----------------------------
+-- Table structure for app_paylogs
+-- ----------------------------
+DROP TABLE IF EXISTS `app_paylogs`;
+CREATE TABLE `app_paylogs`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userid` bigint(20) NOT NULL,
+  `total` decimal(12, 2) NOT NULL,
+  `fee` decimal(11, 2) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `tradeno` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `datetime` bigint(20) NOT NULL DEFAULT 0,
+  `trade_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `gate_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `pay_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `plat_cur` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `rel_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `receipt_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `refunds_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `payment_tok` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `payment_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `domain` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `tradeno1`(`tradeno`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 456 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_paylogs
+-- ----------------------------
+INSERT INTO `app_paylogs` VALUES (424, 0, 562.00, NULL, 1, '15822559473792708', 1582255948, '支付', 'th', 'thalipay', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (425, 0, 500.00, NULL, 1, '15822673799949733', 1582267380, '支付', 'th', 'thalipay', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (450, 0, 500.00, 16.00, 0, '15827873263128619', 1582787343, '支付', 'bitcoin', 'bitcoin', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (451, 0, 500.00, 13.50, 1, '15827877139687298', 1582787715, '支付', 'th', 'thalipay', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (452, 0, 300.00, 7.50, 1, '15828932684962354', 1582893269, '支付', 'th', 'chinabank', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (453, 0, 500.00, 15.50, 0, '15844999138672199', 1584499915, '支付', 'payssion', 'bank', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (454, 0, 500.00, 11.50, 0, '15859196449902200', 1585919648, '支付', 'pay9', 'yunshoufu', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+INSERT INTO `app_paylogs` VALUES (455, 0, 300.00, 6.90, 0, '15859199999137115', 1585920009, '支付', 'pay9', 'yunshoufu', NULL, NULL, NULL, NULL, NULL, NULL, 'x.paysite.xyz', NULL);
+
+-- ----------------------------
+-- Table structure for app_payment
+-- ----------------------------
+DROP TABLE IF EXISTS `app_payment`;
+CREATE TABLE `app_payment`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `label` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `sprovider_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `sprovider` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `gateway_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `gateway` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `fee_rate` decimal(11, 2) UNSIGNED DEFAULT NULL,
+  `single_fee` decimal(11, 2) DEFAULT NULL,
+  `min_fee` decimal(11, 2) DEFAULT 0.00,
+  `min_charge` decimal(11, 2) DEFAULT NULL,
+  `max_charge` decimal(11, 2) DEFAULT NULL,
+  `status` tinyint(1) UNSIGNED DEFAULT 0,
+  `ico_pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `gateway`(`gateway`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_payment
+-- ----------------------------
+INSERT INTO `app_payment` VALUES (1, '人民币大额', '天宏', 'th', '支付宝', 'thalipay', 2.50, 1.00, 5.00, 500.00, 20000.00, 1, '/template/default/img/pay-alipay.png');
+INSERT INTO `app_payment` VALUES (2, '人民币大额', '天宏', 'th', '微信', 'thtenpay', 2.50, 0.00, 0.00, 500.00, 10000.00, 1, '/template/default/img/pay-wechat.png');
+INSERT INTO `app_payment` VALUES (3, '人民币大额', '天宏', 'th', '网银', 'chinabank', 2.50, 0.00, 0.00, 100.00, 50000.00, 1, '/template/default/img/pay-union.png');
+INSERT INTO `app_payment` VALUES (4, '备用支付通道', 'pay9', 'pay9', '支付宝', 'alipay', 2.30, 0.00, 3.00, 300.00, 10000.00, 1, '/template/default/img/pay-alipay.png');
+INSERT INTO `app_payment` VALUES (5, '备用支付通道', 'pay9', 'pay9', '微信支付', 'tenpay', 2.30, 0.00, 3.00, 300.00, 10000.00, 1, '/template/default/img/pay-wechat.png');
+INSERT INTO `app_payment` VALUES (6, '备用支付通道', 'pay9', 'pay9', '云闪付', 'yunshoufu', 2.30, 0.00, 3.00, 300.00, 30000.00, 1, '/template/default/img/pay-union.png');
+INSERT INTO `app_payment` VALUES (7, '备用支付通道2', 'payssion', 'payssion', '网银', 'bank', 2.90, 1.00, 5.00, 100.00, 20000.00, 1, '/template/default/img/pay-union.png');
+INSERT INTO `app_payment` VALUES (8, '加密货币', '比特币', 'bitcoin', '比特币', 'bitcoin', 3.00, 1.00, 3.00, 500.00, 50000.00, 1, '/template/default/img/pay-bitcoin.png');
+
+-- ----------------------------
 -- Table structure for app_screen_otype
 -- ----------------------------
 DROP TABLE IF EXISTS `app_screen_otype`;
@@ -1013,6 +1220,24 @@ INSERT INTO `app_share_logs` VALUES (10012, 10191, '2019-03-28 00:00:00');
 INSERT INTO `app_share_logs` VALUES (10013, 10193, '2019-03-29 00:00:00');
 
 -- ----------------------------
+-- Table structure for app_site_cfg
+-- ----------------------------
+DROP TABLE IF EXISTS `app_site_cfg`;
+CREATE TABLE `app_site_cfg`  (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `User` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  `Key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `key`(`Key`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_site_cfg
+-- ----------------------------
+INSERT INTO `app_site_cfg` VALUES (1, '3029', 'xwIqVLokZDRRjyh0', '127.0.0.1');
+
+-- ----------------------------
 -- Table structure for app_siterate
 -- ----------------------------
 DROP TABLE IF EXISTS `app_siterate`;
@@ -1084,17 +1309,56 @@ CREATE TABLE `app_trans_log`  (
 -- ----------------------------
 -- Records of app_trans_log
 -- ----------------------------
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '转码准备', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\",\"6\":\"240p\\uff1a426x240\"}}', 1585127039, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '正在转码', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/PVcKQFHP.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/PVcKQFHP.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/PVcKQFHP.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\"}', 1585127039, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '转码成功', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1585127062, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '第一次组合m3u8 json数据', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1585127062, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '更新记录成功', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1585127063, NULL, NULL, NULL);
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '正在转码', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"240\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/PVcKQFHP.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/PVcKQFHP.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/PVcKQFHP.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\"}', 1585127063, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '转码成功', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1585127082, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '拼接m3u8 json数据', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1585127082, '20200325', '10089', '你被AI盯上了吗？.mp4');
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '更新记录成功', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"rate\":\"240\"}', 1585127082, NULL, NULL, NULL);
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '删除源文件', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\",\"6\":\"240p\\uff1a426x240\"}}', 1585127082, NULL, NULL, NULL);
-INSERT INTO `app_trans_log` VALUES ('PVcKQFHP', '转码完毕', '{\"ids\":\"10089\",\"file\":\"\\u4f60\\u88abAI\\u76ef\\u4e0a\\u4e86\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\",\"6\":\"240p\\uff1a426x240\"}}', 1585127082, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '转码准备', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1586675185, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '正在转码', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\",\"togifdir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200412\\/HeqvQbrL\\/360\\/HeqvQbrL.gif\",\"toimgedir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200412\\/HeqvQbrL\\/360\\/HeqvQbrL.jpg\",\"tovideodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/product\\/20200412\\/HeqvQbrL\\/360\\/HeqvQbrL.mp4\",\"videodir\":\"E:\\/phpstudy_pro\\/WWW\\/clusterctl.xyz\\/public\\/video\\/upload\\/\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\"}', 1586675185, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '转码成功', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1586675208, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '正在切片', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1586675208, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '切片成功', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1586675208, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '第一次组合m3u8 json数据', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1586675208, '20200412', '11034', '人类下达的命令，AI会吗？.mp4');
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '更新记录成功', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"rate\":\"360\"}', 1586675209, NULL, NULL, NULL);
+INSERT INTO `app_trans_log` VALUES ('HeqvQbrL', '转码完毕', '{\"ids\":\"11034\",\"file\":\"\\u4eba\\u7c7b\\u4e0b\\u8fbe\\u7684\\u547d\\u4ee4\\uff0cAI\\u4f1a\\u5417\\uff1f.mp4\",\"size_rate\":{\"5\":\"360p\\uff1a640x360\"}}', 1586675209, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for app_user
+-- ----------------------------
+DROP TABLE IF EXISTS `app_user`;
+CREATE TABLE `app_user`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `pass` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `contact` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `sub_domain` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  `domain` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0',
+  `createtime` int(11) DEFAULT NULL,
+  `status` tinyint(2) UNSIGNED DEFAULT 0,
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `message` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `site_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `js_code` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `grade` tinyint(1) UNSIGNED DEFAULT 0,
+  `foreign` tinyint(1) UNSIGNED DEFAULT 0,
+  `payment` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `bank` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `telegram` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `notify` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `balance` decimal(12, 2) DEFAULT NULL COMMENT '账户余额',
+  `withdraw` decimal(12, 2) DEFAULT NULL COMMENT '提现金额',
+  `his_amout` decimal(12, 2) DEFAULT NULL COMMENT '历史交易',
+  `fee_amout` decimal(12, 2) DEFAULT NULL COMMENT '总费用',
+  `pay_num` int(11) UNSIGNED DEFAULT 0 COMMENT '成功付款笔数',
+  `get_num` int(11) UNSIGNED DEFAULT 0 COMMENT '成功提现笔数',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `sub_domain`(`sub_domain`) USING BTREE,
+  UNIQUE INDEX `username`(`name`) USING BTREE,
+  UNIQUE INDEX `email`(`email`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_user
+-- ----------------------------
+INSERT INTO `app_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'QQ：78590495544\n微信：18434354504', 'x.paysite.xyz', 'paysite.xyz', 'https://bpic.588ku.com/element_origin_min_pic/19/07/30/45b55a2c975d5e5ee1609bfeb6b8f906.jpg', 'http://www.baidu.com', 1582027800, 1, 'admin@winskyx.com', '1. wfjklj;   \n2. 327489;   \n3. fdj37a;', '蚂蚁科技', '        },function (ret) {\n            lightyear.loading(\'show\');  // 显示\n            setTimeout(function() {\n                lightyear.loading(\'hide\');  // 隐藏\n                lightyear.notify(ret.msg+\'，页面即将刷新页面~\', \'success\', 2000);\n                setTimeout(function() {\n                    window.location.reload();\n                }, 1500);\n            }, 1500);', 0, 1, 'th,pay9,payssion', '{\"deposit\":\"ABC\",\"branch\":\"\\u897f\\u4e3d\\u652f\\u884c\",\"account\":\"73285789435794456\",\"address\":\"\\u897f\\u4e3d\"}', '1022421443', 'email,telegram', 953.50, 562.00, 33043.00, 1091.50, 46, 3);
 
 -- ----------------------------
 -- Table structure for app_user_click
@@ -1927,15 +2191,30 @@ CREATE TABLE `app_video_list`  (
   `year` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`vid`) USING BTREE,
   UNIQUE INDEX `title`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10090 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11052 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of app_video_list
 -- ----------------------------
-INSERT INTO `app_video_list` VALUES (10084, '【天然素人】缺少streams字段问题', '/video/product/20200323/8CjSJNGD/360/cover.jpg', '/video/product/20200323/8CjSJNGD/360/cover.gif', '{\"360\":\"\\/video\\/product\\/20200323\\/8CjSJNGD\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', NULL, '6', '1', NULL, NULL, NULL, 0, NULL, '0', '1584329219', 1, NULL, NULL, '/video/product/20200323/8CjSJNGD/360/8CjSJNGD.mp4', '8CjSJNGD.mp4', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '949101584329219462.mp4', 1, NULL, NULL, NULL);
-INSERT INTO `app_video_list` VALUES (10085, '人类下达的命令，AI会吗？', '/video/product/20200316/u3XXhQ81/360/cover.jpg', '/video/product/20200316/u3XXhQ81/360/cover.gif', '{\"240\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200316\\/u3XXhQ81\\/360\\/mmm.m3u8\"}', 'hdsafhsat', '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '2', '7', '1', NULL, '1,3', '2,3', 0, '5', '0', '1584329219', 1, NULL, NULL, '/video/product/20200316/u3XXhQ81/360/u3XXhQ81.mp4', 'u3XXhQ81.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', '4', 'gdf', 'gdfg', '488021584329219921.mp4', 1, '2,3,6,9,10,11', 'JPN', '2016');
-INSERT INTO `app_video_list` VALUES (10087, '转码变宽屏问题', '/video/product/20200316/tSgffoSB/360/cover.jpg', '/video/product/20200316/tSgffoSB/360/tSgffoSB.gif', '{\"360\":\"\\/video\\/product\\/20200316\\/tSgffoSB\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/转码变宽屏问题.mp4', '1', '6', '1', NULL, NULL, NULL, 0, NULL, '0', '1584329220', 1, NULL, NULL, '/video/product/20200316/tSgffoSB/360/tSgffoSB.mp4', 'tSgffoSB.mp4', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '883161584329220384.mp4', 1, NULL, 'HK', '2020');
-INSERT INTO `app_video_list` VALUES (10089, '你被AI盯上了吗？', '/video/product/20200325/PVcKQFHP/360/cover.jpg', '/video/product/20200325/PVcKQFHP/360/cover.gif', '{\"240\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200325\\/PVcKQFHP\\/360\\/mmm.m3u8\"}', 'gasfdgdh', '2', '/video/upload/你被AI盯上了吗？.mp4', '1', '5', '1', NULL, '3', '2', 0, NULL, '0', '1585127028', 1, NULL, NULL, '/video/product/20200325/PVcKQFHP/360/PVcKQFHP.mp4', 'PVcKQFHP.mp4', 35248982, 1280, 720, '1432870', '196.760000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '970181585127028201.mp4', 1, '2,3', 'HK', '2019');
+INSERT INTO `app_video_list` VALUES (11033, '【天然素人】缺少streams字段问题', NULL, NULL, NULL, NULL, '2', '/video/upload/【天然素人】缺少streams字段问题.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414745', 1, NULL, NULL, NULL, '', 1222588909, 1920, 1080, '2056751', '4755.416667', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '', 'aac', NULL, NULL, NULL, '603891586414745682.mp4', 0, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11034, '人类下达的命令，AI会吗？', '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.jpg', '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.gif', '{\"360\":\"\\/video\\/product\\/20200412\\/HeqvQbrL\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/人类下达的命令，AI会吗？.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414745', 1, NULL, NULL, '/video/product/20200412/HeqvQbrL/360/HeqvQbrL.mp4', 'HeqvQbrL.mp4', 31391061, 1280, 720, '1215059', '206.640000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '16:9', 'aac', NULL, NULL, NULL, '720871586414745728.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11035, '梨泰院第01集', '/video/product/20200409/43vTAoc7/360/43vTAoc7.jpg', '/video/product/20200409/43vTAoc7/360/43vTAoc7.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/43vTAoc7\\/360\\/mmm.m3u8\",\"720\":\"\\/video\\/product\\/20200409\\/43vTAoc7\\/720\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第01集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/43vTAoc7/360/43vTAoc7.mp4', '43vTAoc7.mp4', 403575276, 1080, 606, '737631', '4376.960000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '902581586414746491.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11036, '梨泰院第02集', '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.jpg', '/video/product/20200409/a0mqg9Qz/240/a0mqg9Qz.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/a0mqg9Qz\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/a0mqg9Qz\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第02集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/a0mqg9Qz/360/a0mqg9Qz.mp4', 'a0mqg9Qz.mp4', 350124432, 1080, 606, '702464', '3987.360000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '689251586414746411.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11037, '梨泰院第03集', '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.jpg', '/video/product/20200409/UYc9WrWu/240/UYc9WrWu.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/UYc9WrWu\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/UYc9WrWu\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第03集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/UYc9WrWu/360/UYc9WrWu.mp4', 'UYc9WrWu.mp4', 374817292, 1080, 606, '765319', '3918.000000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '767251586414746915.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11038, '梨泰院第04集', '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.jpg', '/video/product/20200409/KvoB3HGX/240/KvoB3HGX.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/KvoB3HGX\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/KvoB3HGX\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第04集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/KvoB3HGX/360/KvoB3HGX.mp4', 'KvoB3HGX.mp4', 318459592, 1080, 606, '676095', '3768.200000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '514891586414746888.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11039, '梨泰院第05集', '/video/product/20200409/XFT33rQK/240/XFT33rQK.jpg', '/video/product/20200409/XFT33rQK/240/XFT33rQK.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/XFT33rQK\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/XFT33rQK\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第05集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/XFT33rQK/360/XFT33rQK.mp4', 'XFT33rQK.mp4', 375300076, 1080, 606, '746415', '4022.400000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '748031586414746572.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11040, '梨泰院第06集', '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.jpg', '/video/product/20200409/bvEyUu3T/240/bvEyUu3T.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/bvEyUu3T\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/bvEyUu3T\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第06集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414746', 1, NULL, NULL, '/video/product/20200409/bvEyUu3T/360/bvEyUu3T.mp4', 'bvEyUu3T.mp4', 324792372, 1080, 606, '644905', '4029.000000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '645421586414746671.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11041, '梨泰院第07集', '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.jpg', '/video/product/20200409/N4sYZm1L/240/N4sYZm1L.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/N4sYZm1L\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/N4sYZm1L\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第07集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/N4sYZm1L/360/N4sYZm1L.mp4', 'N4sYZm1L.mp4', 312947244, 1080, 606, '605129', '4137.240000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '754131586414747135.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11042, '梨泰院第08集', '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.jpg', '/video/product/20200409/KQbDS0pn/240/KQbDS0pn.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/KQbDS0pn\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/KQbDS0pn\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第08集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/KQbDS0pn/360/KQbDS0pn.mp4', 'KQbDS0pn.mp4', 304025704, 1080, 606, '626323', '3883.280000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '996031586414747429.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11043, '梨泰院第09集', '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.jpg', '/video/product/20200409/uMnJMIWF/240/uMnJMIWF.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/uMnJMIWF\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/uMnJMIWF\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第09集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/uMnJMIWF/360/uMnJMIWF.mp4', 'uMnJMIWF.mp4', 306703764, 1080, 606, '618818', '3965.000000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '851911586414747879.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11044, '梨泰院第10集', '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.jpg', '/video/product/20200409/ZiLfCwqC/240/ZiLfCwqC.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/ZiLfCwqC\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/ZiLfCwqC\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第10集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/ZiLfCwqC/360/ZiLfCwqC.mp4', 'ZiLfCwqC.mp4', 329003008, 1080, 606, '625430', '4208.320000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '112191586414747197.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11045, '梨泰院第11集', '/video/product/20200409/flosGHJa/240/flosGHJa.jpg', '/video/product/20200409/flosGHJa/240/flosGHJa.gif', '{\"240\":\"\\/video\\/product\\/20200409\\/flosGHJa\\/240\\/mmm.m3u8\",\"360\":\"\\/video\\/product\\/20200409\\/flosGHJa\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第11集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/flosGHJa/360/flosGHJa.mp4', 'flosGHJa.mp4', 329378068, 1080, 606, '627341', '4200.280000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '446831586414747111.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11046, '梨泰院第12集', '/video/product/20200409/7uhTUNNC/360/7uhTUNNC.jpg', '/video/product/20200409/7uhTUNNC/360/7uhTUNNC.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/7uhTUNNC\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第12集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414747', 1, NULL, NULL, '/video/product/20200409/7uhTUNNC/360/7uhTUNNC.mp4', '7uhTUNNC.mp4', 304528228, 1080, 606, '585464', '4161.160000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '233101586414747808.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11047, '梨泰院第13集', '/video/product/20200409/JZjU6FOt/360/JZjU6FOt.jpg', '/video/product/20200409/JZjU6FOt/360/JZjU6FOt.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/JZjU6FOt\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第13集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414748', 1, NULL, NULL, '/video/product/20200409/JZjU6FOt/360/JZjU6FOt.mp4', 'JZjU6FOt.mp4', 316632420, 1080, 606, '614405', '4122.720000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '729741586414748281.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11048, '梨泰院第14集', '/video/product/20200409/QtlZXBOR/360/QtlZXBOR.jpg', '/video/product/20200409/QtlZXBOR/360/QtlZXBOR.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/QtlZXBOR\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第14集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414748', 1, NULL, NULL, '/video/product/20200409/QtlZXBOR/360/QtlZXBOR.mp4', 'QtlZXBOR.mp4', 284239456, 1080, 606, '580296', '3918.480000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '852151586414748821.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11049, '梨泰院第15集', '/video/product/20200409/szPOgAve/360/szPOgAve.jpg', '/video/product/20200409/szPOgAve/360/szPOgAve.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/szPOgAve\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第15集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414748', 1, NULL, NULL, '/video/product/20200409/szPOgAve/360/szPOgAve.mp4', 'szPOgAve.mp4', 281802036, 1080, 606, '576208', '3912.440000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '233761586414748764.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11050, '梨泰院第16集', '/video/product/20200409/aETtYk2d/360/aETtYk2d.jpg', '/video/product/20200409/aETtYk2d/360/aETtYk2d.gif', '{\"360\":\"\\/video\\/product\\/20200409\\/aETtYk2d\\/360\\/mmm.m3u8\"}', NULL, '2', '/video/upload/梨泰院第16集.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414748', 1, NULL, NULL, '/video/product/20200409/aETtYk2d/360/aETtYk2d.mp4', 'aETtYk2d.mp4', 392425936, 1080, 606, '599061', '5240.480000', 'aac', 'h264', 'mpegts', '16:9', 'aac', NULL, NULL, NULL, '842411586414748350.mp4', 1, NULL, NULL, NULL);
+INSERT INTO `app_video_list` VALUES (11051, '转码变宽屏问题', NULL, NULL, NULL, NULL, '2', '/video/upload/转码变宽屏问题.mp4', '0', '0', '1', '0', NULL, NULL, 0, NULL, '0', '1586414748', 1, NULL, NULL, NULL, '', 237254668, 608, 1080, '1490437', '1273.428000', 'aac', 'h264', 'mov,mp4,m4a,3gp,3g2,mj2', '9:16', 'aac', NULL, NULL, NULL, '120901586414748820.mp4', 0, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for app_video_otype
@@ -2099,5 +2378,30 @@ CREATE TABLE `app_vip`  (
 -- Records of app_vip
 -- ----------------------------
 INSERT INTO `app_vip` VALUES (1, 1.00, 2.00, 3.00);
+
+-- ----------------------------
+-- Table structure for app_withdraw
+-- ----------------------------
+DROP TABLE IF EXISTS `app_withdraw`;
+CREATE TABLE `app_withdraw`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userid` bigint(20) NOT NULL,
+  `total` decimal(12, 2) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `tradeno` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `datetime` bigint(20) NOT NULL DEFAULT 0,
+  `fee` int(11) UNSIGNED DEFAULT 0,
+  `domain` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `tradeno1`(`tradeno`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 427 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of app_withdraw
+-- ----------------------------
+INSERT INTO `app_withdraw` VALUES (424, 0, 562.00, 1, '15822559473792708', 1582255948, 20, 'x.paysite.xyz', '处理完毕');
+INSERT INTO `app_withdraw` VALUES (425, 0, 423125.00, 0, '19451582862443728', 1582862443, 0, 'x.paysite.xyz', NULL);
+INSERT INTO `app_withdraw` VALUES (426, 0, 120.00, 0, '61911582862670477', 1582862670, 0, 'x.paysite.xyz', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
