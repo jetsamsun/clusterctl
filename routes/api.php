@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v1','namespace' => 'Api'], function () {
     //media
     Route::post('getmedia', 'MediaController@getmedia');
     Route::post('getepisodes', 'MediaController@getepisodes');
+    Route::any('getsrc', 'MediaController@getsrc');
     // user
     Route::any('user/randomUser', 'UserController@randomUser');
     Route::any('user/getUserInfo', 'UserController@getUserInfo');

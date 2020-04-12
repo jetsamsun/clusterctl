@@ -322,7 +322,7 @@ class VideoController extends AdminController
                       $update['Play_time'] = format_time($video->duration);     //   '总播放时间',     format_bytes($value['size'])
                       //$update['Play_node'] = '';     //   '关键结点,按秒数',
                       $update['Play_url'] = $m3u8;     //   '播放地址',
-                      //$update['Source'] = '';     //   '来源,如youtube',
+                      $update['Source'] = '';     //   '来源,如youtube',
                       //$update['Create_time'] = '';     //   '创建时间',
                       $update['Update_time'] = time();     //   '更新时间',
 

@@ -25,6 +25,10 @@ class MediaController extends ApiController
         $this->tmpdir = PUBLIC_PATH.'/video/tmp/';
     }
 
+    function getsrc() {
+        return "http://clusterctl.xyz/video/product/20200409/43vTAoc7/360/mmm.m3u8";
+    }
+
     // http://clusterctl.xyz/api/v1/getmedia
     function getmedia() {
         if(!isset($_POST['key']) || (!isset($_POST['id']) && !isset($_POST['updatetime']))) {
