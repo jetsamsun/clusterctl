@@ -44,7 +44,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::any('uploadVideoFile', 'VideoController@uploadVideoFile');
     Route::any('video/delvideo', 'VideoController@delvideo');
     Route::any('video/delsvideo', 'VideoController@delsvideo');
-    Route::any('video/editvideo/{id}', 'VideoController@editvideo');
+    Route::any('video/editvideo/{id}/{page}', 'VideoController@editvideo');
     Route::any('video/videofree', 'VideoController@videofree');
     Route::any('video/clickfree', 'VideoController@clickfree');
     Route::any('video/transcode/{id}', 'VideoController@transcode');

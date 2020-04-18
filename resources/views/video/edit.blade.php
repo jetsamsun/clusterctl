@@ -152,7 +152,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <a href="{{url('admin/video')}}?page={{$page}}" type="button" class="layui-btn layui-btn-primary">返 回</a>
             </div>
         </div>
     </form>
@@ -191,7 +191,7 @@
 
     // 截图
     function zt() {
-        let siteurl = "{{$cfgs['site_url']}}";
+        let siteurl = "{{$cfgs['img_url']}}";
         let time = document.getElementById("video-active").currentTime;
         let data = {
             "src_path": "{{ $data['video'] }}",
@@ -210,7 +210,7 @@
     }
 
     function gif_sz() {
-        let siteurl = "{{$cfgs['site_url']}}";
+        let siteurl = "{{$cfgs['img_url']}}";
         $.post("{{url('admin/video/vodtogif')}}",{src_path:"{{ $data['video'] }}",time:document.getElementById("video-active").currentTime},function (ret) {
             if(ret.code===1) {
                 $('#showgif').find('img').attr('src',ret.data+'?s='+Math.random());

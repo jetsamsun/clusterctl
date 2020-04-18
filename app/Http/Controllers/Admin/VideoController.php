@@ -88,10 +88,15 @@ class VideoController extends AdminController
 
         $cfgs = $this->cfgs;
         $data = VideoAdminLog::select('log_id')->get()->toArray();
-        return view('video.list',compact('data','no_display_aspect_ratio','cfgs'));
+		
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		$page = empty($page) ? 1 : $page;
+
+        return view('video.list',compact('data','no_display_aspect_ratio','cfgs', 'page'));
     }
     public function getVideoList(Request $request){
         $limit = $request->input('limit');
+		$page = $request->input('page');
         $title = $request->input('title');
         $count = VideoList::select('*');
         if($title){
@@ -156,7 +161,7 @@ class VideoController extends AdminController
             }
         }
 
-        return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'data'=>$dataTmp));
+        return response()->json(array('code'=>0,'msg'=>'','count'=>$count,'page'=>$page,'data'=>$dataTmp));
     }
 
     public function cusm3u8url(Request $request,$vid) {
@@ -179,7 +184,7 @@ class VideoController extends AdminController
         $bool = M3u8List::where('vid',$vid)->where('url',trim($data['url']))->delete();
         return response()->json(array('code'=>1,'msg'=>"移除成功"));
     }
-    public function editvideo(Request $request,$vid){
+    public function editvideo(Request $request,$vid,$page){
         $cfgs = $this->cfgs;
 
         if($request->isMethod('post')) {
@@ -213,8 +218,10 @@ class VideoController extends AdminController
             }
             $data['m3u8'] = $str;
         }
+		
+		if(!$page) $page = 1; 
 
-        return view('video.edit',compact('vid','data','cfgs'));
+        return view('video.edit',compact('vid','data','cfgs','page'));
     }
     public function sync(Request $request,$vid){
         if($request->isMethod('post')) {

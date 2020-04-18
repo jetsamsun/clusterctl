@@ -88,8 +88,10 @@
             var tableIn = table.render({
                 elem: '#test'
                 ,url:'/admin/video/getVideoList'
-                ,page: true
-                ,limit:10    // 每页显示的条数
+                ,page: {
+					curr: '{{$page}}'
+				}
+                ,limit:20    // 每页显示的条数
                 ,cols: [[
                     {type:'checkbox', fixed: 'left'}
                     ,{field:'vid', width:80, title: 'ID', sort: true, fixed: 'left'}
@@ -251,8 +253,10 @@
                     });
                 } else if(obj.event === 'edit'){
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+					var pageIndex = tableIn.config.page.curr;
+				
                     vid = data.vid;
-                    window.location.href = "/admin/video/editvideo/"+vid;
+                    window.location.href = "/admin/video/editvideo/"+vid+"/"+pageIndex;
                 } else if(obj.event === 'transcode'){
                     if(data.url == '(已删除)') {
                         layer.msg('源文件已删除', {icon: 2, anim: 6, time: 1000});
